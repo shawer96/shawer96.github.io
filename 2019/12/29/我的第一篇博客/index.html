@@ -5,22 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 4.2.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/shawer96.github.io/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/shawer96.github.io/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/shawer96.github.io/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/shawer96.github.io/images/logo.svg" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-<link rel="stylesheet" href="/shawer96.github.io/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="/shawer96.github.io/lib/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
 
 <script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
     hostname: new URL('http://yoursite.com').hostname,
-    root: '/shawer96.github.io/',
+    root: '/',
     scheme: 'Pisces',
     version: '7.6.0',
     exturl: false,
@@ -40,21 +40,21 @@
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     },
-    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
-    path: '',
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
   };
 </script>
 
-  <meta name="description" content="忙活了大半天, 终于摸索清楚了如何去建立一个属于自己的博客。hexo搭建博客本身倒是没什么困难的，时间主要还是花在使用TravisCI实现持续集成上。一不小心还走了许多弯路。好歹还是成功了，很大程度上依靠下面的这篇文章帮忙。  https:&#x2F;&#x2F;www.jianshu.com&#x2F;p&#x2F;5691815b81b6  唉，明明有更要紧的事情去做，却偏偏要把时间都花在这些没什么意义的事情上，好不容易学会了怎么建">
+  <meta name="description" content="Here&#39;s something encrypted, password is required to continue reading.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="我的第一篇博客">
 <meta property="og:url" content="http://yoursite.com/2019/12/29/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/index.html">
 <meta property="og:site_name" content="Shaw的博客">
-<meta property="og:description" content="忙活了大半天, 终于摸索清楚了如何去建立一个属于自己的博客。hexo搭建博客本身倒是没什么困难的，时间主要还是花在使用TravisCI实现持续集成上。一不小心还走了许多弯路。好歹还是成功了，很大程度上依靠下面的这篇文章帮忙。  https:&#x2F;&#x2F;www.jianshu.com&#x2F;p&#x2F;5691815b81b6  唉，明明有更要紧的事情去做，却偏偏要把时间都花在这些没什么意义的事情上，好不容易学会了怎么建">
+<meta property="og:description" content="Here&#39;s something encrypted, password is required to continue reading.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-12-29T12:28:29.000Z">
-<meta property="article:modified_time" content="2020-06-12T09:30:35.700Z">
+<meta property="article:modified_time" content="2020-06-12T12:35:17.453Z">
 <meta property="article:author" content="Shaw">
 <meta name="twitter:card" content="summary">
 
@@ -112,7 +112,7 @@
   <div class="site-meta">
 
     <div>
-      <a href="/shawer96.github.io/" class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Shaw的博客</span>
         <span class="logo-line-after"><i></i></span>
@@ -136,27 +136,52 @@
   <ul id="menu" class="menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/shawer96.github.io/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/shawer96.github.io/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/shawer96.github.io/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/shawer96.github.io/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
 
   </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
   </ul>
 
 </nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
 </div>
     </header>
 
@@ -183,7 +208,7 @@
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/29/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/shawer96.github.io/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Shaw">
       <meta itemprop="description" content="记录生活与学习中的点滴">
     </span>
@@ -210,7 +235,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-12 17:30:35" itemprop="dateModified" datetime="2020-06-12T17:30:35+08:00">2020-06-12</time>
+                <time title="修改时间：2020-06-12 20:35:17" itemprop="dateModified" datetime="2020-06-12T20:35:17+08:00">2020-06-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -218,7 +243,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/shawer96.github.io/categories/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index">
+                  <a href="/categories/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index">
                     <span itemprop="name">随笔</span>
                   </a>
                 </span>
@@ -235,13 +260,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>忙活了大半天, 终于摸索清楚了如何去建立一个属于自己的博客。hexo搭建博客本身倒是没什么困难的，时间主要还是花在使用TravisCI实现持续集成上。一不小心还走了许多弯路。好歹还是成功了，很大程度上依靠下面的这篇文章帮忙。</p>
-<blockquote>
-<p><a href="https://www.jianshu.com/p/5691815b81b6" target="_blank" rel="noopener">https://www.jianshu.com/p/5691815b81b6</a></p>
-</blockquote>
-<p>唉，明明有更要紧的事情去做，却偏偏要把时间都花在这些没什么意义的事情上，好不容易学会了怎么建博客却又不知道自己有没有动力持续写下去。学业这边导师又总是派一些吃力不讨好的杂活，真是不知道能学到什么东西。感觉明年找工作还是得靠自己。</p>
-<p>就这样吧，希望自己能有干劲，为了自己也为了她，希望自己能好好珍惜时间。</p>
-
+        <div id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <div class="hbe-input-container">
+  <input type="password" id="hbePass" placeholder="" />
+    <label for="hbePass">Hey, password is required here.</label>
+    <div class="bottom-line"></div>
+  </div>
+  <script id="hbeData" type="hbeData" data-hmacdigest="7486c518ae0fc1b9e30d7f842c9d87cefc53672818b77d122f3a0b7ca6d9c508">b9316a85146e040399b04c0428777ee928c8da8e41768b9a5da251cc1310eeb1f67602c465a1e4a530e88557cf364316a3fb4153fca15f17ffc45dd0e2ed718b5c91c5d6c6ce543dc20ee4cdd40626e1deef0bdaf6f08acfb0bdaa9844039236da589ac5a76e671275c410711508205bb52cd9adab72059814ae975ca9142c59939ca6c63bfcf6567fd2da48c7aeb2ebb49ec3f7048d576e40c6e1bda1425359123ed53d8d597dee7c8f6983f4f02e45e2ee1e5c066dbc9d8327463f888a71ffa6f6f1e04d9bf393430bdf4e02ed7161bcf43a10df76486f191909e18399211c44f068bbcf31482bf77c506276baa9f1c0784da2501720f465c6796b0b3e971fc0fb0bb7281b21a898cfc06b5733cca485d4e45f2029b1a092e8c8e4281064d6bcf249ee95f35608d0de7b543134e47e8e4f5094dd5bc4b015a3626443000cf77cd1a5d9cea7895172d8edafccce19ef7fee6423a3b927f9afbd3918b3267bac4a126a1e2e80bc544be2743def6d045b64ff5508eb5655fb2a8ecf74ff46b94bc3a7c96b47df5b50599a730c91da74649043dfd0a3c0e4ef5c835d2f255beed3c762af320cc9be39f4d687b9c72c2c30425d072eb44e69a81f4eb43e37293fd9d6b6d396693e35190a3c7c18df77106def54967aa54bd8054163817f3e05664641fcc1ed6a7adce8f9d2ef6734a8f5278294a30acb21f07927f9f5ea9b070625bd3ffa119d667ad0a6db4b93f28227febcb2ea700f9a6761a791de209d7ab80e940c1470ac913e49acb108bd76a7035badace8898a61448a364c7def7fd1a35decc0820784f9963d1a8f7cb90cf36a0c41c8dfd9bd20160db3555b1032da41e8d1dd53942cd1ad32abf774af695a1776aa7c9d2fa7e3abf0f95a77fa59c4f728310c085adcea5e54bc5a0a46cdd705c8bb0908f1b7d12dd12a7412fbfe8d62571afd87e47a8f7841dae6d403ec28c564f1f118e3372680a5b6124a98dc0c6bf338303ac323661f730c5077c62a917200dca64f7437952251ec6703546915de6dbc5f90de9f8d1ac1f96c179f14c5595efdfc2258561b5c8b4811f6bfd62fc2e41c0e12964a4b67ab8655731bba406b8382dbd421e309c0080f12a0b53de9064639af740c61881ec8fb7fa8810431b74c2dd938894a424fceccf6cc4f435ef274d068c6ed19dd6f9a8937c1fa2bc98114cd724ad1d06327529ffe9dc87aa4a1fbed5460cc9a75980cfb3f1f2a4819e219c8a216ce8ba23ef1e3d38054f9abb93099be8933fd9457dc29fc3b57da185106a286ffe60b683a6cb8c8167651ea67125593fe7d33ead32361754b64821cdac4</script>
+</div>
+<script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">
     </div>
 
     
@@ -256,11 +283,11 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/shawer96.github.io/2019/12/29/hello-world/" rel="prev" title="Hello World">
+    <a href="/2019/12/29/hello-world/" rel="prev" title="Hello World">
       <i class="fa fa-chevron-left"></i> Hello World
     </a></div>
       <div class="post-nav-item">
-    <a href="/shawer96.github.io/2020/06/12/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97-Buffet/" rel="next" title="经典论文系列--Buffet">
+    <a href="/2020/06/12/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97-Buffet/" rel="next" title="经典论文系列--Buffet">
       经典论文系列--Buffet <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -333,20 +360,20 @@
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
-          <a href="/shawer96.github.io/archives/">
+          <a href="/archives/">
         
           <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-            <a href="/shawer96.github.io/categories/">
+            <a href="/categories/">
           
         <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
-            <a href="/shawer96.github.io/tags/">
+            <a href="/tags/">
           
         <span class="site-state-item-count">1</span>
         <span class="site-state-item-name">标签</span></a>
@@ -394,19 +421,19 @@
   </div>
 
   
-  <script src="/shawer96.github.io/lib/anime.min.js"></script>
-  <script src="/shawer96.github.io/lib/velocity/velocity.min.js"></script>
-  <script src="/shawer96.github.io/lib/velocity/velocity.ui.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
 
-<script src="/shawer96.github.io/js/utils.js"></script>
+<script src="/js/utils.js"></script>
 
-<script src="/shawer96.github.io/js/motion.js"></script>
-
-
-<script src="/shawer96.github.io/js/schemes/pisces.js"></script>
+<script src="/js/motion.js"></script>
 
 
-<script src="/shawer96.github.io/js/next-boot.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
 
 
 
@@ -414,6 +441,10 @@
   
 
 
+
+
+  
+<script src="/js/local-search.js"></script>
 
 
 

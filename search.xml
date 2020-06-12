@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Hello World</title>
+    <url>/2019/12/29/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+]]></content>
+      <categories>
+        <category>hexo 入门</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>我的第一篇博客</title>
+    <url>/2019/12/29/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<div id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <div class="hbe-input-container">
+  <input type="password" id="hbePass" placeholder="" />
+    <label for="hbePass">Hey, password is required here.</label>
+    <div class="bottom-line"></div>
+  </div>
+  <script id="hbeData" type="hbeData" data-hmacdigest="7486c518ae0fc1b9e30d7f842c9d87cefc53672818b77d122f3a0b7ca6d9c508">b9316a85146e040399b04c0428777ee928c8da8e41768b9a5da251cc1310eeb1f67602c465a1e4a530e88557cf364316a3fb4153fca15f17ffc45dd0e2ed718b5c91c5d6c6ce543dc20ee4cdd40626e1deef0bdaf6f08acfb0bdaa9844039236da589ac5a76e671275c410711508205bb52cd9adab72059814ae975ca9142c59939ca6c63bfcf6567fd2da48c7aeb2ebb49ec3f7048d576e40c6e1bda1425359123ed53d8d597dee7c8f6983f4f02e45e2ee1e5c066dbc9d8327463f888a71ffa6f6f1e04d9bf393430bdf4e02ed7161bcf43a10df76486f191909e18399211c44f068bbcf31482bf77c506276baa9f1c0784da2501720f465c6796b0b3e971fc0fb0bb7281b21a898cfc06b5733cca485d4e45f2029b1a092e8c8e4281064d6bcf249ee95f35608d0de7b543134e47e8e4f5094dd5bc4b015a3626443000cf77cd1a5d9cea7895172d8edafccce19ef7fee6423a3b927f9afbd3918b3267bac4a126a1e2e80bc544be2743def6d045b64ff5508eb5655fb2a8ecf74ff46b94bc3a7c96b47df5b50599a730c91da74649043dfd0a3c0e4ef5c835d2f255beed3c762af320cc9be39f4d687b9c72c2c30425d072eb44e69a81f4eb43e37293fd9d6b6d396693e35190a3c7c18df77106def54967aa54bd8054163817f3e05664641fcc1ed6a7adce8f9d2ef6734a8f5278294a30acb21f07927f9f5ea9b070625bd3ffa119d667ad0a6db4b93f28227febcb2ea700f9a6761a791de209d7ab80e940c1470ac913e49acb108bd76a7035badace8898a61448a364c7def7fd1a35decc0820784f9963d1a8f7cb90cf36a0c41c8dfd9bd20160db3555b1032da41e8d1dd53942cd1ad32abf774af695a1776aa7c9d2fa7e3abf0f95a77fa59c4f728310c085adcea5e54bc5a0a46cdd705c8bb0908f1b7d12dd12a7412fbfe8d62571afd87e47a8f7841dae6d403ec28c564f1f118e3372680a5b6124a98dc0c6bf338303ac323661f730c5077c62a917200dca64f7437952251ec6703546915de6dbc5f90de9f8d1ac1f96c179f14c5595efdfc2258561b5c8b4811f6bfd62fc2e41c0e12964a4b67ab8655731bba406b8382dbd421e309c0080f12a0b53de9064639af740c61881ec8fb7fa8810431b74c2dd938894a424fceccf6cc4f435ef274d068c6ed19dd6f9a8937c1fa2bc98114cd724ad1d06327529ffe9dc87aa4a1fbed5460cc9a75980cfb3f1f2a4819e219c8a216ce8ba23ef1e3d38054f9abb93099be8933fd9457dc29fc3b57da185106a286ffe60b683a6cb8c8167651ea67125593fe7d33ead32361754b64821cdac4</script>
+</div>
+<script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>经典论文系列--Buffet</title>
+    <url>/2020/06/12/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97-Buffet/</url>
+    <content><![CDATA[<h1 id="Buffets-An-Efficient-and-Composable-Storage-Idiom"><a href="#Buffets-An-Efficient-and-Composable-Storage-Idiom" class="headerlink" title="Buffets: An Efficient and Composable Storage Idiom"></a>Buffets: An Efficient and Composable Storage Idiom</h1><p>for Explicit Decoupled Data Orchestration</p>
+<blockquote>
+<p>原文:</p>
+</blockquote>
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><h3 id="1-作者想要解决什么问题"><a href="#1-作者想要解决什么问题" class="headerlink" title="1. 作者想要解决什么问题"></a>1. 作者想要解决什么问题</h3><p>提出针对加速器不同需求通用的, 可重用的storage idiom, 它独立于任何特定的设计.</p>
+<h3 id="2-通过什么理论或者模型来解决"><a href="#2-通过什么理论或者模型来解决" class="headerlink" title="2. 通过什么理论或者模型来解决"></a>2. 通过什么理论或者模型来解决</h3><ul>
+<li><p>Buffet</p>
+</li>
+<li><p>Decoupled fills and accesses with fine-grained synchronization.</p>
+</li>
+<li><p>Hierarchical composition, and efficient multi-casting. </p>
+</li>
+</ul>
+<h3 id="3-给出了什么答案"><a href="#3-给出了什么答案" class="headerlink" title="3. 给出了什么答案"></a>3. 给出了什么答案</h3><p>在8KB RAM上仅仅增加2%的控制开销,与DMA管理的double-buffer scratched pad和跨各种工作负载的cache相比，Buffet分别将能量延迟乘积提高了1.53倍和5.39倍。</p>
+<a id="more"></a>
+
+
+
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><h3 id="1-为什么研究这一课题"><a href="#1-为什么研究这一课题" class="headerlink" title="1. 为什么研究这一课题"></a>1. 为什么研究这一课题</h3><p>相较于通用芯片, 数据编排(data orchestration)–即将数据移入或者移出buffer heirarchy, 是专用加速芯片实现高性能的重要方法.</p>
+<img src="https://i.loli.net/2020/06/11/4sbALD7TirONE19.png" alt="image-20200611104101471" style="zoom:80%;" />
+
+<p>加速器在定制的片上缓冲上花费了大量的精力。不幸的是，这些解决方案与特定设计紧密相关，从而妨碍了其他加速器领域的可重用性。</p>
+<h3 id="2-进行到了哪一个阶段"><a href="#2-进行到了哪一个阶段" class="headerlink" title="2. 进行到了哪一个阶段"></a>2. 进行到了哪一个阶段</h3><p>Existing reusable buffer idiom:</p>
+<p>cache</p>
+<ul>
+<li>过多面积和功耗用于隐式数据编排, 与加速器需求不一致.</li>
+</ul>
+<p>scratched pad</p>
+<ul>
+<li>不灵活, 不满足复杂数据重用和更新模式需求.</li>
+</ul>
+<p>FIFO</p>
+<ul>
+<li>缺乏同步性, 难以层次化..</li>
+</ul>
+<h3 id="3-基于哪些假设"><a href="#3-基于哪些假设" class="headerlink" title="3. 基于哪些假设"></a>3. 基于哪些假设</h3><ol>
+<li>显式解耦合(EDDO)方式.</li>
+<li>同步实现方式.</li>
+<li>Buffet与层次化存储结合, buffet间同步, 支持单buffet多数据广播.</li>
+</ol>
+<h2 id="Classifying-Data-Orchestration"><a href="#Classifying-Data-Orchestration" class="headerlink" title="Classifying Data Orchestration"></a>Classifying Data Orchestration</h2><p>加速器架构师利用他们在设计时对工作负载特征和访问模式的了解，可以获得以下收益：</p>
+<ul>
+<li>预取–提前准确的取来将被使用的数据,</li>
+<li><del>在最小，最快和最节能的缓冲区中最大程度地访问数据,</del></li>
+<li>将数据暂存到层次结构中共享者之间最小上限的缓冲区中,</li>
+<li>将下一个数据图块的填充与当前数据图块的消耗重叠，</li>
+<li>同时向访问的数据的所有使用者广播（或multi-casting）缓冲区访问的结果，</li>
+<li>精确且廉价地同步数据可用性,</li>
+<li>准确删除不再需要的数据</li>
+</ul>
+<p>传统应用场景下的resuable buffering idioms分类:</p>
+<p>​        implict/explict: workload在何种程度上决定暂存, 缓存策略.</p>
+<p>​        coupled/decoupled: 访存请求是round-trip还是flow-forward.</p>
+<img src="https://i.loli.net/2020/06/11/HG2x6trF9miWDl8.png" alt="image-20200611115419792" style="zoom: 67%;" />
+
+
+
+<h3 id="1-Implicit-versus-Explicit-Orchestration"><a href="#1-Implicit-versus-Explicit-Orchestration" class="headerlink" title="1. Implicit versus Explicit Orchestration"></a>1. Implicit versus Explicit Orchestration</h3><ul>
+<li>cache<ul>
+<li>可重用的模块化的buffer抽象</li>
+<li>implice: 发起请求的程序并不指定数据何时重用和清空</li>
+<li>启发式(Heuristic)替换策略, 与workload无关</li>
+<li>但对于特定领域的加速器, tag匹配等带来的面积和功耗开销也难以忍受</li>
+</ul>
+</li>
+<li>Scratched Pad<ul>
+<li>指定存储的地址范围, 实现显示数据编排和青雀控制</li>
+<li>常用语GPU的shared mem</li>
+<li>避免了cache的硬件开销</li>
+<li>Across fill和overlaping fill繁琐且易出错, 难组成层级化的存储</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-Coupled-versus-Decoupled-Orchestration"><a href="#2-Coupled-versus-Decoupled-Orchestration" class="headerlink" title="2.  Coupled versus Decoupled Orchestration"></a>2.  Coupled versus Decoupled Orchestration</h3><ul>
+<li><p>Coupled</p>
+<ul>
+<li>存取请求的发起者也接收响应.</li>
+<li>Pros: <ul>
+<li>数据需求和使用之前的同步性高效且直观</li>
+</ul>
+</li>
+<li>Cons: <ul>
+<li>难以实现数据填充(fill)和访问(access)之间的交叠–请求/响应者要来在请求和消费响应之间回变换角色</li>
+</ul>
+</li>
+<li>必须为整个往返负载延迟保留传入数据图块的“着陆区”，这会增加对RAM资源的压力</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>Decoupled</p>
+<ul>
+<li><p>单独的硬件模块（例如DMA或地址生成器（AGEN））负责将数据推送到一个或多个功能单元的staging buffer中.</p>
+</li>
+<li><p>为了掩盖延时, ==这些buffer通常是ping-pong buffers[1,2].</p>
+</li>
+<li><p>Pros:</p>
+<ul>
+<li>请求者可以以自己的速度运行, 返回的数据可以广播到多个使用者.</li>
+<li>访存是feed-forward的, 只需要与相邻层级的存储结构之间的lantancy相关的landing zong,  而不是在整个层次结构之间round-trip(比如cache如果miss还要去访问高一级存储, 如果decoupled那么buffer的大小只需要掩盖L1到L2的延时)</li>
+</ul>
+</li>
+<li><p>Cons:</p>
+<ul>
+<li>传统的DAE数据编排依然是隐式的, 使用cache的管理机制</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2020/06/12/HYUbECoueQTwhqa.png" alt=""></p>
+<h3 id="3-Synchronization-Concerns"><a href="#3-Synchronization-Concerns" class="headerlink" title="3. Synchronization Concerns"></a>3. Synchronization Concerns</h3><p>何时load一个new tile? 过早会导致数据被覆盖, 过晚会导致性能损失. </p>
+<p>通过脉动阵列来约束tile的执行时间是一种办法.对于设计片外访问或者条件执行的系统, 这些时限过于保守.</p>
+<p>本文采用ready-valid握手协议, 也可以使用其他micro-protocols(例如TRY/ACK). 本文提供了一个EDDO storage idiom，它在staging buffer操作本身中封装了细粒度的同步。</p>
+<h2 id="The-Buffet-Storage-Idiom"><a href="#The-Buffet-Storage-Idiom" class="headerlink" title="==The Buffet Storage Idiom=="></a>==The Buffet Storage Idiom==</h2><img src="https://i.loli.net/2020/06/12/omPiChJxk5trX1S.png" style="zoom: 67%;" />
+
+
+
+<p>上图给出了buffet的数据编排模型, 它属于表1中的EDDO象限. 相较于DMA, 采用decoupled AGEN扩大了解耦的范围.</p>
+<p>在buffet中，有限状态机控制四个基本存储操作：</p>
+<ol>
+<li>Fill(data)</li>
+<li>Read(index)</li>
+<li>Update(index, data): </li>
+<li>Shrink(num)</li>
+</ol>
+<p>上级存储如DRAM通过<strong>FILL</strong>操作填入数据. 下级模块（例如DataPath）则通过<strong>Read</strong>和<strong>Update</strong>操作来处理自助餐中的数据. <strong>Shrink</strong>操作从窗口中删除数据.</p>
+<img src="https://i.loli.net/2020/06/12/kprVbnS1IgGwmxu.png" style="zoom:67%;" />
+
+
+
+<h3 id="1-Buffet-Operational-Behavior"><a href="#1-Buffet-Operational-Behavior" class="headerlink" title="1. Buffet Operational Behavior"></a>1. Buffet Operational Behavior</h3><img src="https://i.loli.net/2020/06/12/PcMjgDhnptIOEfV.png" alt="image-20200611205302228" style="zoom: 50%;" />
+
+
+
+<p>❶新传输的数据通过Fill逻辑装入RAM, 这一步类似于传统的FIFO, 数据不带有地址信息. Local地址的生成依赖于填充顺序.</p>
+<p>❷与FIFO不同的是Read请求包含一个额外的Index, 允许以与接收数据不同的顺序读取数据. 这一index是相对于staging buffer中的oldest installed datum. 这一缩影不能超出RAM的大小.  传统的FIFO只要为非空，就会声明Pop.Vld. 在buffet中，请求数据的存在是索引的函数.  只有被请求的数据已被填充, 才会设置ReadRsp.VLD.</p>
+<p>❸除了索引读取之外，与FIFO的一个显着区别是活动窗口内的数据元素可以就地修改，我们将其称为Update路径.</p>
+<p>❹ shrink路径描述了从自助餐中删除暂存数据的逻辑。此操作采用size参数，并从活动窗口中删除那么多元素。此操作仅更新内部记分板-不会发生数据移动。credits被释放到Fill AGEN，表明有空间可以进行另一次批量传输. 主张谁使用数据(生成index)谁shrink.</p>
+<img src="https://i.loli.net/2020/06/12/uZ1agqPvn9zxKRo.png" alt="image-20200611211210544" style="zoom:80%;" />
+
+
+
+<h3 id="2-Buffet-Synchronization-Details"><a href="#2-Buffet-Synchronization-Details" class="headerlink" title="2. Buffet Synchronization Details"></a>2. Buffet Synchronization Details</h3><ul>
+<li>需要显式硬件同步的情况由算法1中的“wait_until”调用表示。</li>
+<li>由于公式1中的操作顺序，许多其他同步情况都可以在不需要显式硬件支持的情况下处理，如图4所示。</li>
+<li>RAW冒险检查–计分板<ul>
+<li>will_update 用于表示datapath即将修改当前阶段的值</li>
+<li>如果后续的<strong>Read</strong>请求正在修改的索引，则响应将stall-这与读取尚未填充的索引没有区别</li>
+<li><strong>FILL</strong>写入时不需要检查</li>
+<li>定制化–如果确定没有RAW毛线可以删除RAW检查, 如果<strong>FILL</strong>与<strong>UPDATE</strong>互斥, 可以共享一个写端口. </li>
+</ul>
+</li>
+<li><strong>SHRINK</strong>与<strong>FILL</strong>之间的同步<ul>
+<li>算法1中对<strong>SHRINK</strong>保守的使用显示同步–wait_until(num&lt;occupancy).</li>
+<li>图4将其描述为隐式同步, 详见第四节</li>
+</ul>
+</li>
+</ul>
+<img src="https://i.loli.net/2020/06/12/On4vEXflL9IuGKk.png" alt="image-20200611212533286" style="zoom:67%;" />
+
+
+
+<h3 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h3><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><h3 id="1-文章的主要内容"><a href="#1-文章的主要内容" class="headerlink" title="1. 文章的主要内容"></a>1. 文章的主要内容</h3><h3 id="2-存在哪些缺陷"><a href="#2-存在哪些缺陷" class="headerlink" title="2. 存在哪些缺陷"></a>2. 存在哪些缺陷</h3><h3 id="3-有什么构思"><a href="#3-有什么构思" class="headerlink" title="3. 有什么构思"></a>3. 有什么构思</h3><blockquote>
+<p>[1] J. Cong, M. A. Ghodrat, M. Gill, B. Grigorian, K. Gururaj, and G. Reinman. Accelerator-rich architectures: Opportunities and progresses. In Proceedings of the Design Automation Conference (DAC), 2014.<br>[2] E. G. Cota, P. Mantovani, G. D. Guglielmo, and L. P. Carloni. An analysis of accelerator coupling in heterogeneous architectures. In 2015 52nd ACM/EDAC/IEEE Design Automation Conference (DAC), pages 1–6, June 2015.</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>计算机体系结构</tag>
+      </tags>
+  </entry>
+</search>
