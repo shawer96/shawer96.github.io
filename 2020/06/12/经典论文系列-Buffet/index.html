@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 4.2.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/x1-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/x1-16.png">
   <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
 <link rel="stylesheet" href="/css/main.css">
@@ -19,7 +19,7 @@
 <script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    hostname: new URL('http://yoursite.com').hostname,
+    hostname: new URL('https://yoursite.com').hostname,
     root: '/',
     scheme: 'Pisces',
     version: '7.6.0',
@@ -46,12 +46,12 @@
   };
 </script>
 
-  <meta name="description" content="Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration Pellauer, M., et al. (2019). Buffets. Proceedings of the Twenty-Fourth International Conference on Architec">
+  <meta name="description" content="Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration 原文: Pellauer, M., et al. (2019). Buffets. Proceedings of the Twenty-Fourth International Conference on Arch">
 <meta property="og:type" content="article">
 <meta property="og:title" content="经典论文系列--Buffet">
-<meta property="og:url" content="http://yoursite.com/2020/06/12/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97-Buffet/index.html">
+<meta property="og:url" content="https://yoursite.com/2020/06/12/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97-Buffet/index.html">
 <meta property="og:site_name" content="Shaw的博客">
-<meta property="og:description" content="Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration Pellauer, M., et al. (2019). Buffets. Proceedings of the Twenty-Fourth International Conference on Architec">
+<meta property="og:description" content="Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration 原文: Pellauer, M., et al. (2019). Buffets. Proceedings of the Twenty-Fourth International Conference on Arch">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2020/06/11/4sbALD7TirONE19.png">
 <meta property="og:image" content="https://i.loli.net/2020/06/11/HG2x6trF9miWDl8.png">
@@ -62,13 +62,13 @@
 <meta property="og:image" content="https://i.loli.net/2020/06/12/uZ1agqPvn9zxKRo.png">
 <meta property="og:image" content="https://i.loli.net/2020/06/12/On4vEXflL9IuGKk.png">
 <meta property="article:published_time" content="2020-06-12T07:24:18.000Z">
-<meta property="article:modified_time" content="2020-06-13T01:43:41.386Z">
+<meta property="article:modified_time" content="2020-06-14T16:11:13.002Z">
 <meta property="article:author" content="Shaw">
 <meta property="article:tag" content="计算机体系结构">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://i.loli.net/2020/06/11/4sbALD7TirONE19.png">
 
-<link rel="canonical" href="http://yoursite.com/2020/06/12/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97-Buffet/">
+<link rel="canonical" href="https://yoursite.com/2020/06/12/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97-Buffet/">
 
 
 <script id="page-configurations">
@@ -216,7 +216,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/12/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97-Buffet/">
+    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2020/06/12/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97-Buffet/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -246,7 +246,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-13 09:43:41" itemprop="dateModified" datetime="2020-06-13T09:43:41+08:00">2020-06-13</time>
+                <time title="修改时间：2020-06-15 00:11:13" itemprop="dateModified" datetime="2020-06-15T00:11:13+08:00">2020-06-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -254,8 +254,8 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
-                    <span itemprop="name">学习</span>
+                  <a href="/categories/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97/" itemprop="url" rel="index">
+                    <span itemprop="name">经典论文系列</span>
                   </a>
                 </span>
             </span>
@@ -272,7 +272,7 @@
 
       
         <h1 id="Buffets-An-Efficient-and-Composable-Storage-Idiom-for-Explicit-Decoupled-Data-Orchestration"><a href="#Buffets-An-Efficient-and-Composable-Storage-Idiom-for-Explicit-Decoupled-Data-Orchestration" class="headerlink" title="Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration"></a>Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration</h1><blockquote>
-<p>Pellauer, M., et al. (2019). Buffets. Proceedings of the Twenty-Fourth International Conference on Architectural Support for Programming Languages and Operating Systems - ASPLOS ‘19: 137-151.</p>
+<p>原文: Pellauer, M., et al. (2019). Buffets. Proceedings of the Twenty-Fourth International Conference on Architectural Support for Programming Languages and Operating Systems - ASPLOS ‘19: 137-151.</p>
 </blockquote>
 <a id="more"></a>
 
@@ -416,9 +416,9 @@
 <li>由于公式1中的操作顺序，许多其他同步情况都可以在不需要显式硬件支持的情况下处理，如图4所示。</li>
 <li>RAW冒险检查–计分板<ul>
 <li>will_update 用于表示datapath即将修改当前阶段的值</li>
-<li>如果后续的<strong>Read</strong>请求正在修改的索引，则响应将stall-这与读取尚未填充的索引没有区别</li>
+<li>如果后续的<strong>Read</strong>请求正在被修改的索引，则响应将stall–这与读取尚未填充的索引没有区别</li>
 <li><strong>FILL</strong>写入时不需要检查</li>
-<li>定制化–如果确定没有RAW毛线, 可以删除RAW检查, 如果<strong>FILL</strong>与<strong>UPDATE</strong>互斥, 可以共享一个写端口. </li>
+<li>定制化–如果确定没有RAW冒险, 可以删除RAW检查, 如果<strong>FILL</strong>与<strong>UPDATE</strong>互斥, 可以共享一个写端口. </li>
 </ul>
 </li>
 <li><strong>SHRINK</strong>与<strong>FILL</strong>之间的同步<ul>
@@ -443,7 +443,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" rel="tag"># 计算机体系结构</a>
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" rel="tag"> <i class="fa fa-tag"></i> 计算机体系结构</a>
           </div>
 
         
@@ -455,7 +455,10 @@
     <a href="/2019/12/29/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" rel="prev" title="我的第一篇博客">
       <i class="fa fa-chevron-left"></i> 我的第一篇博客
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/14/Hexo%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/" rel="next" title="Hexo主题美化">
+      Hexo主题美化 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -542,7 +545,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
