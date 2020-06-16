@@ -52,7 +52,7 @@
 
   <meta name="description" content="本文通过对循环优化技术进行数值表征，对卷积循环加速策略进行了深入分析。加速器目标和设计变量之间的关系进行了定量研究。提出了相应的新数据流和体系结构，以最大程度地减少数据通信并提高吞吐量。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="经典论文系列--Optimizing the Convolution Operation to Accelerate">
+<meta property="og:title" content="经典论文系列--卷积神经网络加速器最优设计空间">
 <meta property="og:url" content="https://yoursite.com/2020/06/15/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97-Optimizing-the-Convolution-Operation-to-Accelerate/index.html">
 <meta property="og:site_name" content="Shaw的博客">
 <meta property="og:description" content="本文通过对循环优化技术进行数值表征，对卷积循环加速策略进行了深入分析。加速器目标和设计变量之间的关系进行了定量研究。提出了相应的新数据流和体系结构，以最大程度地减少数据通信并提高吞吐量。">
@@ -66,11 +66,6 @@
 <meta property="og:image" content="https://i.loli.net/2020/06/15/op2jV9MCFedQnDx.png">
 <meta property="og:image" content="https://i.loli.net/2020/06/15/2WjGodfwNt4yVbX.png">
 <meta property="og:image" content="https://i.loli.net/2020/06/15/5eJkWvogZlXnhtm.png">
-<meta property="og:image" content="https://i.loli.net/2020/06/15/EUJwvBz9ZOP4xng.png">
-<meta property="og:image" content="https://i.loli.net/2020/06/15/mxLbgIMCakEYtQD.png">
-<meta property="og:image" content="https://i.loli.net/2020/06/15/DNz8MV65rZFTqtI.png">
-<meta property="og:image" content="https://i.loli.net/2020/06/15/x25rZOWc1qG9HNd.png">
-<meta property="og:image" content="c:/Users/shaw/AppData/Roaming/Typora/typora-user-images/image-20200615180100371.png">
 <meta property="og:image" content="https://i.loli.net/2020/06/15/AZcJwFHNxnmMqEp.png">
 <meta property="og:image" content="https://i.loli.net/2020/06/15/pxYsW6rCMqA5UcQ.png">
 <meta property="og:image" content="https://i.loli.net/2020/06/15/g4XasvzWZrC6IUV.png">
@@ -80,7 +75,7 @@
 <meta property="og:image" content="https://i.loli.net/2020/06/16/zFdaY4rBNXkiMcq.png">
 <meta property="og:image" content="https://i.loli.net/2020/06/16/LHRFOgGDIhPCzJu.png">
 <meta property="og:image" content="https://i.loli.net/2020/06/16/xeiqHz3Zlb7OrpE.png">
-<meta property="og:image" content="c:/Users/shaw/AppData/Roaming/Typora/typora-user-images/image-20200616172246692.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/17/EnKmW8xDTjHqIOt.png">
 <meta property="og:image" content="https://i.loli.net/2020/06/16/eHR1GlgS7JqE4kT.png">
 <meta property="og:image" content="https://i.loli.net/2020/06/16/uQJcEHYK9TMVkx7.png">
 <meta property="og:image" content="https://i.loli.net/2020/06/16/IHOnqbFhseLKwyU.png">
@@ -88,14 +83,15 @@
 <meta property="og:image" content="https://i.loli.net/2020/06/16/zdPgrHhYyb6BjG3.png">
 <meta property="og:image" content="https://i.loli.net/2020/06/16/xXpqME3hIGtL2CZ.png">
 <meta property="og:image" content="https://i.loli.net/2020/06/16/8Tq5hcF9fVJbYDM.png">
-<meta property="og:image" content="c:/Users/shaw/AppData/Roaming/Typora/typora-user-images/image-20200616201841590.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/16/4eanUkZxrflCjmJ.png">
 <meta property="og:image" content="https://i.loli.net/2020/06/16/8Gx5CD1BW7a3ru9.png">
 <meta property="og:image" content="https://i.loli.net/2020/06/16/8reIBy6J9Yb7WFP.png">
 <meta property="og:image" content="https://i.loli.net/2020/06/16/rCmFHdE5Ub1o7uQ.png">
 <meta property="og:image" content="https://i.loli.net/2020/06/16/xYdwBE1bjmOuWeJ.png">
 <meta property="article:published_time" content="2020-06-15T02:13:42.000Z">
-<meta property="article:modified_time" content="2020-06-16T12:58:15.444Z">
+<meta property="article:modified_time" content="2020-06-16T23:50:33.044Z">
 <meta property="article:author" content="Shaw">
+<meta property="article:tag" content="计算机体系结构">
 <meta property="article:tag" content="神经网络加速器">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://i.loli.net/2020/06/15/AhqwfLtMNJpegar.png">
@@ -112,7 +108,7 @@
   };
 </script>
 
-  <title>经典论文系列--Optimizing the Convolution Operation to Accelerate | Shaw的博客</title>
+  <title>经典论文系列--卷积神经网络加速器最优设计空间 | Shaw的博客</title>
   
 
 
@@ -261,7 +257,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          经典论文系列--Optimizing the Convolution Operation to Accelerate
+          经典论文系列--卷积神经网络加速器最优设计空间
         </h1>
 
         <div class="post-meta">
@@ -278,7 +274,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-16 20:58:15" itemprop="dateModified" datetime="2020-06-16T20:58:15+08:00">2020-06-16</time>
+                <time title="修改时间：2020-06-17 07:50:33" itemprop="dateModified" datetime="2020-06-17T07:50:33+08:00">2020-06-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -310,7 +306,7 @@
 <h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><h3 id="1-作者想要解决什么问题"><a href="#1-作者想要解决什么问题" class="headerlink" title="1. 作者想要解决什么问题"></a>1. 作者想要解决什么问题</h3><p>卷积加速方案会显著影响CNN加速器的效率和性能。卷积涉及具有四个循环级别的乘法和累加运算，这带来了较大的设计空间。但先前的工作要么采用有限的循环优化技术，例如循环展开(unrollilng)，分块(tilling)和交换(interchange)，要么仅在加速器体系结构和数据流已经固定之后才调整一些设计变量。最终的加速器几乎无法利用数据重用并有效地管理数据移动。</p>
 <h3 id="2-通过什么理论或者模型来解决"><a href="#2-通过什么理论或者模型来解决" class="headerlink" title="2. 通过什么理论或者模型来解决"></a>2. 通过什么理论或者模型来解决</h3><p>本文通过基于多个设计变量定量分析和优化CNN加速器的设计目标（例如内存访问）来克服上述障碍。<strong>然后，本文提出了硬件CNN加速的特定数据流，以最大程度地减少数据通信，同时最大化资源利用率以实现高性能。</strong></p>
 <h3 id="3-给出了什么答案"><a href="#3-给出了什么答案" class="headerlink" title="3. 给出了什么答案"></a>3. 给出了什么答案</h3><p>通过实现包括NiN，VGG-16和ResNet-50 / ResNet152的端到端CNN进行推理，演示了提出的CNN加速方案和体系结构。对于VGG-16  CNN，在Intel Stratix V和Arria 10 FPGA上，总体吞吐量分别达到348 GOPS和715 GOPS.</p>
-<h2 id="I-引言"><a href="#I-引言" class="headerlink" title="I.引言"></a>I.引言</h2><h3 id="1-研究背景"><a href="#1-研究背景" class="headerlink" title="1.研究背景"></a>1.研究背景</h3><p>现代FPGA允许定制架构，并可以利用数百到数千个片上DSP模块。但是，在将CNN映射到FPGA上仍然存在重大挑战。</p>
+<h2 id="I-引言"><a href="#I-引言" class="headerlink" title="I. 引言"></a>I. 引言</h2><h3 id="1-研究背景"><a href="#1-研究背景" class="headerlink" title="1.研究背景"></a>1.研究背景</h3><p>现代FPGA允许定制架构，并可以利用数百到数千个片上DSP模块。但是，在将CNN映射到FPGA上仍然存在重大挑战。</p>
 <p>深度CNN算法具有数十到数百个层，在大小和配置方面，各层之间存在显着差异。  FPGA上有限的计算资源和存储容量使CNN的最佳映射任务（例如，使受能耗限制的延时最小化，或者相反）成为一个复杂的多维优化问题。片外通信的高成本是实现更高性能和更低能耗的另一个主要障碍。实际上，与大量数据移动和存储器访问相关的能源成本通常超过了计算的能源消耗。由于这些原因，基于FPGA的高能效CNN硬件加速需要同时最大化资源利用和数据重用，以及最小化数据通信。</p>
 <h3 id="2-研究现状"><a href="#2-研究现状" class="headerlink" title="2. 研究现状"></a>2. 研究现状</h3><p>在CNN中，卷积由沿着kernel和特征图滑动的<strong>四个level的循环执行</strong>，如图1所示。这产生了一个庞大的设计空间，其中包括用于：实现并行性，计算顺序和对大数据集进行划分的各种选择，将数据分成较小的块以适合片上存储器等。这些问题可以通过现有的循环优化技术]处理，例如循环展开，分块和交换。</p>
 <p><img src="https://i.loli.net/2020/06/15/AhqwfLtMNJpegar.png" alt="image-20200615163047678"></p>
@@ -318,85 +314,82 @@
 <h3 id="3-基于哪些假设"><a href="#3-基于哪些假设" class="headerlink" title="3. 基于哪些假设"></a>3. 基于哪些假设</h3><p>CNN中超过90％的运算都涉及卷积操作。因此，有理由认为，加速方案应侧重于并行计算的管理以及跨多个级别的存储器（例如，片外动态随机存取存储器（DRAM），片上存储器和  本地寄存器）的数据存储和访问的组织。</p>
 <ol>
 <li>我们对卷积运算的三种循环优化技术进行了深入分析，并使用相应的设计变量<strong>对加速方案进行了数值表征</strong>。</li>
-<li>根据设计变量的配置，定量估算CNN加速器的设计目标（例如，延迟，访存）。</li>
+<li>根据设计变量的配置，定量估算CNN加速器的设计目标（例如延迟，访存）。</li>
 <li>提出了一种有效的卷积加速策略和数据流，旨在最<strong>小化数据通信和内存访问</strong>。</li>
 <li>数据路由（data router）的设计目的是处理卷积滑动操作（例如stride和padding）的不同设置，尤其是对于高度不规则的CNN。</li>
 <li>设计了一种相应的硬件体系结构，该体系结构充分利用了计算资源以实现高性能和高效率，并且对于所有层而言都是统一且可重复使用的。</li>
 </ol>
-<h2 id="II-卷积的加速–关键设计变量"><a href="#II-卷积的加速–关键设计变量" class="headerlink" title="II.卷积的加速–关键设计变量"></a>II.卷积的加速–关键设计变量</h2><h3 id="1-通用的CNN加速器系统"><a href="#1-通用的CNN加速器系统" class="headerlink" title="1. 通用的CNN加速器系统"></a>1. 通用的CNN加速器系统</h3><p>CNN算法设计大量数据和权重，片上存储不足以存储所有数据。因此，典型的CNN加速器包括三个层次的存储层次结构：1）外部存储器； 2）片上缓存；3）PE关联的寄存器</p>
+<h2 id="II-卷积的加速—关键设计变量"><a href="#II-卷积的加速—关键设计变量" class="headerlink" title="II. 卷积的加速—关键设计变量"></a>II. 卷积的加速—关键设计变量</h2><h3 id="1-通用的CNN加速器系统"><a href="#1-通用的CNN加速器系统" class="headerlink" title="1. 通用的CNN加速器系统"></a>1. 通用的CNN加速器系统</h3><p>CNN算法设计大量数据和权重，片上存储不足以存储所有数据。因此，典型的CNN加速器包括三个层次的存储层次结构：1）外部存储器； 2）片上缓存；3）PE关联的寄存器</p>
 <p><img src="https://i.loli.net/2020/06/15/UWRjYhspAbvazd1.png" alt="image-20200615164907018"></p>
 <p>基本流程是将数据从外部存储器获取到片上缓冲器，然后将其馈送到寄存器和PE中。  PE计算完成后，结果将传输回片上缓冲区，并在必要时传输到外部存储器，这些数据将用作后续层的输入。</p>
 <h3 id="2-卷积循环"><a href="#2-卷积循环" class="headerlink" title="2. 卷积循环"></a>2. 卷积循环</h3><p>卷积是由四个级别的循环实现的，如图1中的伪代码所示，如图3所示。为了有效地映射和执行卷积循环，可以使用三种循环优化技术，即循环展开(unrolling)，循环分块(tilling)和循环交换(interchange)用于定制具有三个级别的内存层次结构的加速器的计算和通信模式。</p>
 <p><img src="https://i.loli.net/2020/06/15/6KTSDQXbq3ZasFg.png" alt="image-20200615165112556"></p>
 <h3 id="3-循环优化和设计变量"><a href="#3-循环优化和设计变量" class="headerlink" title="3. 循环优化和设计变量"></a>3. 循环优化和设计变量</h3><p>图3使用多个维度（dimensions）描述给定CNN的每个卷积层的特征图和卷积核尺寸。循环展开和循环分块的硬件设计变量将确定加速因子和硬件占用空间。表I列出了本文中使用的所有dimensions和variables。</p>
 <p><img src="https://i.loli.net/2020/06/15/6QXrBi1oC38wFRH.png" alt="image-20200615165538174"></p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left">符号</th>
+<th style="text-align:left">符号</th>
 <th>意义</th>
 <th>符号</th>
 <th>意义</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">$N_{kx}$</td>
+<tbody>
+<tr>
+<td style="text-align:left">$N_{kx}$</td>
 <td>卷积窗宽度</td>
 <td>$N_{ky}$</td>
 <td>卷积窗高度</td>
 </tr>
 <tr>
-<td align="left">$N_{ix}$</td>
+<td style="text-align:left">$N_{ix}$</td>
 <td>Input Feature宽度</td>
 <td>$N_{iy}$</td>
 <td>Input Feature高度</td>
 </tr>
 <tr>
-<td align="left">$N_{ox}$</td>
+<td style="text-align:left">$N_{ox}$</td>
 <td>Output Feature宽度</td>
 <td>$N_{oy}$</td>
 <td>Output Feature高度</td>
 </tr>
 <tr>
-<td align="left">$N_{if}$</td>
+<td style="text-align:left">$N_{if}$</td>
 <td>Input Features数量</td>
 <td>$N_{of}$</td>
 <td>Output Features数量</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>循环展开设计变量$(P_{kx},P_{ky}),P_{if},(P_{ox},P_{oy}),P_{of}$，它们表示并行计算的次数。</p>
 <p>循环分块设计变量$(T_{kx},T_{ky}),T_{if},(T_{ox},T_{oy}),T_{of}$，他们表示存四个循环中，存储在片上缓存的数据部分。</p>
-<p>这些dimensions或者variables具有如下的约束条件。<br>$$<br>1\le P* \le T* \le N*<br>$$<br>输入和输出的变量的关系受(1)-(3)约束</p>
-<img src="https://i.loli.net/2020/06/15/ijvfHAUz4ZYC29p.png" alt="image-20200615172103274" style="zoom: 67%;" />
-
-
-
+<p>这些dimensions或者variables具有如下的约束条件。</p>
+<script type="math/tex; mode=display">
+1\le P* \le T* \le N*</script><p>输入和输出的变量的关系受(1)-(3)约束</p>
+<p><img src="https://i.loli.net/2020/06/15/ijvfHAUz4ZYC29p.png" alt="image-20200615172103274" style="zoom: 67%;" /></p>
 <h4 id="1-1-循环展开"><a href="#1-1-循环展开" class="headerlink" title="1.1 循环展开"></a>1.1 循环展开</h4><p>如图4-7所示，展开不同的卷积循环会导致不同的计算并行化，这会影响有关数据重用机会和内存访问模式的最佳PE体系结构。</p>
 <ul>
-<li>Loop-1:在一个cycle内同时计算同一特征图和统一卷积窗中不同位置($P_{kx}\times P_{ky}$数量)的像素,  <strong>相当于并行一个卷积窗的不同元素</strong>. </li>
+<li>Loop-1:在一个cycle内同时计算同一特征图和统一卷积窗中不同位置($P_{kx} \times P_{ky}$数量)的像素,  <strong>相当于并行一个卷积窗的不同元素</strong>. </li>
 <li>Loop-2:同时计算$P_{if}$数量的，来自不同特征图/kernel,  同一位置的乘法.  <strong>相当于多个特征图同时做卷积</strong>.</li>
 <li>Loop-3:在每个周期中，将来自相同特征图中不同（x，y）位置的($P_{ix}\times P_{iy}$数量)像素数乘以相同的权重,   因此，该重量可以重复使用$P_{ix}\times P_{iy}$次. <strong>相当于同一卷积窗卷积同一图像不同位置</strong>.</li>
 <li>Loop-4:在每个周期中，输入特征图的一个像素乘以相同（x，y）位置处, 但来自不同的Kernel的$P_{of}$数量的权重，并且该像素被重用$P_{of}$次。<strong>相当于多个卷积窗卷积同一个特征图.</strong></li>
 </ul>
-<img src="https://i.loli.net/2020/06/15/B5OKNTdglhCrGaE.png" alt="image-20200615172358099" style="zoom:80%;" />
-
-<img src="https://i.loli.net/2020/06/15/op2jV9MCFedQnDx.png" style="zoom:80%;" />
-
+<p><img src="https://i.loli.net/2020/06/15/B5OKNTdglhCrGaE.png" alt="image-20200615172358099" style="zoom:80%;" /></p>
+<p><img src="https://i.loli.net/2020/06/15/op2jV9MCFedQnDx.png" style="zoom:80%;" /></p>
 <p>四个卷积循环的展开变量值共同确定并行MAC操作的总数以及所需乘法器数量（Pm）</p>
-<img src="https://i.loli.net/2020/06/15/2WjGodfwNt4yVbX.png" alt="image-20200615174850563" style="zoom: 67%;" />
-
-
-
+<p><img src="https://i.loli.net/2020/06/15/2WjGodfwNt4yVbX.png" alt="image-20200615174850563" style="zoom: 67%;" /></p>
 <h4 id="1-2-循环分块"><a href="#1-2-循环分块" class="headerlink" title="1.2 循环分块"></a>1.2 循环分块</h4><p>循环展开用于将整个数据划分为多个块，这些块可以容纳在片上缓存中，如图8所示。通过正确分配循环切片大小，可以增加数据的位置以减少DRAM访问的次数。</p>
-<img src="https://i.loli.net/2020/06/15/5eJkWvogZlXnhtm.png" alt="image-20200615175142153" style="zoom:80%;" />
-
+<p><img src="https://i.loli.net/2020/06/15/5eJkWvogZlXnhtm.png" alt="image-20200615175142153" style="zoom:80%;" /></p>
 <p>循环分块决定了片上缓存的下界：</p>
 <ul>
-<li><p>输入像素buffer的大小至少为：<img src="https://i.loli.net/2020/06/15/EUJwvBz9ZOP4xng.png" alt="image-20200615175745656" style="zoom:50%;" /></p>
+<li><p>输入像素buffer的大小至少为：$Tix \times Tiy \times Tif \times (pixel_datawidth)$</p>
 </li>
-<li><p>权重buffer的大小至少为：<img src="https://i.loli.net/2020/06/15/mxLbgIMCakEYtQD.png" alt="image-20200615175847804" style="zoom:50%;" /><img src="https://i.loli.net/2020/06/15/DNz8MV65rZFTqtI.png" alt="image-20200615175901244" style="zoom:50%;" /></p>
+<li><p>权重buffer的大小至少为：$Tkx \times Tky \times Tif \times Tof \times (pixel_datawidth)$</p>
 </li>
-<li><p>输出buffer的大小至少为：<img src="https://i.loli.net/2020/06/15/x25rZOWc1qG9HNd.png" alt="image-20200615180040286" style="zoom:50%;" /><img src="C:/Users/shaw/AppData/Roaming/Typora/typora-user-images/image-20200615180100371.png" alt="image-20200615180100371" style="zoom:50%;" /></p>
+<li><p>输出buffer的大小至少为：$Tox \times Toy \times Tof \times (pixel_datawidth)$</p>
 </li>
 </ul>
 <h4 id="1-3-循环交换"><a href="#1-3-循环交换" class="headerlink" title="1.3 循环交换"></a>1.3 循环交换</h4><p>循环交换确定四个卷积循环的顺序计算顺序。循环交换有两种，即Intratile（tile内）和Intertile（tile间）循环顺序。</p>
@@ -404,22 +397,17 @@
 <li>Intratile循环顺序决定了从片上缓冲器到PE的数据移动方式。 </li>
 <li>Intertile循环顺序确定了数据从外部存储器到片上缓冲器的移动。</li>
 </ul>
-<h2 id="III-硬件加速设计目标的定量分析"><a href="#III-硬件加速设计目标的定量分析" class="headerlink" title="III.硬件加速设计目标的定量分析"></a>III.硬件加速设计目标的定量分析</h2><h3 id="1-计算延时"><a href="#1-计算延时" class="headerlink" title="1. 计算延时"></a>1. 计算延时</h3><p>每层乘法操作数量（$Nm$）</p>
-<img src="https://i.loli.net/2020/06/15/AZcJwFHNxnmMqEp.png" alt="image-20200615181004450" style="zoom:67%;" />
-
+<h2 id="III-硬件加速设计目标的定量分析"><a href="#III-硬件加速设计目标的定量分析" class="headerlink" title="III. 硬件加速设计目标的定量分析"></a>III. 硬件加速设计目标的定量分析</h2><h3 id="1-计算延时"><a href="#1-计算延时" class="headerlink" title="1. 计算延时"></a>1. 计算延时</h3><p>每层乘法操作数量（$Nm$）</p>
+<p><img src="https://i.loli.net/2020/06/15/AZcJwFHNxnmMqEp.png" alt="image-20200615181004450" style="zoom:67%;" /></p>
 <p>理想情况下，每层的计算周期数应为$Nm / Pm$，而$Pm$是乘法器数量。但是，对于不同的循环展开和分块大小，不一定必须对每个卷积维度都能充分利用乘法器。每层的实际计算周期数为</p>
-<img src="https://i.loli.net/2020/06/15/pxYsW6rCMqA5UcQ.png" alt="image-20200615181129238" style="zoom:67%;" />
-
+<p><img src="https://i.loli.net/2020/06/15/pxYsW6rCMqA5UcQ.png" alt="image-20200615181129238" style="zoom:67%;" /></p>
 <p>其中的$\lceil  \rceil$表示向上取整</p>
 <p>在这里，我们假设乘法器连续接收输入数据而没有空闲周期。如果N∗与T∗的比率或T∗与P ∗的比率不是整数，则乘法器或外部存储器transaction未得到充分利用。除了考虑计算延迟之外，还必须考虑整个系统延迟的内存传输延迟。</p>
 <h3 id="2-部分和存储"><a href="#2-部分和存储" class="headerlink" title="2. 部分和存储"></a>2. 部分和存储</h3><p>部分和(partial sum)有时需要在接下来的几个周期中存储在内存中，有时必须在PE之间移动。有效的加速策略必须使部分和的数量最少，并尽快在本地进行处理以减少数据移动。</p>
 <p>计算存储在存储器中的部分和（#psum）的流程图如图9所示</p>
-<img src="https://i.loli.net/2020/06/15/g4XasvzWZrC6IUV.png" alt="image-20200615212926967" style="zoom: 67%;" />
-
-
-
+<p><img src="https://i.loli.net/2020/06/15/g4XasvzWZrC6IUV.png" alt="image-20200615212926967" style="zoom: 67%;" /></p>
 <p>Loop1和loop2全展开时没有部分和，可直接写回DRAM.</p>
-<p>P *或 T *确定的部分和的数量很小，可以存储在本地寄存器（9.2）中。 或片内缓冲器（9.3）。</p>
+<p>P <em>或 T </em>确定的部分和的数量很小，可以存储在本地寄存器（9.2）中。 或片内缓冲器（9.3）。</p>
 <p>如果loop tile不能包含Loop-1和Loop-2的所有数据，则需要将一个tile的部分和存储在片上或片外存储器中，直到被另一tile消耗为如（9.6）-（9.9）所示。</p>
 <p>总结下来就是, 循环的计算顺序也会影响部分和的数量，并且循环1和Loop-2的计算越早，部分和的数量就越少。将部分和存储在不同级别的存储器层次结构中的要求极大地恶化了数据移动和相关的能源成本。</p>
 <h3 id="3-数据复用"><a href="#3-数据复用" class="headerlink" title="3. 数据复用"></a>3. 数据复用</h3><p>重用的两种类型：</p>
@@ -427,47 +415,34 @@
 <li>空间重用（Spatial Reuse）：意味着从片上缓冲器读取数据后，单个像素或权重将在一个时钟周期内用于多个并行乘法器。</li>
 <li>时间重用（Temporal Reuse）：时间重用意味着单个像素或权重用于多个连续周期。</li>
 </ul>
-<p>每个周期具有Pm个并行乘法运算需要将Pm像素和Pm权重馈入乘法器。每个周期所需的d权重数为<img src="https://i.loli.net/2020/06/16/QsHfUTI32PeKp7d.png" alt="image-20200616170603273" style="zoom:67%;" /></p>
+<p>每个周期具有Pm个并行乘法运算需要将Pm像素和Pm权重馈入乘法器。每个周期所需的d权重数为</p>
+<p><img src="https://i.loli.net/2020/06/16/QsHfUTI32PeKp7d.png" alt="image-20200616170603273" style="zoom:67%;" /></p>
 <p>如果Loop-1没有展开$(P_{kx} = 1，P_{ky} = 1)$，则每个周期所需的不同像素数$(P_{px})$</p>
-<img src="https://i.loli.net/2020/06/16/zyxeXpL95qKTAEo.png" alt="image-20200616170419509" style="zoom: 67%;" />
-
+<p><img src="https://i.loli.net/2020/06/16/zyxeXpL95qKTAEo.png" alt="image-20200616170419509" style="zoom: 67%;" /></p>
 <p>权重在一个周期内在空间上重复使用的次数为</p>
-<img src="https://i.loli.net/2020/06/16/EwSs5YmVD69c8yv.png" alt="image-20200616170846977" style="zoom:67%;" />
-
+<p><img src="https://i.loli.net/2020/06/16/EwSs5YmVD69c8yv.png" alt="image-20200616170846977" style="zoom:67%;" /></p>
 <p>通过展开Loop-3$（P_{ix}&gt; 1$或$P_{iy}&gt; 1）$实现权重的空间重用。像素的数量在一个周期内在空间上被重用（Reuse_px）为</p>
-<img src="https://i.loli.net/2020/06/16/zFdaY4rBNXkiMcq.png" alt="image-20200616171113765" style="zoom:67%;" />
-
+<p><img src="https://i.loli.net/2020/06/16/zFdaY4rBNXkiMcq.png" alt="image-20200616171113765" style="zoom:67%;" /></p>
 <p>如果未展开Loop-1，则Reuse_px为</p>
-<img src="https://i.loli.net/2020/06/16/LHRFOgGDIhPCzJu.png" alt="image-20200616171214050" style="zoom:67%;" />
-
+<p><img src="https://i.loli.net/2020/06/16/LHRFOgGDIhPCzJu.png" alt="image-20200616171214050" style="zoom:67%;" /></p>
 <p>否则, Reuse_px为</p>
-<img src="https://i.loli.net/2020/06/16/xeiqHz3Zlb7OrpE.png" alt="image-20200616171327803" style="zoom:67%;" />
-
-
-
+<p><img src="https://i.loli.net/2020/06/16/xeiqHz3Zlb7OrpE.png" alt="image-20200616171327803" style="zoom:67%;" /></p>
 <h3 id="4-片上访存"><a href="#4-片上访存" class="headerlink" title="4. 片上访存"></a>4. 片上访存</h3><p>利用数据重用，可以显着减少片上缓冲区访问的次数。由于没有任何数据重用，因此片上缓冲器对像素和权重的总读取操作为<em>Nm</em>，因为每次乘法都需要一个像素和一个权重。通过数据重用，片上缓冲器读取权重的总数变为</p>
-<img src="C:/Users/shaw/AppData/Roaming/Typora/typora-user-images/image-20200616172246692.png" alt="image-20200616172246692" style="zoom:67%;" />
-
+<p><img src="https://i.loli.net/2020/06/17/EnKmW8xDTjHqIOt.png" alt="image-20200616172246692" style="zoom:67%;" /></p>
 <p>像素的读取操作总数为</p>
-<img src="https://i.loli.net/2020/06/16/eHR1GlgS7JqE4kT.png" alt="image-20200616172419573" style="zoom:67%;" />
-
+<p><img src="https://i.loli.net/2020/06/16/eHR1GlgS7JqE4kT.png" alt="image-20200616172419573" style="zoom:67%;" /></p>
 <p>如果无法在一个图块内获得最终输出像素，则将其部分和存储在缓冲区中。每个周期的部分总和向缓冲区的读写操作数为$2×P_{of}×P_{ox}×P_{oy}$，所有部分和都由Loop-1 ($P_{kx},P_{ky}$)产生,  Loop-2（$P_{if}$）生成的乘积在乘法后立即求和。</p>
-<img src="https://i.loli.net/2020/06/16/uQJcEHYK9TMVkx7.png" alt="image-20200616172827907" style="zoom:67%;" />
-
+<p><img src="https://i.loli.net/2020/06/16/uQJcEHYK9TMVkx7.png" alt="image-20200616172827907" style="zoom:67%;" /></p>
 <p>将输出像素写入片上缓冲区的次数（即<em>#write_px</em>）与给定CNN模型中输出像素的总数相同。最后，片上缓冲区访问的总数为</p>
-<img src="https://i.loli.net/2020/06/16/IHOnqbFhseLKwyU.png" alt="image-20200616172906223" style="zoom:67%;" />
-
-
-
+<p><img src="https://i.loli.net/2020/06/16/IHOnqbFhseLKwyU.png" alt="image-20200616172906223" style="zoom:67%;" /></p>
 <h3 id="5-片外访存"><a href="#5-片外访存" class="headerlink" title="5. 片外访存"></a>5. 片外访存</h3><p>DRAM访问的成本具有更高的延迟和能量,  通过具有足够大的片上缓冲区和适当的循环计算顺序，可以实现最少的DRAM访问次数，从而每个像素和权重仅需从DRAM传输一次。</p>
-<p>估计DRAM访问次数的流程图如图10所示，其中<em>#DRAM_px*和</em>#DRAM_w*t分别表示一个输入像素和一个权重的DRAM访问次数。</p>
-<img src="https://i.loli.net/2020/06/16/vjgP13nClhDkITu.png" alt="image-20200616173343725" style="zoom:67%;" />
-
+<p>估计DRAM访问次数的流程图如图10所示，其中<em>#DRAM_px</em>和<em>#DRAM_w</em>t分别表示一个输入像素和一个权重的DRAM访问次数。</p>
+<p><img src="https://i.loli.net/2020/06/16/vjgP13nClhDkITu.png" alt="image-20200616173343725" style="zoom:67%;" /></p>
 <p>从DRAM中取出所有数据后，应将其全部耗尽，然后将其踢出缓冲区。</p>
 <p>因此，如果图块大小或片上缓冲区可以完全覆盖一层的所有输入像素或所有权重，则可以在图10中以（10.8）实现最小DRAM访问。</p>
-<p>通过首先计算Loop-3，如图10中的（10.1）和（10.5）中所示，重用了存储在缓冲区中的权重并减少了$#DRAM_wt$。</p>
+<p>通过首先计算Loop-3，如图10中的（10.1）和（10.5）中所示，重用了存储在缓冲区中的权重并减少了<em>#DRAM_wt​</em>。</p>
 <p>类似地，通过首先计算Loop-4，可以像（10.3）和（10.6）一样重用像素来减少<em>#DRAM_px</em>。<strong>但是，首先计算Loop-3或Loop-4可能会延迟Loop-1或Loop-2的计算，这将导致大量的部分和。</strong></p>
-<h2 id="IV-State-of-the-art-CNN加速器所使用的加速方法"><a href="#IV-State-of-the-art-CNN加速器所使用的加速方法" class="headerlink" title="IV.State-of-the-art CNN加速器所使用的加速方法"></a>IV.State-of-the-art CNN加速器所使用的加速方法</h2><p>当前设计的循环展开策略可以分为四种类型：</p>
+<h2 id="IV-State-of-the-art-CNN加速器所使用的加速方法"><a href="#IV-State-of-the-art-CNN加速器所使用的加速方法" class="headerlink" title="IV. State-of-the-art CNN加速器所使用的加速方法"></a>IV. State-of-the-art CNN加速器所使用的加速方法</h2><p>当前设计的循环展开策略可以分为四种类型：</p>
 <ol>
 <li>[Type-(A)]展开loop-1，loop-2，loop-4</li>
 <li>[Type-(B)]展开loop-2，loop-4</li>
@@ -482,48 +457,34 @@
 <p>在Type-C中，Kernel窗口中的每一行都将完全展开（$P_{kx} =  N_{kx}$），并且Loop-3也将部分展开。通过这种方式，可以通过（15）中的由Loop-1和Loop-3引起的重叠来重用像素，并且还可以通过在（12）中展开Loop-3来实现权重重用。但是，Loop-4不会展开，并且无法实现进一步的像素重用。由展开Loop-1引起的PE效率问题也影响Type-C。</p>
 <p><strong>Type-D</strong></p>
 <p>在Type-D中，将Loop-3和Loop-4都展开，以便可以重用像素和权重。另外，在AlexNet，VGG和ResNet的所有卷积层中，$Nox×Noy×Nof$（≥7×7×64）非常大，因此即使对于具有约3600个DSP Slice的最大FPGA，也可以实现并行级别。<strong>通过这种方式，PE的统一配置和结构可以应用于所有卷积层。</strong></p>
-<h2 id="V-具有特定设计变量的优化加速方案"><a href="#V-具有特定设计变量的优化加速方案" class="headerlink" title="V.具有特定设计变量的优化加速方案"></a>V.具有特定设计变量的优化加速方案</h2><h3 id="1-最小化延时"><a href="#1-最小化延时" class="headerlink" title="1. 最小化延时"></a>1. 最小化延时</h3><p>见公式(5)-(8)</p>
-<p>为了充分利用PE，我们将变量P *设为所有卷积层的T *的公因子，并将T *设为N *的公因子，以充分利用外部存储。对于仅具有较小公因数的CNN模型，建议将$\lceil N ∗\rceil / T ∗ − N ∗ / T ∗$和$\lceil T ∗\rceil / P ∗ − T ∗ / P ∗$ (即余数)设置得尽可能小，以最大程度地减小因CNN模型的大小。</p>
-<h3 id="2-最小化部分和存储"><a href="#2-最小化部分和存储" class="headerlink" title="2. 最小化部分和存储"></a>2. 最小化部分和存储</h3><p>为了减少部分和的数量和移动，Loop-1和Loop-2都应尽早计算或尽可能展开。为了避免展开第IV节中讨论的Loop-1的缺点并最大化第III-3节中讨论的数据重用，我们决定展开Loop-3（$Pox&gt;1$或$Poy&gt;1$）和Loop-4（$Pof&gt;1$）。这也意味着, 我们无法获得最小的部分和存储，如图9内的（9.1）。受$1≤P *≤T *≤N  *$的约束，部分和存储的第二个最小数由（9.2）实现图9中的（9.2）-（9.9）。为满足（9.2）的条件，我们首先对Loop-1和Loop-2进行串行计算，并确保对Loop-1和Loop-2的所需数据进行了缓存，即，$ Tkx = Nkx，Tky = Nky，Tif = Nif$。因此，我们只需要存储$Pof×Pox×Poy$的部分和数，可以将其保留在本地寄存器中，并且数据移动最少。</p>
+<h2 id="V-具有特定设计变量的优化加速方案"><a href="#V-具有特定设计变量的优化加速方案" class="headerlink" title="V. 具有特定设计变量的优化加速方案"></a>V. 具有特定设计变量的优化加速方案</h2><h3 id="1-最小化延时"><a href="#1-最小化延时" class="headerlink" title="1. 最小化延时"></a>1. 最小化延时</h3><p>见公式(5)-(8)</p>
+<p>为了充分利用PE，我们将变量P <em>设为所有卷积层的T </em>的公因子，并将T <em>设为N </em>的公因子，以充分利用外部存储。对于仅具有较小公因数的CNN模型，建议将$\lceil N ∗\rceil / T ∗ − N ∗ / T ∗$和$\lceil T ∗\rceil / P ∗ − T ∗ / P ∗$ (即余数)设置得尽可能小，以最大程度地减小因CNN模型的大小。</p>
+<h3 id="2-最小化部分和存储"><a href="#2-最小化部分和存储" class="headerlink" title="2. 最小化部分和存储"></a>2. 最小化部分和存储</h3><p>为了减少部分和的数量和移动，Loop-1和Loop-2都应尽早计算或尽可能展开。为了避免展开第IV节中讨论的Loop-1的缺点并最大化第III-3节中讨论的数据重用，我们决定展开Loop-3（$Pox&gt;1$或$Poy&gt;1$）和Loop-4（$Pof&gt;1$）。这也意味着, 我们无法获得最小的部分和存储，如图9内的（9.1）。受<script type="math/tex">1≤P *≤T *≤N  *</script>的约束，部分和存储的第二个最小数由（9.2）实现图9中的（9.2）-（9.9）。为满足（9.2）的条件，我们首先对Loop-1和Loop-2进行串行计算，并确保对Loop-1和Loop-2的所需数据进行了缓存，即，$ Tkx = Nkx，Tky = Nky，Tif = Nif $。因此，我们只需要存储$ Pof×Pox×Poy $的部分和，可以将其保留在本地寄存器中，并且数据移动最少。</p>
 <h3 id="3-最小化片上存储"><a href="#3-最小化片上存储" class="headerlink" title="3. 最小化片上存储"></a>3. 最小化片上存储</h3><p>通过展开Loop-3以重用权重（如公式（12）中所示）和展开Loop-4以便重用像素，如公式(14）中所示，可以最大程度地减少片上Buffer的访问次数。由于我们的部分和被保存在本地寄存器中，因此它们不会增加缓冲区访问和存储的开销。</p>
 <h3 id="4-最小化片外访存"><a href="#4-最小化片外访存" class="headerlink" title="4. 最小化片外访存"></a>4. 最小化片外访存</h3><p>当我们首先计算Loop-1和Loop-2以减少部分和时，我们无法实现图10中（10.1）和（10.3）中所述的最小DRAM访问次数，其中一个卷积层的像素和权重均被未完全缓存。因此，我们只能通过为图10的（10.8）中的每一层的所有像素或所有权重分配足够的缓冲区大小来获得最小的DRAM访问。</p>
 <p>然后，在最小化片上缓冲区大小的同时进行最小化DRAM访问的优化公式为</p>
-<img src="https://i.loli.net/2020/06/16/zdPgrHhYyb6BjG3.png" alt="image-20200616201408416" style="zoom:67%;" />
-
-<p>其中<em>#Tile_pxLand</em> <em>#Tile_wtL*分别表示输入像素的分块块数和层L的权重，而</em>#CONVs<em>是卷积层数。</em>bits_BUF_px_wt<em>是像素缓冲区大小（</em>bits_BUF_px<em>）和权重缓冲区大小（</em>bits_BUF_wt*）的总和，由下式给出：</p>
-<img src="https://i.loli.net/2020/06/16/xXpqME3hIGtL2CZ.png" alt="image-20200616201529075" style="zoom:67%;" />
-
+<p><img src="https://i.loli.net/2020/06/16/zdPgrHhYyb6BjG3.png" alt="image-20200616201408416" style="zoom:67%;" /></p>
+<p>其中<em>#Tile_pxLand</em> <em>#Tile_wtL</em>分别表示输入像素的分块块数和层L的权重，而<em>#CONVs</em>是卷积层数。<em>bits_BUF_px_wt</em>是像素缓冲区大小（<em>bits_BUF_px</em>）和权重缓冲区大小（<em>bits_BUF_wt</em>）的总和，由下式给出：</p>
+<p><img src="https://i.loli.net/2020/06/16/xXpqME3hIGtL2CZ.png" alt="image-20200616201529075" style="zoom:67%;" /></p>
 <p>像素缓冲区和权重缓冲区都必须足够大，以覆盖所有卷积层的一个切片块中的数据。表示为</p>
-<img src="https://i.loli.net/2020/06/16/8Tq5hcF9fVJbYDM.png" alt="image-20200616201606094" style="zoom:67%;" />
-
+<p><img src="https://i.loli.net/2020/06/16/8Tq5hcF9fVJbYDM.png" alt="image-20200616201606094" style="zoom:67%;" /></p>
 <p>其中<em>words_pxL</em>和<em>words_wtL</em>分别表示L层中一个分块的像素数和权重。这些以循环分块变量表示，如下所示：</p>
-<img src="C:/Users/shaw/AppData/Roaming/Typora/typora-user-images/image-20200616201841590.png" alt="image-20200616201841590" style="zoom:67%;" />
-
+<p><img src="https://i.loli.net/2020/06/16/4eanUkZxrflCjmJ.png" alt="image-20200616201841590" style="zoom:67%;" /></p>
 <p>其中<em>words_pxL</em>由输入和输出像素组成（20）中的分块数也由T∗变量确定</p>
-<img src="https://i.loli.net/2020/06/16/8Gx5CD1BW7a3ru9.png" alt="image-20200616202025981" style="zoom:67%;" />
-
+<p><img src="https://i.loli.net/2020/06/16/8Gx5CD1BW7a3ru9.png" alt="image-20200616202025981" style="zoom:67%;" /></p>
 <p>通过求解（20），我们可以找到$T*$变量的最佳配置，从而使DRAM访问和片上缓冲区的大小最小。但是，由于我们已经像第V-2节中那样设置了$Tkx = Nkx，Tky = Nky，Tif =  Nif$，因此我们只能通过调整$To x，To y$和$Tof$来实现次优解决方案，从而需要更大的缓冲区大小。如果可用的片上存储器足够，我们将$Tox$设置为$Nox$，以便可以缓冲整行，从而受益于DMA transaction。</p>
-<p>最后，我们必须通过搜索$To y$和$To f$来求解（20），因为它具有非线性目标函数和带有整数变量的约束。由于VGG-16中的$To y$和$To f$由2×#CONVs  = 26个变量组成，并且每个变量可以具有大约四个可选值，<strong>分别受$T ∗ / P ∗ =$整数和$N ∗ / T ∗ =$整数的约束，</strong>因此，$ To y$和$To  f$配置约为$4^{26} = 4.5×10^{15}$，这成为一个巨大的求解空间。在ResNet-50 /  ResNet152中，＃CONV分别增加为53和155，这使得解决方案空间甚至更大，分别为$4^{106} = 6.6×10{63}$和$4_{310} =  4.4×10_{186}$。因此，不可能列举所有候选解。</p>
+<p>最后，我们必须通过搜索$To y$和$To f$来求解（20），因为它具有非线性目标函数和带有整数变量的约束。由于VGG-16中的$To y$和$To f$由2×#CONVs  = 26个变量组成，并且每个变量可以具有大约四个可选值，分别受$T ∗ / P ∗ =$整数和$N ∗ / T ∗ =$整数的约束，因此，$ To y$和$To  f$配置约为$4^{26} = 4.5×10^{15}$，这成为一个巨大的求解空间。在ResNet-50 /  ResNet152中，＃CONV分别增加为53和155，这使得解决方案空间甚至更大，分别为$4^{106} = 6.6×10^{63}$和$4^{310} =  4.4×10^{186}$。因此，不可能列举所有候选解。</p>
 <p>在本文中，我们建议根据经验为给定的利用CNN特性的片上存储容量找到令人满意的解决方案。  <strong>CNN通常在开始的几层中具有较大的像素数据量和较小的权重大小。当我们进入更深的层时，像素大小随着提取的特征而变小，权重大小随着更多的通道而变大。</strong></p>
 <p>图11中说明了这种趋势，其中的条形表示每个卷积层中的数据大小。<strong>要受益于不同层中的数据分发属性，我们只需要使像素缓冲区完全覆盖最后几层，而权重缓冲区则完全覆盖开始的几层。然后，像素和权重都较大的中间层成为缓冲区大小的约束，我们只需要注意这些边界层，就可以大大缩小解决方案空间。</strong>图11中的虚线是我们发现的最小缓冲区大小，同时保证了最少的DRAM访问，并且边界层由箭头指出。如果该缓冲区大小仍然无法装入FPGA片上存储器，则我们需要更改切片策略或减小缓冲区大小，但要付出更多DRAM访问的代价。</p>
-<img src="https://i.loli.net/2020/06/16/8reIBy6J9Yb7WFP.png" alt="image-20200616203031356" style="zoom: 67%;" />
-
-
-
+<p><img src="https://i.loli.net/2020/06/16/8reIBy6J9Yb7WFP.png" alt="image-20200616203031356" style="zoom: 67%;" /></p>
 <h3 id="5-优化循环设计变量"><a href="#5-优化循环设计变量" class="headerlink" title="5. 优化循环设计变量"></a>5. 优化循环设计变量</h3><p>根据上述优化过程，我们提出了一种用于高性能和低通信量的CNN加速器的卷积加速方案，如图12所示。</p>
-<img src="https://i.loli.net/2020/06/16/rCmFHdE5Ub1o7uQ.png" alt="image-20200616203335677" style="zoom:80%;" />
-
-
-
+<p><img src="https://i.loli.net/2020/06/16/rCmFHdE5Ub1o7uQ.png" alt="image-20200616203335677" style="zoom:80%;" /></p>
 <h4 id="循环展开："><a href="#循环展开：" class="headerlink" title="循环展开："></a>循环展开：</h4><p>对于所有卷积层，没有展开Loop1和Loop-2，这意味着$Pkx = 1，Pky = 1$和$Pif  =1$。根据（7）和（8），$Pox，Poy$和$Pof$为分别设置为特征图（$Nox，Noy$）和输出通道（$Nof$）的公因子，以充分利用乘法器。表II中列出了不同FPGA上不同CNN的$Pox$，$Poy$和$Pof$的配置，这些配置在很大程度上受到可用计算资源的限制。通过将$P  *$在所有卷积层上设置为常数，可以实现PE的统一结构和映射，从而降低体系结构的复杂性。</p>
 <h4 id="循环分块"><a href="#循环分块" class="headerlink" title="循环分块"></a>循环分块</h4><p>对于循环展开，如第V-2节所述，如图12所示，设置$Tkx = Nkx，Tky = Nky，Tif =  Nif$，以便将Loop-1和Loop-2中使用的数据全部缓冲，设置$To x = Nox$使得DMA传输获益。 $To y$和$To f$的详细信息在第V-4节中已经描述过。</p>
-<h4 id="循环交换"><a href="#循环交换" class="headerlink" title="循环交换"></a>循环交换</h4><p>我们首先按第V-B节所述依序计算Loop-1，然后计算Loop-2。最后，我们计算Loop-3和Loop-4，这两个循环的确切计算顺序不会对成本产生明显影响,  而是根据我们的$P *$和$T  *$选择(这句话不知道理解的对不对)。</p>
-<img src="https://i.loli.net/2020/06/16/xYdwBE1bjmOuWeJ.png" alt="image-20200616204445613"  />
-
-
-
+<h4 id="循环交换"><a href="#循环交换" class="headerlink" title="循环交换"></a>循环交换</h4><p>我们首先按第V-B节所述依序计算Loop-1，然后计算Loop-2。最后，我们计算Loop-3和Loop-4，这两个循环的确切计算顺序不会对成本产生明显影响,  而是根据我们的$P <em>$和$T  </em>$选择(这句话不知道理解的对不对)。</p>
+<p><img src="https://i.loli.net/2020/06/16/xYdwBE1bjmOuWeJ.png" alt="image-20200616204445613"  /></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>本文通过对循环优化技术进行数值表征，对卷积循环加速策略进行了深入分析。加速器目标和设计变量之间的关系进行了定量研究。提出了相应的新数据流和体系结构，以最大程度地减少数据通信并提高吞吐量。</p>
-<h3 id=""><a href="#" class="headerlink" title=""></a></h3><blockquote>
+<h3 id=""><a href="#" class="headerlink" title=" "></a> </h3><blockquote>
 <p>更多内容欢迎关注我</p>
 <p>知乎:<a href="https://www.zhihu.com/people/zhui-luo-de-jian-dan" target="_blank" rel="noopener">https://www.zhihu.com/people/zhui-luo-de-jian-dan</a></p>
 <p>博客:<a href="https://shawer.work/" target="_blank" rel="noopener">https://shawer.work/</a></p>
@@ -537,6 +498,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" rel="tag"> <i class="fa fa-tag"></i> 计算机体系结构</a>
               <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8A%A0%E9%80%9F%E5%99%A8/" rel="tag"> <i class="fa fa-tag"></i> 神经网络加速器</a>
           </div>
 
@@ -612,7 +574,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Optimizing-the-Convolution-Operation-to-Accelerate-Deep-Neural-Networks-on-FPGA"><span class="nav-text">Optimizing the Convolution Operation to Accelerate Deep Neural Networks on FPGA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#摘要"><span class="nav-text">摘要</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-作者想要解决什么问题"><span class="nav-text">1. 作者想要解决什么问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-通过什么理论或者模型来解决"><span class="nav-text">2. 通过什么理论或者模型来解决</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-给出了什么答案"><span class="nav-text">3. 给出了什么答案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#I-引言"><span class="nav-text">I.引言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-研究背景"><span class="nav-text">1.研究背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-研究现状"><span class="nav-text">2. 研究现状</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-基于哪些假设"><span class="nav-text">3. 基于哪些假设</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#II-卷积的加速–关键设计变量"><span class="nav-text">II.卷积的加速–关键设计变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-通用的CNN加速器系统"><span class="nav-text">1. 通用的CNN加速器系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-卷积循环"><span class="nav-text">2. 卷积循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-循环优化和设计变量"><span class="nav-text">3. 循环优化和设计变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-循环展开"><span class="nav-text">1.1 循环展开</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-循环分块"><span class="nav-text">1.2 循环分块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-循环交换"><span class="nav-text">1.3 循环交换</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#III-硬件加速设计目标的定量分析"><span class="nav-text">III.硬件加速设计目标的定量分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-计算延时"><span class="nav-text">1. 计算延时</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-部分和存储"><span class="nav-text">2. 部分和存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-数据复用"><span class="nav-text">3. 数据复用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-片上访存"><span class="nav-text">4. 片上访存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-片外访存"><span class="nav-text">5. 片外访存</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IV-State-of-the-art-CNN加速器所使用的加速方法"><span class="nav-text">IV.State-of-the-art CNN加速器所使用的加速方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#V-具有特定设计变量的优化加速方案"><span class="nav-text">V.具有特定设计变量的优化加速方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-最小化延时"><span class="nav-text">1. 最小化延时</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-最小化部分和存储"><span class="nav-text">2. 最小化部分和存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-最小化片上存储"><span class="nav-text">3. 最小化片上存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-最小化片外访存"><span class="nav-text">4. 最小化片外访存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-优化循环设计变量"><span class="nav-text">5. 优化循环设计变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#循环展开："><span class="nav-text">循环展开：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#循环分块"><span class="nav-text">循环分块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#循环交换"><span class="nav-text">循环交换</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-text">Conclusion</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-text"></span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Optimizing-the-Convolution-Operation-to-Accelerate-Deep-Neural-Networks-on-FPGA"><span class="nav-text">Optimizing the Convolution Operation to Accelerate Deep Neural Networks on FPGA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#摘要"><span class="nav-text">摘要</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-作者想要解决什么问题"><span class="nav-text">1. 作者想要解决什么问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-通过什么理论或者模型来解决"><span class="nav-text">2. 通过什么理论或者模型来解决</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-给出了什么答案"><span class="nav-text">3. 给出了什么答案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#I-引言"><span class="nav-text">I. 引言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-研究背景"><span class="nav-text">1.研究背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-研究现状"><span class="nav-text">2. 研究现状</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-基于哪些假设"><span class="nav-text">3. 基于哪些假设</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#II-卷积的加速—关键设计变量"><span class="nav-text">II. 卷积的加速—关键设计变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-通用的CNN加速器系统"><span class="nav-text">1. 通用的CNN加速器系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-卷积循环"><span class="nav-text">2. 卷积循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-循环优化和设计变量"><span class="nav-text">3. 循环优化和设计变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-循环展开"><span class="nav-text">1.1 循环展开</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-循环分块"><span class="nav-text">1.2 循环分块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-循环交换"><span class="nav-text">1.3 循环交换</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#III-硬件加速设计目标的定量分析"><span class="nav-text">III. 硬件加速设计目标的定量分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-计算延时"><span class="nav-text">1. 计算延时</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-部分和存储"><span class="nav-text">2. 部分和存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-数据复用"><span class="nav-text">3. 数据复用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-片上访存"><span class="nav-text">4. 片上访存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-片外访存"><span class="nav-text">5. 片外访存</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IV-State-of-the-art-CNN加速器所使用的加速方法"><span class="nav-text">IV. State-of-the-art CNN加速器所使用的加速方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#V-具有特定设计变量的优化加速方案"><span class="nav-text">V. 具有特定设计变量的优化加速方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-最小化延时"><span class="nav-text">1. 最小化延时</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-最小化部分和存储"><span class="nav-text">2. 最小化部分和存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-最小化片上存储"><span class="nav-text">3. 最小化片上存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-最小化片外访存"><span class="nav-text">4. 最小化片外访存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-优化循环设计变量"><span class="nav-text">5. 优化循环设计变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#循环展开："><span class="nav-text">循环展开：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#循环分块"><span class="nav-text">循环分块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#循环交换"><span class="nav-text">循环交换</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-text">Conclusion</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-text"> </span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -733,6 +695,58 @@
 
 
   
+
+  
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
 
   
 

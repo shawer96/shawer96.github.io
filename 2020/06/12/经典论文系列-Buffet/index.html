@@ -279,7 +279,6 @@
 <p>原文: Pellauer, M., et al. (2019). Buffets. Proceedings of the Twenty-Fourth International Conference on Architectural Support for Programming Languages and Operating Systems - ASPLOS ‘19: 137-151.</p>
 </blockquote>
 <a id="more"></a>
-
 <h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><h3 id="1-要解决什么问题"><a href="#1-要解决什么问题" class="headerlink" title="1. 要解决什么问题"></a>1. 要解决什么问题</h3><p>提出针对加速器不同需求通用的, 可重用的storage idiom, 它独立于任何特定的设计.</p>
 <h3 id="2-通过什么理论或者模型来解决"><a href="#2-通过什么理论或者模型来解决" class="headerlink" title="2. 通过什么理论或者模型来解决"></a>2. 通过什么理论或者模型来解决</h3><ul>
 <li><p>Buffet</p>
@@ -290,9 +289,8 @@
 </li>
 </ul>
 <h3 id="3-给出了什么答案"><a href="#3-给出了什么答案" class="headerlink" title="3. 给出了什么答案"></a>3. 给出了什么答案</h3><p>在8KB RAM上仅仅增加2%的控制开销,与DMA管理的double-buffer scratched pad和跨各种工作负载的cache相比，Buffet分别将能量延迟乘积提高了1.53倍和5.39倍。</p>
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><h3 id="1-研究意义"><a href="#1-研究意义" class="headerlink" title="1. 研究意义"></a>1. 研究意义</h3><p>相较于通用芯片, 数据编排(data orchestration)–即将数据移入或者移出buffer heirarchy, 是专用加速芯片实现高性能的重要方法.</p>
-<img src="https://i.loli.net/2020/06/11/4sbALD7TirONE19.png" alt="image-20200611104101471" style="zoom:80%;" />
-
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><h3 id="1-研究意义"><a href="#1-研究意义" class="headerlink" title="1. 研究意义"></a>1. 研究意义</h3><p>相较于通用芯片, 数据编排(data orchestration)—即将数据移入或者移出buffer heirarchy, 是专用加速芯片实现高性能的重要方法.</p>
+<p><img src="https://i.loli.net/2020/06/11/4sbALD7TirONE19.png" alt="image-20200611104101471" style="zoom:80%;" /></p>
 <p>加速器在定制的片上缓冲上花费了大量的精力。不幸的是，这些解决方案与特定设计紧密相关，从而妨碍了其他加速器领域的可重用性。</p>
 <h3 id="2-研究背景"><a href="#2-研究背景" class="headerlink" title="2. 研究背景"></a>2. 研究背景</h3><p>Existing reusable buffer idiom:</p>
 <p>cache</p>
@@ -314,7 +312,7 @@
 </ol>
 <h2 id="Classifying-Data-Orchestration"><a href="#Classifying-Data-Orchestration" class="headerlink" title="Classifying Data Orchestration"></a>Classifying Data Orchestration</h2><p>加速器架构师利用他们在设计时对工作负载特征和访问模式的了解，可以获得以下收益：</p>
 <ul>
-<li>预取–提前准确的取来将被使用的数据,</li>
+<li>预取—提前准确的取来将被使用的数据,</li>
 <li>在最小，最快和最节能的缓冲区中最大程度地访问数据,</li>
 <li><del>将数据暂存到层次结构中共享者之间最小上限的缓冲区中,</del></li>
 <li>将下一个数据图块的填充与当前数据图块的消耗重叠，</li>
@@ -325,10 +323,7 @@
 <p>传统应用场景下的resuable buffering idioms分类:</p>
 <p>​        implict/explict: workload在何种程度上决定暂存, 缓存策略.</p>
 <p>​        coupled/decoupled: 访存请求是round-trip还是flow-forward.</p>
-<img src="https://i.loli.net/2020/06/11/HG2x6trF9miWDl8.png" alt="image-20200611115419792" style="zoom: 67%;" />
-
-
-
+<p><img src="https://i.loli.net/2020/06/11/HG2x6trF9miWDl8.png" alt="image-20200611115419792" style="zoom: 67%;" /></p>
 <h3 id="1-Implicit-versus-Explicit-Orchestration"><a href="#1-Implicit-versus-Explicit-Orchestration" class="headerlink" title="1. Implicit versus Explicit Orchestration"></a>1. Implicit versus Explicit Orchestration</h3><ul>
 <li>cache<ul>
 <li>可重用的模块化的buffer抽象</li>
@@ -354,7 +349,7 @@
 </ul>
 </li>
 <li>Cons: <ul>
-<li>难以实现数据填充(fill)和访问(access)之间的overlap–请求/响应者要来在请求者和消费者之间回变换角色</li>
+<li>难以实现数据填充(fill)和访问(access)之间的overlap—请求/响应者要来在请求者和消费者之间回变换角色</li>
 </ul>
 </li>
 <li>必须为整个往返负载延迟保留传入数据图块的“着陆区(landing zone)”，这会增加对RAM资源的压力</li>
@@ -386,10 +381,7 @@
 <h3 id="3-Synchronization-Concerns"><a href="#3-Synchronization-Concerns" class="headerlink" title="3. Synchronization Concerns"></a>3. Synchronization Concerns</h3><p>何时load一个new tile? 过早会导致数据被覆盖, 过晚会导致性能损失. </p>
 <p>通过脉动阵列来约束tile的执行时间是一种办法. 对于涉及片外访问或者条件执行的系统, 这些时限过于保守.</p>
 <p>本文采用ready-valid握手协议, 也可以使用其他micro-protocols(例如TRY/ACK). 本文提供了一个EDDO storage idiom，它在staging buffer操作本身中封装了细粒度的同步。</p>
-<h2 id="The-Buffet-Storage-Idiom"><a href="#The-Buffet-Storage-Idiom" class="headerlink" title="The Buffet Storage Idiom"></a>The Buffet Storage Idiom</h2><img src="https://i.loli.net/2020/06/12/omPiChJxk5trX1S.png" style="zoom: 67%;" />
-
-
-
+<h2 id="The-Buffet-Storage-Idiom"><a href="#The-Buffet-Storage-Idiom" class="headerlink" title="The Buffet Storage Idiom"></a>The Buffet Storage Idiom</h2><p><img src="https://i.loli.net/2020/06/12/omPiChJxk5trX1S.png" style="zoom: 67%;" /></p>
 <p>上图给出了buffet的数据编排模型, 它属于表1中的EDDO象限. 相较于DMA, 采用decoupled AGEN扩大了解耦的范围.</p>
 <p>在buffet中，有限状态机控制四个基本存储操作：</p>
 <ol>
@@ -399,42 +391,30 @@
 <li>Shrink(num)</li>
 </ol>
 <p>上级存储如DRAM通过<strong>FILL</strong>操作填入数据. 下级模块（例如DataPath）则通过<strong>Read</strong>和<strong>Update</strong>操作来处理buffet中的数据. <strong>Shrink</strong>操作从窗口中删除数据.</p>
-<img src="https://i.loli.net/2020/06/12/kprVbnS1IgGwmxu.png" style="zoom:67%;" />
-
-
-
-<h3 id="1-Buffet-Operational-Behavior"><a href="#1-Buffet-Operational-Behavior" class="headerlink" title="1. Buffet Operational Behavior"></a>1. Buffet Operational Behavior</h3><img src="https://i.loli.net/2020/06/12/PcMjgDhnptIOEfV.png" alt="image-20200611205302228" style="zoom: 50%;" />
-
-
-
+<p><img src="https://i.loli.net/2020/06/12/kprVbnS1IgGwmxu.png" style="zoom:67%;" /></p>
+<h3 id="1-Buffet-Operational-Behavior"><a href="#1-Buffet-Operational-Behavior" class="headerlink" title="1. Buffet Operational Behavior"></a>1. Buffet Operational Behavior</h3><p><img src="https://i.loli.net/2020/06/12/PcMjgDhnptIOEfV.png" alt="image-20200611205302228" style="zoom: 50%;" /></p>
 <p>❶新传输的数据通过Fill逻辑装入RAM, 这一步类似于传统的FIFO, 数据不带有地址信息. Local地址的生成依赖于填充顺序.</p>
 <p>❷与FIFO不同的是Read请求包含一个额外的Index, 允许以与接收数据不同的顺序读取数据. 这一index是相对于staging buffer中的oldest installed datum. 这一缩影不能超出RAM的大小.  传统的FIFO只要为非空，就会声明Pop.Vld. 在buffet中，请求数据的存在是索引的函数.  只有被请求的数据已被填充, 才会设置ReadRsp.VLD.</p>
 <p>❸除了索引读取之外，与FIFO的一个显着区别是活动窗口内的数据元素可以就地修改，我们将其称为Update路径.</p>
 <p>❹ shrink路径描述了从buffet中删除暂存数据的逻辑。此操作采用size参数，并从活动窗口中删除那么多元素。此操作仅更新内部记分板-不会发生数据移动。credits被释放到Fill AGEN，表明有空间可以进行另一次批量传输. 主张谁使用数据(生成index)谁shrink.</p>
-<img src="https://i.loli.net/2020/06/12/uZ1agqPvn9zxKRo.png" alt="image-20200611211210544" style="zoom:80%;" />
-
-
-
+<p><img src="https://i.loli.net/2020/06/12/uZ1agqPvn9zxKRo.png" alt="image-20200611211210544" style="zoom:80%;" /></p>
 <h3 id="2-Buffet-Synchronization-Details"><a href="#2-Buffet-Synchronization-Details" class="headerlink" title="2. Buffet Synchronization Details"></a>2. Buffet Synchronization Details</h3><ul>
 <li>需要显式硬件同步的情况由算法1中的“wait_until”调用表示。</li>
 <li>由于公式1中的操作顺序，许多其他同步情况都可以在不需要显式硬件支持的情况下处理，如图4所示。</li>
-<li>RAW冒险检查–计分板<ul>
+<li>RAW冒险检查—计分板<ul>
 <li>will_update 用于表示datapath即将修改当前阶段的值</li>
-<li>如果后续的<strong>Read</strong>请求正在被修改的索引，则响应将stall–这与读取尚未填充的索引没有区别</li>
+<li>如果后续的<strong>Read</strong>请求正在被修改的索引，则响应将stall—这与读取尚未填充的索引没有区别</li>
 <li><strong>FILL</strong>写入时不需要检查</li>
-<li>定制化–如果确定没有RAW冒险, 可以删除RAW检查, 如果<strong>FILL</strong>与<strong>UPDATE</strong>互斥, 可以共享一个写端口. </li>
+<li>定制化—如果确定没有RAW冒险, 可以删除RAW检查, 如果<strong>FILL</strong>与<strong>UPDATE</strong>互斥, 可以共享一个写端口. </li>
 </ul>
 </li>
 <li><strong>SHRINK</strong>与<strong>FILL</strong>之间的同步<ul>
-<li>算法1中对<strong>SHRINK</strong>保守的使用显示同步–wait_until(num&lt;occupancy).</li>
+<li>算法1中对<strong>SHRINK</strong>保守的使用显示同步—wait_until(num&lt;occupancy).</li>
 <li>图4将其描述为隐式同步, 详见第四节</li>
 </ul>
 </li>
 </ul>
-<img src="https://i.loli.net/2020/06/12/On4vEXflL9IuGKk.png" alt="image-20200611212533286" style="zoom:67%;" />
-
-
-
+<p><img src="https://i.loli.net/2020/06/12/On4vEXflL9IuGKk.png" alt="image-20200611212533286" style="zoom:67%;" /></p>
 <h3 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h3><h3 id="4-Composition-of-Buffets"><a href="#4-Composition-of-Buffets" class="headerlink" title="4. Composition of Buffets"></a>4. Composition of Buffets</h3><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><h3 id="1-文章的主要内容"><a href="#1-文章的主要内容" class="headerlink" title="1. 文章的主要内容"></a>1. 文章的主要内容</h3><h3 id="2-存在哪些缺陷"><a href="#2-存在哪些缺陷" class="headerlink" title="2. 存在哪些缺陷"></a>2. 存在哪些缺陷</h3><h3 id="3-有什么构思"><a href="#3-有什么构思" class="headerlink" title="3. 有什么构思"></a>3. 有什么构思</h3><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><blockquote>
 <p>[1] J. Cong, M. A. Ghodrat, M. Gill, B. Grigorian, K. Gururaj, and G. Reinman. Accelerator-rich architectures: Opportunities and progresses. In Proceedings of the Design Automation Conference (DAC), 2014.<br>[2] E. G. Cota, P. Mantovani, G. D. Guglielmo, and L. P. Carloni. An analysis of accelerator coupling in heterogeneous architectures. In 2015 52nd ACM/EDAC/IEEE Design Automation Conference (DAC), pages 1–6, June 2015.</p>
 </blockquote>
@@ -641,6 +621,8 @@
 
 
 
+
+  
 
   
 
