@@ -45,6 +45,10 @@
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
   };
 </script>
+<%- css(['./css/iconfont/iconfont.css']) %>
+<link rel="stylesheet" href="./iconfont.css">
+
+
 
   <meta name="description" content="Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration 原文: Pellauer, M., et al. (2019). Buffets. Proceedings of the Twenty-Fourth International Conference on Arch">
 <meta property="og:type" content="article">
@@ -518,7 +522,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Buffets-An-Efficient-and-Composable-Storage-Idiom-for-Explicit-Decoupled-Data-Orchestration"><span class="nav-number">1.</span> <span class="nav-text">Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Abstract"><span class="nav-number">1.1.</span> <span class="nav-text">Abstract</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-要解决什么问题"><span class="nav-number">1.1.1.</span> <span class="nav-text">1. 要解决什么问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-通过什么理论或者模型来解决"><span class="nav-number">1.1.2.</span> <span class="nav-text">2. 通过什么理论或者模型来解决</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-给出了什么答案"><span class="nav-number">1.1.3.</span> <span class="nav-text">3. 给出了什么答案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.2.</span> <span class="nav-text">Introduction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-研究意义"><span class="nav-number">1.2.1.</span> <span class="nav-text">1. 研究意义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-研究背景"><span class="nav-number">1.2.2.</span> <span class="nav-text">2. 研究背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-基于哪些假设"><span class="nav-number">1.2.3.</span> <span class="nav-text">3. 基于哪些假设</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Classifying-Data-Orchestration"><span class="nav-number">1.3.</span> <span class="nav-text">Classifying Data Orchestration</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Implicit-versus-Explicit-Orchestration"><span class="nav-number">1.3.1.</span> <span class="nav-text">1. Implicit versus Explicit Orchestration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Coupled-versus-Decoupled-Orchestration"><span class="nav-number">1.3.2.</span> <span class="nav-text">2.  Coupled versus Decoupled Orchestration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Synchronization-Concerns"><span class="nav-number">1.3.3.</span> <span class="nav-text">3. Synchronization Concerns</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Buffet-Storage-Idiom"><span class="nav-number">1.4.</span> <span class="nav-text">The Buffet Storage Idiom</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Buffet-Operational-Behavior"><span class="nav-number">1.4.1.</span> <span class="nav-text">1. Buffet Operational Behavior</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Buffet-Synchronization-Details"><span class="nav-number">1.4.2.</span> <span class="nav-text">2. Buffet Synchronization Details</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3"><span class="nav-number">1.4.3.</span> <span class="nav-text">3.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Composition-of-Buffets"><span class="nav-number">1.4.4.</span> <span class="nav-text">4. Composition of Buffets</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-number">1.5.</span> <span class="nav-text">Conclusion</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-文章的主要内容"><span class="nav-number">1.5.1.</span> <span class="nav-text">1. 文章的主要内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-存在哪些缺陷"><span class="nav-number">1.5.2.</span> <span class="nav-text">2. 存在哪些缺陷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-有什么构思"><span class="nav-number">1.5.3.</span> <span class="nav-text">3. 有什么构思</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">1.6.</span> <span class="nav-text">Reference</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Buffets-An-Efficient-and-Composable-Storage-Idiom-for-Explicit-Decoupled-Data-Orchestration"><span class="nav-text">Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Abstract"><span class="nav-text">Abstract</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-要解决什么问题"><span class="nav-text">1. 要解决什么问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-通过什么理论或者模型来解决"><span class="nav-text">2. 通过什么理论或者模型来解决</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-给出了什么答案"><span class="nav-text">3. 给出了什么答案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-text">Introduction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-研究意义"><span class="nav-text">1. 研究意义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-研究背景"><span class="nav-text">2. 研究背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-基于哪些假设"><span class="nav-text">3. 基于哪些假设</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Classifying-Data-Orchestration"><span class="nav-text">Classifying Data Orchestration</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Implicit-versus-Explicit-Orchestration"><span class="nav-text">1. Implicit versus Explicit Orchestration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Coupled-versus-Decoupled-Orchestration"><span class="nav-text">2.  Coupled versus Decoupled Orchestration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Synchronization-Concerns"><span class="nav-text">3. Synchronization Concerns</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Buffet-Storage-Idiom"><span class="nav-text">The Buffet Storage Idiom</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Buffet-Operational-Behavior"><span class="nav-text">1. Buffet Operational Behavior</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Buffet-Synchronization-Details"><span class="nav-text">2. Buffet Synchronization Details</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3"><span class="nav-text">3.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Composition-of-Buffets"><span class="nav-text">4. Composition of Buffets</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-text">Conclusion</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-文章的主要内容"><span class="nav-text">1. 文章的主要内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-存在哪些缺陷"><span class="nav-text">2. 存在哪些缺陷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-有什么构思"><span class="nav-text">3. 有什么构思</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-text">Reference</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -532,20 +536,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -580,7 +584,7 @@
   &copy; 
   <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
-    <i class="fa fa-user"></i>
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Shaw</span>
 </div>
