@@ -229,6 +229,32 @@
       </tags>
   </entry>
   <entry>
+    <title>计算力参数FLOPS,GOPS,GMACS辨析</title>
+    <url>/2020/06/16/%E8%AE%A1%E7%AE%97%E5%8A%9B%E5%8F%82%E6%95%B0FLOPS-GOPS-GMACS%E8%A7%A3%E6%9E%90/</url>
+    <content><![CDATA[<h2 id="FLOPS"><a href="#FLOPS" class="headerlink" title="FLOPS"></a>FLOPS</h2><p>FLOPS是“每秒所执行的浮点运算次数”（floating-point operations per second）的缩写。它常被用来估算电脑的执行效能，尤其是在使用到大量浮点运算的科学计算领域中。正因为FLOPS字尾的那个S，代表秒，而不是复数，所以不能省略掉。</p>
+<p>在这里所谓的“浮点运算”，实际上包括了所有涉及小数的运算。这类运算在某类应用软件中常常出现，而它们也比整数运算更花时间。现今大部分的处理器中，都有一个专门用来处理浮点运算的“浮点运算器”（FPU）。也因此FLOPS所量测的，实际上就是FPU的执行速度。而最常用来测量FLOPS的基准程式（benchmark）之一，就是Linpack。</p>
+<p>使用时常加数量级前缀如M, G, T等。</p>
+<a id="more"></a>
+<h2 id="OPS"><a href="#OPS" class="headerlink" title="OPS"></a>OPS</h2><p>OPS与FLOPS类似，只不过OPS一个是操作次数，FLOPS一个是浮点操作次数。</p>
+<p>使用时常加数量级前缀如M, G, T等。</p>
+<h2 id="MACS"><a href="#MACS" class="headerlink" title="MACS"></a>MACS</h2><p>MACS 指每秒执行的定点<strong>乘累加</strong>操作次数的缩写，它是衡量计算机定点处理能力的量，这个量经常用在那些需要大量定点乘法累加运算的科学运算中，记为MACS。</p>
+<p>使用时常加数量级前缀如M, G, T等。</p>
+<h2 id="易混辨析—FLOPS-FLOPs-FLOP-s"><a href="#易混辨析—FLOPS-FLOPs-FLOP-s" class="headerlink" title="易混辨析—FLOPS,FLOPs,FLOP/s"></a>易混辨析—FLOPS,FLOPs,FLOP/s</h2><p>FLOPS：注意全大写，是floating point operations per second的缩写，意指每秒浮点运算次数，理解为计算速度。是一个衡量硬件性能的指标。</p>
+<p>FLOPs：注意s小写，是floating point operations的缩写（s表复数），意指浮点运算数，理解为计算量。可以用来衡量算法/模型的复杂度。</p>
+<p>FLOP/s：等同于FLOPS。</p>
+<p>简化到计算机只拥有一块CPU的情况时，可以使用以下公式：</p>
+<script type="math/tex; mode=display">
+{\displaystyle {\text{FLOPS}}={\text{cores}}\times {\frac {\text{cycles}}{\text{second}}}\times {\frac {\text{FLOPs}}{\text{cycle}}}}</script><p>同样的对于OPS和MACS也适用上述规则。</p>
+]]></content>
+      <categories>
+        <category>神经网络加速器</category>
+      </categories>
+      <tags>
+        <tag>计算机体系结构</tag>
+        <tag>神经网络加速器</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>经典论文系列--卷积神经网络加速器最优设计空间</title>
     <url>/2020/06/15/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97-Optimizing-the-Convolution-Operation-to-Accelerate/</url>
     <content><![CDATA[<h1 id="Optimizing-the-Convolution-Operation-to-Accelerate-Deep-Neural-Networks-on-FPGA"><a href="#Optimizing-the-Convolution-Operation-to-Accelerate-Deep-Neural-Networks-on-FPGA" class="headerlink" title="Optimizing the Convolution Operation to Accelerate Deep Neural Networks on FPGA"></a>Optimizing the Convolution Operation to Accelerate Deep Neural Networks on FPGA</h1><blockquote>
@@ -423,32 +449,6 @@
 ]]></content>
       <categories>
         <category>经典论文系列</category>
-      </categories>
-      <tags>
-        <tag>计算机体系结构</tag>
-        <tag>神经网络加速器</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>计算力参数FLOPS,GOPS,GMACS辨析</title>
-    <url>/2020/06/16/%E8%AE%A1%E7%AE%97%E5%8A%9B%E5%8F%82%E6%95%B0FLOPS-GOPS-GMACS%E8%A7%A3%E6%9E%90/</url>
-    <content><![CDATA[<h2 id="FLOPS"><a href="#FLOPS" class="headerlink" title="FLOPS"></a>FLOPS</h2><p>FLOPS是“每秒所执行的浮点运算次数”（floating-point operations per second）的缩写。它常被用来估算电脑的执行效能，尤其是在使用到大量浮点运算的科学计算领域中。正因为FLOPS字尾的那个S，代表秒，而不是复数，所以不能省略掉。</p>
-<p>在这里所谓的“浮点运算”，实际上包括了所有涉及小数的运算。这类运算在某类应用软件中常常出现，而它们也比整数运算更花时间。现今大部分的处理器中，都有一个专门用来处理浮点运算的“浮点运算器”（FPU）。也因此FLOPS所量测的，实际上就是FPU的执行速度。而最常用来测量FLOPS的基准程式（benchmark）之一，就是Linpack。</p>
-<p>使用时常加数量级前缀如M, G, T等。</p>
-<a id="more"></a>
-<h2 id="OPS"><a href="#OPS" class="headerlink" title="OPS"></a>OPS</h2><p>OPS与FLOPS类似，只不过OPS一个是操作次数，FLOPS一个是浮点操作次数。</p>
-<p>使用时常加数量级前缀如M, G, T等。</p>
-<h2 id="MACS"><a href="#MACS" class="headerlink" title="MACS"></a>MACS</h2><p>MACS 指每秒执行的定点<strong>乘累加</strong>操作次数的缩写，它是衡量计算机定点处理能力的量，这个量经常用在那些需要大量定点乘法累加运算的科学运算中，记为MACS。</p>
-<p>使用时常加数量级前缀如M, G, T等。</p>
-<h2 id="易混辨析—FLOPS-FLOPs-FLOP-s"><a href="#易混辨析—FLOPS-FLOPs-FLOP-s" class="headerlink" title="易混辨析—FLOPS,FLOPs,FLOP/s"></a>易混辨析—FLOPS,FLOPs,FLOP/s</h2><p>FLOPS：注意全大写，是floating point operations per second的缩写，意指每秒浮点运算次数，理解为计算速度。是一个衡量硬件性能的指标。</p>
-<p>FLOPs：注意s小写，是floating point operations的缩写（s表复数），意指浮点运算数，理解为计算量。可以用来衡量算法/模型的复杂度。</p>
-<p>FLOP/s：等同于FLOPS。</p>
-<p>简化到计算机只拥有一块CPU的情况时，可以使用以下公式：</p>
-<script type="math/tex; mode=display">
-{\displaystyle {\text{FLOPS}}={\text{cores}}\times {\frac {\text{cycles}}{\text{second}}}\times {\frac {\text{FLOPs}}{\text{cycle}}}}</script><p>同样的对于OPS和MACS也适用上述规则。</p>
-]]></content>
-      <categories>
-        <category>神经网络加速器</category>
       </categories>
       <tags>
         <tag>计算机体系结构</tag>
