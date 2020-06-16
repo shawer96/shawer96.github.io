@@ -1,6 +1,302 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Hexo主题美化</title>
+    <url>/2020/06/14/Hexo%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/</url>
+    <content><![CDATA[<h1 id="Hexo美化"><a href="#Hexo美化" class="headerlink" title="Hexo美化"></a>Hexo美化</h1><h2 id="修改网站图标"><a href="#修改网站图标" class="headerlink" title="修改网站图标"></a>修改网站图标</h2><h3 id="1-实现效果"><a href="#1-实现效果" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3>   <img src="https://i.loli.net/2020/06/14/Z4eQtNWaku6gzdh.png" alt="image-20200614211627199" style="zoom:67%;" div align=center/>
+
+
+
+<h3 id="2-实现方法"><a href="#2-实现方法" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><p>制作或者下载自己的网站图标，这里推荐几个免费的图标下载网站. </p>
+<p><a href="https://fontawesome.com/" target="_blank" rel="noopener">Font Awesome</a></p>
+<p><a href="https://icons8.com/" target="_blank" rel="noopener">Download free icons, music, stock photos, vectors</a></p>
+<p><a href="https://illustrio.com/" target="_blank" rel="noopener">illustrio: 100% free, 100% customizable icon library</a></p>
+<p><a href="https://www.iconfont.cn/?spm=a313x.7781069.1998910419.d4d0a486a" target="_blank" rel="noopener">https://www.iconfont.cn/?spm=a313x.7781069.1998910419.d4d0a486a</a></p>
+<p>下载的图标最好是32x32和16x16的,  将它们放进<code>/themes/next/source/images/</code>中, 在主题config文件搜索favicon, 进行如下修改</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">favicon:</span></span><br><span class="line">  <span class="comment"># small: /images/favicon-16x16-next.png</span></span><br><span class="line">  <span class="comment"># medium: /images/favicon-32x32-next.png</span></span><br><span class="line">  <span class="attr">small:</span> <span class="string">/images/你的图标名(16x16)</span></span><br><span class="line">  <span class="attr">medium:</span> <span class="string">/images/你的图标名(32x32)</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="修改Next主题底部标签的-号"><a href="#修改Next主题底部标签的-号" class="headerlink" title="修改Next主题底部标签的#号"></a>修改Next主题底部标签的#号</h2><h3 id="1-实现效果-1"><a href="#1-实现效果-1" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3><img src="https://i.loli.net/2020/06/14/gu2OWawqbG1ZhzM.png" alt="image-20200614105134514" style="zoom: 67%;" />
+
+
+
+<h3 id="2-实现方法-1"><a href="#2-实现方法-1" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><p>打开 <code>/themes/next/layout/_macro/post.swig</code>，搜索 <code>rel=&quot;tag&quot;&gt; </code>，将 <code></code> 换成<code>&lt;i class=&quot;fa fa-tag&quot;&gt;&lt;/i&gt;</code></p>
+<h2 id="添加社交图标"><a href="#添加社交图标" class="headerlink" title="添加社交图标"></a>添加社交图标</h2><h3 id="1-实现效果-2"><a href="#1-实现效果-2" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3><h3 id="2-实现方法-2"><a href="#2-实现方法-2" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><p>在主题config文件中搜索social, 取消相应注释即可.</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">social:</span></span><br><span class="line">  <span class="comment"># GitHub: https://github.com/shawer96 || github</span></span><br><span class="line">  <span class="comment"># E-Mail: mailto:yourname@gmail.com || envelope</span></span><br><span class="line">  <span class="comment"># Weibo: https://weibo.com/yourname || weibo</span></span><br><span class="line">  <span class="comment">#Google: https://plus.google.com/yourname || google</span></span><br><span class="line">  <span class="comment">#Twitter: https://twitter.com/yourname || twitter</span></span><br><span class="line">  <span class="comment">#FB Page: https://www.facebook.com/yourname || facebook</span></span><br><span class="line">  <span class="comment">#StackOverflow: https://stackoverflow.com/yourname || stack-overflow</span></span><br><span class="line">  <span class="comment">#YouTube: https://youtube.com/yourname || youtube</span></span><br><span class="line">  <span class="comment">#Instagram: https://instagram.com/yourname || instagram</span></span><br><span class="line">  <span class="comment">#Skype: skype:yourname?call|chat || skype</span></span><br><span class="line">  <span class="comment">#RSS: /atom.xml || rss</span></span><br></pre></td></tr></table></figure>
+
+<p>也可按照<code>名称: 链接地址 || 社交图标</code>的格式自定义其他的社交账号, 其中<code>||</code>后面的图标是其在<a href="https://fontawesome.com/" target="_blank" rel="noopener">Font Awesome</a>中对应的图标名, 不需要下载.</p>
+<h2 id="文章加锁"><a href="#文章加锁" class="headerlink" title="文章加锁"></a>文章加锁</h2><h3 id="1-实现效果-3"><a href="#1-实现效果-3" class="headerlink" title="1.实现效果"></a>1.实现效果</h3><p><img src="https://i.loli.net/2020/06/14/BH3mvAxdMb9l4Yc.png" alt="image-20200614215553079"></p>
+<h3 id="2-实现方法-3"><a href="#2-实现方法-3" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><ol>
+<li>下载加密插件</li>
+</ol>
+<p>   进入hexo根目录，使用<code>npm install hexo-blog-encrypt</code>命令安装插件。</p>
+<ol start="2">
+<li>修改配置文件</li>
+</ol>
+<p>​        在hexo根目录下的config文件中, 添加</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">encrypt:</span></span><br><span class="line">	<span class="attr">enable:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="3">
+<li>在文章属性栏中添加相应字段</li>
+</ol>
+<img src="https://i.loli.net/2020/06/14/Y6PVFjne9cHlzhy.png" alt="image-20200614215627622" style="zoom: 67%;" />
+
+<p>​    password:  文章的密码</p>
+<p>​    message: 输入密码界面提示说明.</p>
+<p>​    abstract: 文章界面介绍.</p>
+<p>​    message和abstract可以省略.</p>
+<h2 id="折叠首页文章"><a href="#折叠首页文章" class="headerlink" title="折叠首页文章"></a>折叠首页文章</h2><h3 id="1-实现效果-4"><a href="#1-实现效果-4" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3><img src="https://i.loli.net/2020/06/14/CcZoB8XpVUJkHNr.png" alt="image-20200614220006815" style="zoom:67%;" />
+
+
+
+<h3 id="2-实现方法-4"><a href="#2-实现方法-4" class="headerlink" title="2.实现方法"></a>2.实现方法</h3><ol>
+<li><del>已失效, 修改主题config文件中的</del></li>
+</ol>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">auto_excerpt:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">length:</span> <span class="number">150</span></span><br></pre></td></tr></table></figure>
+
+<p>​        随着Next主题的更新, 这一方法不再有用.</p>
+<ol start="2">
+<li>在文章中的属性栏中添加description，并提供文章摘录</li>
+</ol>
+<p>   这种方式只会在首页列表中显示文章的摘要内容，进入文章详情后不会再显示</p>
+   <img src="https://i.loli.net/2020/06/15/3YIW8ZFi7DJVTq6.png" alt="image-20200615000644376" style="zoom: 67%;" />
+
+
+
+<ol start="3">
+<li>在文章中使用<code>&lt; !--more--&gt;</code> 手动进行截断</li>
+</ol>
+<p>   这种方法可以根据文章的内容，自己在合适的位置添加 <code>&lt; !--more--&gt;</code> 标签，使用灵活，也是Hexo推荐的方法</p>
+<p>​        <img src="https://i.loli.net/2020/06/14/hqtfdeRPaTrx7Dj.png" alt="image-20200614220921108"></p>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>我的第一篇博客</title>
+    <url>/2019/12/29/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<div id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <div class="hbe-input-container">
+  <input type="password" id="hbePass" placeholder="" />
+    <label for="hbePass">Hey, password is required here.</label>
+    <div class="bottom-line"></div>
+  </div>
+  <script id="hbeData" type="hbeData" data-hmacdigest="c60b1ad9f22f09a9905fa786aac12ca23e35ac28ef82a4d384ba02338c7309b0">2daa0e43d16059575e0358eeb13204c9334f10fe9f5b4c4ca9e491347ae1aac787a653f3bfdff483154faa9c306499459a543d8e0e9fdb7cb6a5691a3868df52cad9689da85c8199db4aac1924b04b538bf91d99cddcb7f67e38171e7d09e6b5597213a8b0d8533be2784f8c387f9f0e68d0da8bb048934a16c72aa145f07ad7ad2b10054f7f6b1d80b0d972ac6485d319be33fd5c92fbe1131f89956e7073ea85085780b1c6a34ebadafa0d52784ba9f0261bdd30c89b38edda4c7efe264159e6e8a362df38552661363061bfa6a36abe0affed58798e5a6d70904733b2ad67d59ed42e7b388d29ddb4d8010b266ca05db60cbedc9060a428ca1bad408deceeab54380c354fdfb78225304e7d4c88b8e72446d8af33f4178fb27faf0449b805d486d93cb7785dd7dbb3392434262aab7a601b8088edb79def0f6fdb4926f9d04f2c1e1aead921142879cb84a484b8e4dfcd34931c5fcea43e424ded1d1812eba22ca16c330fd68f276497435047212117eeb1a62d4c93242d72e10d6724aaad4dcfb180bc95b3f5b99e65330158bd894ce97a9c4fb53d4f5c1ea52ef8ff5dbe2648adca06564933bdac07b21b3cad5c719d3e3240f6c8552d75e8f2915a921e6d0843ea372193f682b95dcd3bf10c782b69c7ce44d3b0090bc7d681e2fc7b223cf6d6d0250200d0783bc24ad9075ab73f86040d8f679046798f5cd3a1ca8209329d43d6f89d643546670e222bb26ffd8b10a56ce2af5dbc3e12ae65c3f3216d657241a0657c72df14798ba83b10ccddbb47eef59f497761a407577164474a0c2e03e28634c6f9912748f2d6dd6a69b188d8cc2e21686e42bab33415c5f368932f753d1fd62ace6bbf3c7b75a9e2a799ed4d386784a9ce1405719dc52e00dc1f0c85e5c6ac756e1e14c66a268140ebf1b1ecfa515901fd273c9351202425498ae9b937346baa409fcfe66635c516435b9a929ec339333d2d8e0091b8bc155b1f24d6fe55d4d17d8a760648d92ccd7983b79df3cd5e2aa01f015c75216019495aabe0fedd9b61d1b5672d5643de5e7b7adff4dd66c76df3f67193d7e3812aca14eb90b0badc2dc2461c8a98524cb119b47ca1302e93962a861f229c0fdcc505cfb12451ec1bad993b4e8e23dee748821febba58e44b376a927b5b7a3d19439c3b9878319c543f34f7dec63c58fcf910fe08bb7335c34f277eedb08d61ac013b1c887783e609bfe2f17fe64abd6d402da318e9668de1a6d5b6ce48ceb45da8337e001be83a04e4351b653c4bbd9ee42d16b3c8639da1f7e5636130c198a212e168bc4dc35121d604ba0de0cb781467df42</script>
+</div>
+<script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>计算力参数FLOPS,GOPS,GMACS辨析</title>
+    <url>/2020/06/16/%E8%AE%A1%E7%AE%97%E5%8A%9B%E5%8F%82%E6%95%B0FLOPS-GOPS-GMACS%E8%A7%A3%E6%9E%90/</url>
+    <content><![CDATA[<h1 id="计算力参数FLOPS-OPS-MACS解析"><a href="#计算力参数FLOPS-OPS-MACS解析" class="headerlink" title="计算力参数FLOPS,OPS,MACS解析"></a>计算力参数FLOPS,OPS,MACS解析</h1><h2 id="FLOPS"><a href="#FLOPS" class="headerlink" title="FLOPS"></a>FLOPS</h2><p>FLOPS是“每秒所执行的浮点运算次数”（floating-point operations per second）的缩写。它常被用来估算电脑的执行效能，尤其是在使用到大量浮点运算的科学计算领域中。正因为FLOPS字尾的那个S，代表秒，而不是复数，所以不能省略掉。</p>
+<p>在这里所谓的“浮点运算”，实际上包括了所有涉及小数的运算。这类运算在某类应用软件中常常出现，而它们也比整数运算更花时间。现今大部分的处理器中，都有一个专门用来处理浮点运算的“浮点运算器”（FPU）。也因此FLOPS所量测的，实际上就是FPU的执行速度。而最常用来测量FLOPS的基准程式（benchmark）之一，就是Linpack。</p>
+<p>使用时常加数量级前缀如M, G, T等。</p>
+<h2 id="OPS"><a href="#OPS" class="headerlink" title="OPS"></a>OPS</h2><p>OPS与FLOPS类似，只不过OPS一个是操作次数，FLOPS一个是浮点操作次数。</p>
+<p>使用时常加数量级前缀如M, G, T等。</p>
+<h2 id="MACS"><a href="#MACS" class="headerlink" title="MACS"></a>MACS</h2><p>MACS 指每秒执行的定点<strong>乘累加</strong>操作次数的缩写，它是衡量计算机定点处理能力的量，这个量经常用在那些需要大量定点乘法累加运算的科学运算中，记为MACS。</p>
+<p>使用时常加数量级前缀如M, G, T等。</p>
+<h2 id="易混辨析–FLOPS-FLOPs-FLOP-s"><a href="#易混辨析–FLOPS-FLOPs-FLOP-s" class="headerlink" title="易混辨析–FLOPS,FLOPs,FLOP/s"></a>易混辨析–FLOPS,FLOPs,FLOP/s</h2><p>FLOPS：注意全大写，是floating point operations per second的缩写，意指每秒浮点运算次数，理解为计算速度。是一个衡量硬件性能的指标。</p>
+<p>FLOPs：注意s小写，是floating point operations的缩写（s表复数），意指浮点运算数，理解为计算量。可以用来衡量算法/模型的复杂度。</p>
+<p>FLOP/s：等同于FLOPS。</p>
+<p>简化到计算机只拥有一块CPU的情况时，可以使用以下公式：</p>
+<p>$$<br>{\displaystyle {\text{FLOPS}}={\text{cores}}\times {\frac {\text{cycles}}{\text{second}}}\times {\frac {\text{FLOPs}}{\text{cycle}}}}<br>$$</p>
+<p>同样的对于OPS和MACS也适用上述规则。</p>
+]]></content>
+      <categories>
+        <category>神经网络加速器</category>
+      </categories>
+      <tags>
+        <tag>神经网络加速器</tag>
+        <tag>计算机体系结构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>经典论文系列--Buffet</title>
+    <url>/2020/06/12/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97-Buffet/</url>
+    <content><![CDATA[<h1 id="Buffets-An-Efficient-and-Composable-Storage-Idiom-for-Explicit-Decoupled-Data-Orchestration"><a href="#Buffets-An-Efficient-and-Composable-Storage-Idiom-for-Explicit-Decoupled-Data-Orchestration" class="headerlink" title="Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration"></a>Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration</h1><blockquote>
+<p>原文: Pellauer, M., et al. (2019). Buffets. Proceedings of the Twenty-Fourth International Conference on Architectural Support for Programming Languages and Operating Systems - ASPLOS ‘19: 137-151.</p>
+</blockquote>
+<a id="more"></a>
+
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><h3 id="1-要解决什么问题"><a href="#1-要解决什么问题" class="headerlink" title="1. 要解决什么问题"></a>1. 要解决什么问题</h3><p>提出针对加速器不同需求通用的, 可重用的storage idiom, 它独立于任何特定的设计.</p>
+<h3 id="2-通过什么理论或者模型来解决"><a href="#2-通过什么理论或者模型来解决" class="headerlink" title="2. 通过什么理论或者模型来解决"></a>2. 通过什么理论或者模型来解决</h3><ul>
+<li><p>Buffet</p>
+</li>
+<li><p>Decoupled fills and accesses with fine-grained synchronization.</p>
+</li>
+<li><p>Hierarchical composition, and efficient multi-casting. </p>
+</li>
+</ul>
+<h3 id="3-给出了什么答案"><a href="#3-给出了什么答案" class="headerlink" title="3. 给出了什么答案"></a>3. 给出了什么答案</h3><p>在8KB RAM上仅仅增加2%的控制开销,与DMA管理的double-buffer scratched pad和跨各种工作负载的cache相比，Buffet分别将能量延迟乘积提高了1.53倍和5.39倍。</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><h3 id="1-研究意义"><a href="#1-研究意义" class="headerlink" title="1. 研究意义"></a>1. 研究意义</h3><p>相较于通用芯片, 数据编排(data orchestration)–即将数据移入或者移出buffer heirarchy, 是专用加速芯片实现高性能的重要方法.</p>
+<img src="https://i.loli.net/2020/06/11/4sbALD7TirONE19.png" alt="image-20200611104101471" style="zoom:80%;" />
+
+<p>加速器在定制的片上缓冲上花费了大量的精力。不幸的是，这些解决方案与特定设计紧密相关，从而妨碍了其他加速器领域的可重用性。</p>
+<h3 id="2-研究背景"><a href="#2-研究背景" class="headerlink" title="2. 研究背景"></a>2. 研究背景</h3><p>Existing reusable buffer idiom:</p>
+<p>cache</p>
+<ul>
+<li>过多面积和功耗用于隐式数据编排, 与加速器需求不一致.</li>
+</ul>
+<p>scratched pad</p>
+<ul>
+<li>不灵活, 不满足复杂数据重用和更新模式需求.</li>
+</ul>
+<p>FIFO</p>
+<ul>
+<li>缺乏同步性, 难以层次化..</li>
+</ul>
+<h3 id="3-基于哪些假设"><a href="#3-基于哪些假设" class="headerlink" title="3. 基于哪些假设"></a>3. 基于哪些假设</h3><ol>
+<li>显式解耦合(EDDO)方式.</li>
+<li>同步实现方式.</li>
+<li>Buffet与层次化存储结合, buffet间同步, 支持单buffet多数据广播.</li>
+</ol>
+<h2 id="Classifying-Data-Orchestration"><a href="#Classifying-Data-Orchestration" class="headerlink" title="Classifying Data Orchestration"></a>Classifying Data Orchestration</h2><p>加速器架构师利用他们在设计时对工作负载特征和访问模式的了解，可以获得以下收益：</p>
+<ul>
+<li>预取–提前准确的取来将被使用的数据,</li>
+<li>在最小，最快和最节能的缓冲区中最大程度地访问数据,</li>
+<li><del>将数据暂存到层次结构中共享者之间最小上限的缓冲区中,</del></li>
+<li>将下一个数据图块的填充与当前数据图块的消耗重叠，</li>
+<li>同时向访问的数据的所有使用者广播（或multi-casting）缓冲区访问的结果，</li>
+<li>精确且廉价地同步数据可用性,</li>
+<li>准确删除不再需要的数据</li>
+</ul>
+<p>传统应用场景下的resuable buffering idioms分类:</p>
+<p>​        implict/explict: workload在何种程度上决定暂存, 缓存策略.</p>
+<p>​        coupled/decoupled: 访存请求是round-trip还是flow-forward.</p>
+<img src="https://i.loli.net/2020/06/11/HG2x6trF9miWDl8.png" alt="image-20200611115419792" style="zoom: 67%;" />
+
+
+
+<h3 id="1-Implicit-versus-Explicit-Orchestration"><a href="#1-Implicit-versus-Explicit-Orchestration" class="headerlink" title="1. Implicit versus Explicit Orchestration"></a>1. Implicit versus Explicit Orchestration</h3><ul>
+<li>cache<ul>
+<li>可重用的模块化的buffer抽象</li>
+<li>implict: 发起请求的程序并不指定数据何时重用和清空</li>
+<li>启发式(Heuristic)替换策略, 与workload无关</li>
+<li>但对于特定领域的加速器, tag匹配等带来的面积和功耗开销也难以忍受</li>
+</ul>
+</li>
+<li>Scratched Pad<ul>
+<li>指定存储的地址范围, 实现显示数据编排和精确控制</li>
+<li>常用于GPU的shared mem</li>
+<li>避免了cache的硬件开销</li>
+<li>Across fill和overlaping fill繁琐且易出错, 难组成层级化的存储</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-Coupled-versus-Decoupled-Orchestration"><a href="#2-Coupled-versus-Decoupled-Orchestration" class="headerlink" title="2.  Coupled versus Decoupled Orchestration"></a>2.  Coupled versus Decoupled Orchestration</h3><ul>
+<li><p>Coupled</p>
+<ul>
+<li>存取请求的发起者也接收响应.</li>
+<li>Pros: <ul>
+<li>数据需求和使用之前的同步性高效且直观</li>
+</ul>
+</li>
+<li>Cons: <ul>
+<li>难以实现数据填充(fill)和访问(access)之间的overlap–请求/响应者要来在请求者和消费者之间回变换角色</li>
+</ul>
+</li>
+<li>必须为整个往返负载延迟保留传入数据图块的“着陆区(landing zone)”，这会增加对RAM资源的压力</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>Decoupled</p>
+<ul>
+<li><p>单独的硬件模块（例如DMA或地址生成器（AGEN））负责将数据推送到一个或多个功能单元的staging buffer中.</p>
+</li>
+<li><p>为了掩盖延时, ==这些buffer通常是ping-pong buffers[1,2].</p>
+</li>
+<li><p>Pros:</p>
+<ul>
+<li>请求者可以以自己的速度运行, 返回的数据可以广播到多个使用者.</li>
+<li>访存是feed-forward的, 只需要与相邻层级的存储结构之间的lantancy相关的landing zong,  而不是在整个层次结构之间round-trip(比如cache如果miss还要去访问高一级存储, 如果decoupled那么buffer的大小只需要掩盖L1到L2的延时)</li>
+</ul>
+</li>
+<li><p>Cons:</p>
+<ul>
+<li>传统的DAE数据编排依然是隐式的, 使用cache的管理机制</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2020/06/12/HYUbECoueQTwhqa.png" alt=""></p>
+<h3 id="3-Synchronization-Concerns"><a href="#3-Synchronization-Concerns" class="headerlink" title="3. Synchronization Concerns"></a>3. Synchronization Concerns</h3><p>何时load一个new tile? 过早会导致数据被覆盖, 过晚会导致性能损失. </p>
+<p>通过脉动阵列来约束tile的执行时间是一种办法. 对于涉及片外访问或者条件执行的系统, 这些时限过于保守.</p>
+<p>本文采用ready-valid握手协议, 也可以使用其他micro-protocols(例如TRY/ACK). 本文提供了一个EDDO storage idiom，它在staging buffer操作本身中封装了细粒度的同步。</p>
+<h2 id="The-Buffet-Storage-Idiom"><a href="#The-Buffet-Storage-Idiom" class="headerlink" title="The Buffet Storage Idiom"></a>The Buffet Storage Idiom</h2><img src="https://i.loli.net/2020/06/12/omPiChJxk5trX1S.png" style="zoom: 67%;" />
+
+
+
+<p>上图给出了buffet的数据编排模型, 它属于表1中的EDDO象限. 相较于DMA, 采用decoupled AGEN扩大了解耦的范围.</p>
+<p>在buffet中，有限状态机控制四个基本存储操作：</p>
+<ol>
+<li>Fill(data)</li>
+<li>Read(index)</li>
+<li>Update(index, data): </li>
+<li>Shrink(num)</li>
+</ol>
+<p>上级存储如DRAM通过<strong>FILL</strong>操作填入数据. 下级模块（例如DataPath）则通过<strong>Read</strong>和<strong>Update</strong>操作来处理buffet中的数据. <strong>Shrink</strong>操作从窗口中删除数据.</p>
+<img src="https://i.loli.net/2020/06/12/kprVbnS1IgGwmxu.png" style="zoom:67%;" />
+
+
+
+<h3 id="1-Buffet-Operational-Behavior"><a href="#1-Buffet-Operational-Behavior" class="headerlink" title="1. Buffet Operational Behavior"></a>1. Buffet Operational Behavior</h3><img src="https://i.loli.net/2020/06/12/PcMjgDhnptIOEfV.png" alt="image-20200611205302228" style="zoom: 50%;" />
+
+
+
+<p>❶新传输的数据通过Fill逻辑装入RAM, 这一步类似于传统的FIFO, 数据不带有地址信息. Local地址的生成依赖于填充顺序.</p>
+<p>❷与FIFO不同的是Read请求包含一个额外的Index, 允许以与接收数据不同的顺序读取数据. 这一index是相对于staging buffer中的oldest installed datum. 这一缩影不能超出RAM的大小.  传统的FIFO只要为非空，就会声明Pop.Vld. 在buffet中，请求数据的存在是索引的函数.  只有被请求的数据已被填充, 才会设置ReadRsp.VLD.</p>
+<p>❸除了索引读取之外，与FIFO的一个显着区别是活动窗口内的数据元素可以就地修改，我们将其称为Update路径.</p>
+<p>❹ shrink路径描述了从buffet中删除暂存数据的逻辑。此操作采用size参数，并从活动窗口中删除那么多元素。此操作仅更新内部记分板-不会发生数据移动。credits被释放到Fill AGEN，表明有空间可以进行另一次批量传输. 主张谁使用数据(生成index)谁shrink.</p>
+<img src="https://i.loli.net/2020/06/12/uZ1agqPvn9zxKRo.png" alt="image-20200611211210544" style="zoom:80%;" />
+
+
+
+<h3 id="2-Buffet-Synchronization-Details"><a href="#2-Buffet-Synchronization-Details" class="headerlink" title="2. Buffet Synchronization Details"></a>2. Buffet Synchronization Details</h3><ul>
+<li>需要显式硬件同步的情况由算法1中的“wait_until”调用表示。</li>
+<li>由于公式1中的操作顺序，许多其他同步情况都可以在不需要显式硬件支持的情况下处理，如图4所示。</li>
+<li>RAW冒险检查–计分板<ul>
+<li>will_update 用于表示datapath即将修改当前阶段的值</li>
+<li>如果后续的<strong>Read</strong>请求正在被修改的索引，则响应将stall–这与读取尚未填充的索引没有区别</li>
+<li><strong>FILL</strong>写入时不需要检查</li>
+<li>定制化–如果确定没有RAW冒险, 可以删除RAW检查, 如果<strong>FILL</strong>与<strong>UPDATE</strong>互斥, 可以共享一个写端口. </li>
+</ul>
+</li>
+<li><strong>SHRINK</strong>与<strong>FILL</strong>之间的同步<ul>
+<li>算法1中对<strong>SHRINK</strong>保守的使用显示同步–wait_until(num&lt;occupancy).</li>
+<li>图4将其描述为隐式同步, 详见第四节</li>
+</ul>
+</li>
+</ul>
+<img src="https://i.loli.net/2020/06/12/On4vEXflL9IuGKk.png" alt="image-20200611212533286" style="zoom:67%;" />
+
+
+
+<h3 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h3><h3 id="4-Composition-of-Buffets"><a href="#4-Composition-of-Buffets" class="headerlink" title="4. Composition of Buffets"></a>4. Composition of Buffets</h3><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><h3 id="1-文章的主要内容"><a href="#1-文章的主要内容" class="headerlink" title="1. 文章的主要内容"></a>1. 文章的主要内容</h3><h3 id="2-存在哪些缺陷"><a href="#2-存在哪些缺陷" class="headerlink" title="2. 存在哪些缺陷"></a>2. 存在哪些缺陷</h3><h3 id="3-有什么构思"><a href="#3-有什么构思" class="headerlink" title="3. 有什么构思"></a>3. 有什么构思</h3><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><blockquote>
+<p>[1] J. Cong, M. A. Ghodrat, M. Gill, B. Grigorian, K. Gururaj, and G. Reinman. Accelerator-rich architectures: Opportunities and progresses. In Proceedings of the Design Automation Conference (DAC), 2014.<br>[2] E. G. Cota, P. Mantovani, G. D. Guglielmo, and L. P. Carloni. An analysis of accelerator coupling in heterogeneous architectures. In 2015 52nd ACM/EDAC/IEEE Design Automation Conference (DAC), pages 1–6, June 2015.</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>经典论文系列</category>
+      </categories>
+      <tags>
+        <tag>计算机体系结构</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>经典论文系列--Optimizing the Convolution Operation to Accelerate</title>
     <url>/2020/06/15/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97-Optimizing-the-Convolution-Operation-to-Accelerate/</url>
     <content><![CDATA[<h1 id="Optimizing-the-Convolution-Operation-to-Accelerate-Deep-Neural-Networks-on-FPGA"><a href="#Optimizing-the-Convolution-Operation-to-Accelerate-Deep-Neural-Networks-on-FPGA" class="headerlink" title="Optimizing the Convolution Operation to Accelerate Deep Neural Networks on FPGA"></a>Optimizing the Convolution Operation to Accelerate Deep Neural Networks on FPGA</h1><blockquote>
@@ -233,302 +529,6 @@
       </categories>
       <tags>
         <tag>神经网络加速器</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>计算力参数FLOPS,GOPS,GMACS辨析</title>
-    <url>/2020/06/16/%E8%AE%A1%E7%AE%97%E5%8A%9B%E5%8F%82%E6%95%B0FLOPS-GOPS-GMACS%E8%A7%A3%E6%9E%90/</url>
-    <content><![CDATA[<h1 id="计算力参数FLOPS-OPS-MACS解析"><a href="#计算力参数FLOPS-OPS-MACS解析" class="headerlink" title="计算力参数FLOPS,OPS,MACS解析"></a>计算力参数FLOPS,OPS,MACS解析</h1><h2 id="FLOPS"><a href="#FLOPS" class="headerlink" title="FLOPS"></a>FLOPS</h2><p>FLOPS是“每秒所执行的浮点运算次数”（floating-point operations per second）的缩写。它常被用来估算电脑的执行效能，尤其是在使用到大量浮点运算的科学计算领域中。正因为FLOPS字尾的那个S，代表秒，而不是复数，所以不能省略掉。</p>
-<p>在这里所谓的“浮点运算”，实际上包括了所有涉及小数的运算。这类运算在某类应用软件中常常出现，而它们也比整数运算更花时间。现今大部分的处理器中，都有一个专门用来处理浮点运算的“浮点运算器”（FPU）。也因此FLOPS所量测的，实际上就是FPU的执行速度。而最常用来测量FLOPS的基准程式（benchmark）之一，就是Linpack。</p>
-<p>使用时常加数量级前缀如M, G, T等。</p>
-<h2 id="OPS"><a href="#OPS" class="headerlink" title="OPS"></a>OPS</h2><p>OPS与FLOPS类似，只不过OPS一个是操作次数，FLOPS一个是浮点操作次数。</p>
-<p>使用时常加数量级前缀如M, G, T等。</p>
-<h2 id="MACS"><a href="#MACS" class="headerlink" title="MACS"></a>MACS</h2><p>MACS 指每秒执行的定点<strong>乘累加</strong>操作次数的缩写，它是衡量计算机定点处理能力的量，这个量经常用在那些需要大量定点乘法累加运算的科学运算中，记为MACS。</p>
-<p>使用时常加数量级前缀如M, G, T等。</p>
-<h2 id="易混辨析–FLOPS-FLOPs-FLOP-s"><a href="#易混辨析–FLOPS-FLOPs-FLOP-s" class="headerlink" title="易混辨析–FLOPS,FLOPs,FLOP/s"></a>易混辨析–FLOPS,FLOPs,FLOP/s</h2><p>FLOPS：注意全大写，是floating point operations per second的缩写，意指每秒浮点运算次数，理解为计算速度。是一个衡量硬件性能的指标。</p>
-<p>FLOPs：注意s小写，是floating point operations的缩写（s表复数），意指浮点运算数，理解为计算量。可以用来衡量算法/模型的复杂度。</p>
-<p>FLOP/s：等同于FLOPS。</p>
-<p>简化到计算机只拥有一块CPU的情况时，可以使用以下公式：</p>
-<p>$$<br>{\displaystyle {\text{FLOPS}}={\text{cores}}\times {\frac {\text{cycles}}{\text{second}}}\times {\frac {\text{FLOPs}}{\text{cycle}}}}<br>$$</p>
-<p>同样的对于OPS和MACS也适用上述规则。</p>
-]]></content>
-      <categories>
-        <category>神经网络加速器</category>
-      </categories>
-      <tags>
-        <tag>神经网络加速器</tag>
-        <tag>计算机体系结构</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>我的第一篇博客</title>
-    <url>/2019/12/29/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<div id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
-  <div class="hbe-input-container">
-  <input type="password" id="hbePass" placeholder="" />
-    <label for="hbePass">Hey, password is required here.</label>
-    <div class="bottom-line"></div>
-  </div>
-  <script id="hbeData" type="hbeData" data-hmacdigest="c60b1ad9f22f09a9905fa786aac12ca23e35ac28ef82a4d384ba02338c7309b0">2daa0e43d16059575e0358eeb13204c9334f10fe9f5b4c4ca9e491347ae1aac787a653f3bfdff483154faa9c306499459a543d8e0e9fdb7cb6a5691a3868df52cad9689da85c8199db4aac1924b04b538bf91d99cddcb7f67e38171e7d09e6b5597213a8b0d8533be2784f8c387f9f0e68d0da8bb048934a16c72aa145f07ad7ad2b10054f7f6b1d80b0d972ac6485d319be33fd5c92fbe1131f89956e7073ea85085780b1c6a34ebadafa0d52784ba9f0261bdd30c89b38edda4c7efe264159e6e8a362df38552661363061bfa6a36abe0affed58798e5a6d70904733b2ad67d59ed42e7b388d29ddb4d8010b266ca05db60cbedc9060a428ca1bad408deceeab54380c354fdfb78225304e7d4c88b8e72446d8af33f4178fb27faf0449b805d486d93cb7785dd7dbb3392434262aab7a601b8088edb79def0f6fdb4926f9d04f2c1e1aead921142879cb84a484b8e4dfcd34931c5fcea43e424ded1d1812eba22ca16c330fd68f276497435047212117eeb1a62d4c93242d72e10d6724aaad4dcfb180bc95b3f5b99e65330158bd894ce97a9c4fb53d4f5c1ea52ef8ff5dbe2648adca06564933bdac07b21b3cad5c719d3e3240f6c8552d75e8f2915a921e6d0843ea372193f682b95dcd3bf10c782b69c7ce44d3b0090bc7d681e2fc7b223cf6d6d0250200d0783bc24ad9075ab73f86040d8f679046798f5cd3a1ca8209329d43d6f89d643546670e222bb26ffd8b10a56ce2af5dbc3e12ae65c3f3216d657241a0657c72df14798ba83b10ccddbb47eef59f497761a407577164474a0c2e03e28634c6f9912748f2d6dd6a69b188d8cc2e21686e42bab33415c5f368932f753d1fd62ace6bbf3c7b75a9e2a799ed4d386784a9ce1405719dc52e00dc1f0c85e5c6ac756e1e14c66a268140ebf1b1ecfa515901fd273c9351202425498ae9b937346baa409fcfe66635c516435b9a929ec339333d2d8e0091b8bc155b1f24d6fe55d4d17d8a760648d92ccd7983b79df3cd5e2aa01f015c75216019495aabe0fedd9b61d1b5672d5643de5e7b7adff4dd66c76df3f67193d7e3812aca14eb90b0badc2dc2461c8a98524cb119b47ca1302e93962a861f229c0fdcc505cfb12451ec1bad993b4e8e23dee748821febba58e44b376a927b5b7a3d19439c3b9878319c543f34f7dec63c58fcf910fe08bb7335c34f277eedb08d61ac013b1c887783e609bfe2f17fe64abd6d402da318e9668de1a6d5b6ce48ceb45da8337e001be83a04e4351b653c4bbd9ee42d16b3c8639da1f7e5636130c198a212e168bc4dc35121d604ba0de0cb781467df42</script>
-</div>
-<script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Hexo主题美化</title>
-    <url>/2020/06/14/Hexo%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/</url>
-    <content><![CDATA[<h1 id="Hexo美化"><a href="#Hexo美化" class="headerlink" title="Hexo美化"></a>Hexo美化</h1><h2 id="修改网站图标"><a href="#修改网站图标" class="headerlink" title="修改网站图标"></a>修改网站图标</h2><h3 id="1-实现效果"><a href="#1-实现效果" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3>   <img src="https://i.loli.net/2020/06/14/Z4eQtNWaku6gzdh.png" alt="image-20200614211627199" style="zoom:67%;" div align=center/>
-
-
-
-<h3 id="2-实现方法"><a href="#2-实现方法" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><p>制作或者下载自己的网站图标，这里推荐几个免费的图标下载网站. </p>
-<p><a href="https://fontawesome.com/" target="_blank" rel="noopener">Font Awesome</a></p>
-<p><a href="https://icons8.com/" target="_blank" rel="noopener">Download free icons, music, stock photos, vectors</a></p>
-<p><a href="https://illustrio.com/" target="_blank" rel="noopener">illustrio: 100% free, 100% customizable icon library</a></p>
-<p><a href="https://www.iconfont.cn/?spm=a313x.7781069.1998910419.d4d0a486a" target="_blank" rel="noopener">https://www.iconfont.cn/?spm=a313x.7781069.1998910419.d4d0a486a</a></p>
-<p>下载的图标最好是32x32和16x16的,  将它们放进<code>/themes/next/source/images/</code>中, 在主题config文件搜索favicon, 进行如下修改</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">favicon:</span></span><br><span class="line">  <span class="comment"># small: /images/favicon-16x16-next.png</span></span><br><span class="line">  <span class="comment"># medium: /images/favicon-32x32-next.png</span></span><br><span class="line">  <span class="attr">small:</span> <span class="string">/images/你的图标名(16x16)</span></span><br><span class="line">  <span class="attr">medium:</span> <span class="string">/images/你的图标名(32x32)</span></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h2 id="修改Next主题底部标签的-号"><a href="#修改Next主题底部标签的-号" class="headerlink" title="修改Next主题底部标签的#号"></a>修改Next主题底部标签的#号</h2><h3 id="1-实现效果-1"><a href="#1-实现效果-1" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3><img src="https://i.loli.net/2020/06/14/gu2OWawqbG1ZhzM.png" alt="image-20200614105134514" style="zoom: 67%;" />
-
-
-
-<h3 id="2-实现方法-1"><a href="#2-实现方法-1" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><p>打开 <code>/themes/next/layout/_macro/post.swig</code>，搜索 <code>rel=&quot;tag&quot;&gt; </code>，将 <code></code> 换成<code>&lt;i class=&quot;fa fa-tag&quot;&gt;&lt;/i&gt;</code></p>
-<h2 id="添加社交图标"><a href="#添加社交图标" class="headerlink" title="添加社交图标"></a>添加社交图标</h2><h3 id="1-实现效果-2"><a href="#1-实现效果-2" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3><h3 id="2-实现方法-2"><a href="#2-实现方法-2" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><p>在主题config文件中搜索social, 取消相应注释即可.</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">social:</span></span><br><span class="line">  <span class="comment"># GitHub: https://github.com/shawer96 || github</span></span><br><span class="line">  <span class="comment"># E-Mail: mailto:yourname@gmail.com || envelope</span></span><br><span class="line">  <span class="comment"># Weibo: https://weibo.com/yourname || weibo</span></span><br><span class="line">  <span class="comment">#Google: https://plus.google.com/yourname || google</span></span><br><span class="line">  <span class="comment">#Twitter: https://twitter.com/yourname || twitter</span></span><br><span class="line">  <span class="comment">#FB Page: https://www.facebook.com/yourname || facebook</span></span><br><span class="line">  <span class="comment">#StackOverflow: https://stackoverflow.com/yourname || stack-overflow</span></span><br><span class="line">  <span class="comment">#YouTube: https://youtube.com/yourname || youtube</span></span><br><span class="line">  <span class="comment">#Instagram: https://instagram.com/yourname || instagram</span></span><br><span class="line">  <span class="comment">#Skype: skype:yourname?call|chat || skype</span></span><br><span class="line">  <span class="comment">#RSS: /atom.xml || rss</span></span><br></pre></td></tr></table></figure>
-
-<p>也可按照<code>名称: 链接地址 || 社交图标</code>的格式自定义其他的社交账号, 其中<code>||</code>后面的图标是其在<a href="https://fontawesome.com/" target="_blank" rel="noopener">Font Awesome</a>中对应的图标名, 不需要下载.</p>
-<h2 id="文章加锁"><a href="#文章加锁" class="headerlink" title="文章加锁"></a>文章加锁</h2><h3 id="1-实现效果-3"><a href="#1-实现效果-3" class="headerlink" title="1.实现效果"></a>1.实现效果</h3><p><img src="https://i.loli.net/2020/06/14/BH3mvAxdMb9l4Yc.png" alt="image-20200614215553079"></p>
-<h3 id="2-实现方法-3"><a href="#2-实现方法-3" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><ol>
-<li>下载加密插件</li>
-</ol>
-<p>   进入hexo根目录，使用<code>npm install hexo-blog-encrypt</code>命令安装插件。</p>
-<ol start="2">
-<li>修改配置文件</li>
-</ol>
-<p>​        在hexo根目录下的config文件中, 添加</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">encrypt:</span></span><br><span class="line">	<span class="attr">enable:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
-
-
-
-<ol start="3">
-<li>在文章属性栏中添加相应字段</li>
-</ol>
-<img src="https://i.loli.net/2020/06/14/Y6PVFjne9cHlzhy.png" alt="image-20200614215627622" style="zoom: 67%;" />
-
-<p>​    password:  文章的密码</p>
-<p>​    message: 输入密码界面提示说明.</p>
-<p>​    abstract: 文章界面介绍.</p>
-<p>​    message和abstract可以省略.</p>
-<h2 id="折叠首页文章"><a href="#折叠首页文章" class="headerlink" title="折叠首页文章"></a>折叠首页文章</h2><h3 id="1-实现效果-4"><a href="#1-实现效果-4" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3><img src="https://i.loli.net/2020/06/14/CcZoB8XpVUJkHNr.png" alt="image-20200614220006815" style="zoom:67%;" />
-
-
-
-<h3 id="2-实现方法-4"><a href="#2-实现方法-4" class="headerlink" title="2.实现方法"></a>2.实现方法</h3><ol>
-<li><del>已失效, 修改主题config文件中的</del></li>
-</ol>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">auto_excerpt:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">length:</span> <span class="number">150</span></span><br></pre></td></tr></table></figure>
-
-<p>​        随着Next主题的更新, 这一方法不再有用.</p>
-<ol start="2">
-<li>在文章中的属性栏中添加description，并提供文章摘录</li>
-</ol>
-<p>   这种方式只会在首页列表中显示文章的摘要内容，进入文章详情后不会再显示</p>
-   <img src="https://i.loli.net/2020/06/15/3YIW8ZFi7DJVTq6.png" alt="image-20200615000644376" style="zoom: 67%;" />
-
-
-
-<ol start="3">
-<li>在文章中使用<code>&lt; !--more--&gt;</code> 手动进行截断</li>
-</ol>
-<p>   这种方法可以根据文章的内容，自己在合适的位置添加 <code>&lt; !--more--&gt;</code> 标签，使用灵活，也是Hexo推荐的方法</p>
-<p>​        <img src="https://i.loli.net/2020/06/14/hqtfdeRPaTrx7Dj.png" alt="image-20200614220921108"></p>
-]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>经典论文系列--Buffet</title>
-    <url>/2020/06/12/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97-Buffet/</url>
-    <content><![CDATA[<h1 id="Buffets-An-Efficient-and-Composable-Storage-Idiom-for-Explicit-Decoupled-Data-Orchestration"><a href="#Buffets-An-Efficient-and-Composable-Storage-Idiom-for-Explicit-Decoupled-Data-Orchestration" class="headerlink" title="Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration"></a>Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration</h1><blockquote>
-<p>原文: Pellauer, M., et al. (2019). Buffets. Proceedings of the Twenty-Fourth International Conference on Architectural Support for Programming Languages and Operating Systems - ASPLOS ‘19: 137-151.</p>
-</blockquote>
-<a id="more"></a>
-
-<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><h3 id="1-要解决什么问题"><a href="#1-要解决什么问题" class="headerlink" title="1. 要解决什么问题"></a>1. 要解决什么问题</h3><p>提出针对加速器不同需求通用的, 可重用的storage idiom, 它独立于任何特定的设计.</p>
-<h3 id="2-通过什么理论或者模型来解决"><a href="#2-通过什么理论或者模型来解决" class="headerlink" title="2. 通过什么理论或者模型来解决"></a>2. 通过什么理论或者模型来解决</h3><ul>
-<li><p>Buffet</p>
-</li>
-<li><p>Decoupled fills and accesses with fine-grained synchronization.</p>
-</li>
-<li><p>Hierarchical composition, and efficient multi-casting. </p>
-</li>
-</ul>
-<h3 id="3-给出了什么答案"><a href="#3-给出了什么答案" class="headerlink" title="3. 给出了什么答案"></a>3. 给出了什么答案</h3><p>在8KB RAM上仅仅增加2%的控制开销,与DMA管理的double-buffer scratched pad和跨各种工作负载的cache相比，Buffet分别将能量延迟乘积提高了1.53倍和5.39倍。</p>
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><h3 id="1-研究意义"><a href="#1-研究意义" class="headerlink" title="1. 研究意义"></a>1. 研究意义</h3><p>相较于通用芯片, 数据编排(data orchestration)–即将数据移入或者移出buffer heirarchy, 是专用加速芯片实现高性能的重要方法.</p>
-<img src="https://i.loli.net/2020/06/11/4sbALD7TirONE19.png" alt="image-20200611104101471" style="zoom:80%;" />
-
-<p>加速器在定制的片上缓冲上花费了大量的精力。不幸的是，这些解决方案与特定设计紧密相关，从而妨碍了其他加速器领域的可重用性。</p>
-<h3 id="2-研究背景"><a href="#2-研究背景" class="headerlink" title="2. 研究背景"></a>2. 研究背景</h3><p>Existing reusable buffer idiom:</p>
-<p>cache</p>
-<ul>
-<li>过多面积和功耗用于隐式数据编排, 与加速器需求不一致.</li>
-</ul>
-<p>scratched pad</p>
-<ul>
-<li>不灵活, 不满足复杂数据重用和更新模式需求.</li>
-</ul>
-<p>FIFO</p>
-<ul>
-<li>缺乏同步性, 难以层次化..</li>
-</ul>
-<h3 id="3-基于哪些假设"><a href="#3-基于哪些假设" class="headerlink" title="3. 基于哪些假设"></a>3. 基于哪些假设</h3><ol>
-<li>显式解耦合(EDDO)方式.</li>
-<li>同步实现方式.</li>
-<li>Buffet与层次化存储结合, buffet间同步, 支持单buffet多数据广播.</li>
-</ol>
-<h2 id="Classifying-Data-Orchestration"><a href="#Classifying-Data-Orchestration" class="headerlink" title="Classifying Data Orchestration"></a>Classifying Data Orchestration</h2><p>加速器架构师利用他们在设计时对工作负载特征和访问模式的了解，可以获得以下收益：</p>
-<ul>
-<li>预取–提前准确的取来将被使用的数据,</li>
-<li>在最小，最快和最节能的缓冲区中最大程度地访问数据,</li>
-<li><del>将数据暂存到层次结构中共享者之间最小上限的缓冲区中,</del></li>
-<li>将下一个数据图块的填充与当前数据图块的消耗重叠，</li>
-<li>同时向访问的数据的所有使用者广播（或multi-casting）缓冲区访问的结果，</li>
-<li>精确且廉价地同步数据可用性,</li>
-<li>准确删除不再需要的数据</li>
-</ul>
-<p>传统应用场景下的resuable buffering idioms分类:</p>
-<p>​        implict/explict: workload在何种程度上决定暂存, 缓存策略.</p>
-<p>​        coupled/decoupled: 访存请求是round-trip还是flow-forward.</p>
-<img src="https://i.loli.net/2020/06/11/HG2x6trF9miWDl8.png" alt="image-20200611115419792" style="zoom: 67%;" />
-
-
-
-<h3 id="1-Implicit-versus-Explicit-Orchestration"><a href="#1-Implicit-versus-Explicit-Orchestration" class="headerlink" title="1. Implicit versus Explicit Orchestration"></a>1. Implicit versus Explicit Orchestration</h3><ul>
-<li>cache<ul>
-<li>可重用的模块化的buffer抽象</li>
-<li>implict: 发起请求的程序并不指定数据何时重用和清空</li>
-<li>启发式(Heuristic)替换策略, 与workload无关</li>
-<li>但对于特定领域的加速器, tag匹配等带来的面积和功耗开销也难以忍受</li>
-</ul>
-</li>
-<li>Scratched Pad<ul>
-<li>指定存储的地址范围, 实现显示数据编排和精确控制</li>
-<li>常用于GPU的shared mem</li>
-<li>避免了cache的硬件开销</li>
-<li>Across fill和overlaping fill繁琐且易出错, 难组成层级化的存储</li>
-</ul>
-</li>
-</ul>
-<h3 id="2-Coupled-versus-Decoupled-Orchestration"><a href="#2-Coupled-versus-Decoupled-Orchestration" class="headerlink" title="2.  Coupled versus Decoupled Orchestration"></a>2.  Coupled versus Decoupled Orchestration</h3><ul>
-<li><p>Coupled</p>
-<ul>
-<li>存取请求的发起者也接收响应.</li>
-<li>Pros: <ul>
-<li>数据需求和使用之前的同步性高效且直观</li>
-</ul>
-</li>
-<li>Cons: <ul>
-<li>难以实现数据填充(fill)和访问(access)之间的overlap–请求/响应者要来在请求者和消费者之间回变换角色</li>
-</ul>
-</li>
-<li>必须为整个往返负载延迟保留传入数据图块的“着陆区(landing zone)”，这会增加对RAM资源的压力</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><p>Decoupled</p>
-<ul>
-<li><p>单独的硬件模块（例如DMA或地址生成器（AGEN））负责将数据推送到一个或多个功能单元的staging buffer中.</p>
-</li>
-<li><p>为了掩盖延时, ==这些buffer通常是ping-pong buffers[1,2].</p>
-</li>
-<li><p>Pros:</p>
-<ul>
-<li>请求者可以以自己的速度运行, 返回的数据可以广播到多个使用者.</li>
-<li>访存是feed-forward的, 只需要与相邻层级的存储结构之间的lantancy相关的landing zong,  而不是在整个层次结构之间round-trip(比如cache如果miss还要去访问高一级存储, 如果decoupled那么buffer的大小只需要掩盖L1到L2的延时)</li>
-</ul>
-</li>
-<li><p>Cons:</p>
-<ul>
-<li>传统的DAE数据编排依然是隐式的, 使用cache的管理机制</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://i.loli.net/2020/06/12/HYUbECoueQTwhqa.png" alt=""></p>
-<h3 id="3-Synchronization-Concerns"><a href="#3-Synchronization-Concerns" class="headerlink" title="3. Synchronization Concerns"></a>3. Synchronization Concerns</h3><p>何时load一个new tile? 过早会导致数据被覆盖, 过晚会导致性能损失. </p>
-<p>通过脉动阵列来约束tile的执行时间是一种办法. 对于涉及片外访问或者条件执行的系统, 这些时限过于保守.</p>
-<p>本文采用ready-valid握手协议, 也可以使用其他micro-protocols(例如TRY/ACK). 本文提供了一个EDDO storage idiom，它在staging buffer操作本身中封装了细粒度的同步。</p>
-<h2 id="The-Buffet-Storage-Idiom"><a href="#The-Buffet-Storage-Idiom" class="headerlink" title="The Buffet Storage Idiom"></a>The Buffet Storage Idiom</h2><img src="https://i.loli.net/2020/06/12/omPiChJxk5trX1S.png" style="zoom: 67%;" />
-
-
-
-<p>上图给出了buffet的数据编排模型, 它属于表1中的EDDO象限. 相较于DMA, 采用decoupled AGEN扩大了解耦的范围.</p>
-<p>在buffet中，有限状态机控制四个基本存储操作：</p>
-<ol>
-<li>Fill(data)</li>
-<li>Read(index)</li>
-<li>Update(index, data): </li>
-<li>Shrink(num)</li>
-</ol>
-<p>上级存储如DRAM通过<strong>FILL</strong>操作填入数据. 下级模块（例如DataPath）则通过<strong>Read</strong>和<strong>Update</strong>操作来处理buffet中的数据. <strong>Shrink</strong>操作从窗口中删除数据.</p>
-<img src="https://i.loli.net/2020/06/12/kprVbnS1IgGwmxu.png" style="zoom:67%;" />
-
-
-
-<h3 id="1-Buffet-Operational-Behavior"><a href="#1-Buffet-Operational-Behavior" class="headerlink" title="1. Buffet Operational Behavior"></a>1. Buffet Operational Behavior</h3><img src="https://i.loli.net/2020/06/12/PcMjgDhnptIOEfV.png" alt="image-20200611205302228" style="zoom: 50%;" />
-
-
-
-<p>❶新传输的数据通过Fill逻辑装入RAM, 这一步类似于传统的FIFO, 数据不带有地址信息. Local地址的生成依赖于填充顺序.</p>
-<p>❷与FIFO不同的是Read请求包含一个额外的Index, 允许以与接收数据不同的顺序读取数据. 这一index是相对于staging buffer中的oldest installed datum. 这一缩影不能超出RAM的大小.  传统的FIFO只要为非空，就会声明Pop.Vld. 在buffet中，请求数据的存在是索引的函数.  只有被请求的数据已被填充, 才会设置ReadRsp.VLD.</p>
-<p>❸除了索引读取之外，与FIFO的一个显着区别是活动窗口内的数据元素可以就地修改，我们将其称为Update路径.</p>
-<p>❹ shrink路径描述了从buffet中删除暂存数据的逻辑。此操作采用size参数，并从活动窗口中删除那么多元素。此操作仅更新内部记分板-不会发生数据移动。credits被释放到Fill AGEN，表明有空间可以进行另一次批量传输. 主张谁使用数据(生成index)谁shrink.</p>
-<img src="https://i.loli.net/2020/06/12/uZ1agqPvn9zxKRo.png" alt="image-20200611211210544" style="zoom:80%;" />
-
-
-
-<h3 id="2-Buffet-Synchronization-Details"><a href="#2-Buffet-Synchronization-Details" class="headerlink" title="2. Buffet Synchronization Details"></a>2. Buffet Synchronization Details</h3><ul>
-<li>需要显式硬件同步的情况由算法1中的“wait_until”调用表示。</li>
-<li>由于公式1中的操作顺序，许多其他同步情况都可以在不需要显式硬件支持的情况下处理，如图4所示。</li>
-<li>RAW冒险检查–计分板<ul>
-<li>will_update 用于表示datapath即将修改当前阶段的值</li>
-<li>如果后续的<strong>Read</strong>请求正在被修改的索引，则响应将stall–这与读取尚未填充的索引没有区别</li>
-<li><strong>FILL</strong>写入时不需要检查</li>
-<li>定制化–如果确定没有RAW冒险, 可以删除RAW检查, 如果<strong>FILL</strong>与<strong>UPDATE</strong>互斥, 可以共享一个写端口. </li>
-</ul>
-</li>
-<li><strong>SHRINK</strong>与<strong>FILL</strong>之间的同步<ul>
-<li>算法1中对<strong>SHRINK</strong>保守的使用显示同步–wait_until(num&lt;occupancy).</li>
-<li>图4将其描述为隐式同步, 详见第四节</li>
-</ul>
-</li>
-</ul>
-<img src="https://i.loli.net/2020/06/12/On4vEXflL9IuGKk.png" alt="image-20200611212533286" style="zoom:67%;" />
-
-
-
-<h3 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h3><h3 id="4-Composition-of-Buffets"><a href="#4-Composition-of-Buffets" class="headerlink" title="4. Composition of Buffets"></a>4. Composition of Buffets</h3><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><h3 id="1-文章的主要内容"><a href="#1-文章的主要内容" class="headerlink" title="1. 文章的主要内容"></a>1. 文章的主要内容</h3><h3 id="2-存在哪些缺陷"><a href="#2-存在哪些缺陷" class="headerlink" title="2. 存在哪些缺陷"></a>2. 存在哪些缺陷</h3><h3 id="3-有什么构思"><a href="#3-有什么构思" class="headerlink" title="3. 有什么构思"></a>3. 有什么构思</h3><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><blockquote>
-<p>[1] J. Cong, M. A. Ghodrat, M. Gill, B. Grigorian, K. Gururaj, and G. Reinman. Accelerator-rich architectures: Opportunities and progresses. In Proceedings of the Design Automation Conference (DAC), 2014.<br>[2] E. G. Cota, P. Mantovani, G. D. Guglielmo, and L. P. Carloni. An analysis of accelerator coupling in heterogeneous architectures. In 2015 52nd ACM/EDAC/IEEE Design Automation Conference (DAC), pages 1–6, June 2015.</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>经典论文系列</category>
-      </categories>
-      <tags>
-        <tag>计算机体系结构</tag>
       </tags>
   </entry>
 </search>
