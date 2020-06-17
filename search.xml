@@ -59,20 +59,293 @@
       </tags>
   </entry>
   <entry>
-    <title>我的第一篇博客</title>
-    <url>/2019/12/29/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<div id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
-  <div class="hbe-input-container">
-  <input type="password" id="hbePass" placeholder="" />
-    <label for="hbePass">Hey, password is required here.</label>
-    <div class="bottom-line"></div>
-  </div>
-  <script id="hbeData" type="hbeData" data-hmacdigest="c60b1ad9f22f09a9905fa786aac12ca23e35ac28ef82a4d384ba02338c7309b0">2daa0e43d16059575e0358eeb13204c9334f10fe9f5b4c4ca9e491347ae1aac787a653f3bfdff483154faa9c306499459a543d8e0e9fdb7cb6a5691a3868df52cad9689da85c8199db4aac1924b04b538bf91d99cddcb7f67e38171e7d09e6b5597213a8b0d8533be2784f8c387f9f0e68d0da8bb048934a16c72aa145f07ad7ad2b10054f7f6b1d80b0d972ac6485d319be33fd5c92fbe1131f89956e7073ea85085780b1c6a34ebadafa0d52784ba9f0261bdd30c89b38edda4c7efe264159e6e8a362df38552661363061bfa6a36abe0affed58798e5a6d70904733b2ad67d59ed42e7b388d29ddb4d8010b266ca05db60cbedc9060a428ca1bad408deceeab54380c354fdfb78225304e7d4c88b8e72446d8af33f4178fb27faf0449b805d486d93cb7785dd7dbb3392434262aab7a601b8088edb79def0f6fdb4926f9d04f2c1e1aead921142879cb84a484b8e4dfcd34931c5fcea43e424ded1d1812eba22ca16c330fd68f276497435047212117eeb1a62d4c93242d72e10d6724aaad4dcfb180bc95b3f5b99e65330158bd894ce97a9c4fb53d4f5c1ea52ef8ff5dbe2648adca06564933bdac07b21b3cad5c719d3e3240f6c8552d75e8f2915a921e6d0843ea372193f682b95dcd3bf10c782b69c7ce44d3b0090bc7d681e2fc7b223cf6d6d0250200d0783bc24ad9075ab73f86040d8f679046798f5cd3a1ca8209329d43d6f89d643546670e222bb26ffd8b10a56ce2af5dbc3e12ae65c3f3216d657241a0657c72df14798ba83b10ccddbb47eef59f497761a407577164474a0c2e03e28634c6f9912748f2d6dd6a69b188d8cc2e21686e42bab33415c5f368932f753d1fd62ace6bbf3c7b75a9e2a799ed4d386784a9ce1405719dc52e00dc1f0c85e5c6ac756e1e14c66a268140ebf1b1ecfa515901fd273c9351202425498ae9b937346baa409fcfe66635c516435b9a929ec339333d2d8e0091b8bc155b1f24d6fe55d4d17d8a760648d92ccd7983b79df3cd5e2aa01f015c75216019495aabe0fedd9b61d1b5672d5643de5e7b7adff4dd66c76df3f67193d7e3812aca14eb90b0badc2dc2461c8a98524cb119b47ca1302e93962a861f229c0fdcc505cfb12451ec1bad993b4e8e23dee748821febba58e44b376a927b5b7a3d19439c3b9878319c543f34f7dec63c58fcf910fe08bb7335c34f277eedb08d61ac013b1c887783e609bfe2f17fe64abd6d402da318e9668de1a6d5b6ce48ceb45da8337e001be83a04e4351b653c4bbd9ee42d16b3c8639da1f7e5636130c198a212e168bc4dc35121d604ba0de0cb781467df42</script>
-</div>
-<script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">]]></content>
+    <title>git使用教程</title>
+    <url>/2019/12/30/git%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/</url>
+    <content><![CDATA[<h1 id="git使用教程"><a href="#git使用教程" class="headerlink" title="git使用教程"></a>git使用教程</h1><h2 id="1-为什么要使用git和github"><a href="#1-为什么要使用git和github" class="headerlink" title="1.为什么要使用git和github"></a>1.为什么要使用git和github</h2><p>无论是写文档还是码代码，你一定遇到过这些情况：某句我想先删掉，但是我又怕找不回来了怎么办？我有别的想法，但是又不敢随便改动这段代码怎么办？我在稳定的代码基础上做修改，结果GG了，更悲催的是忘了改了什么地方…</p>
+<p>也许你可以通过不断“save as”来解决，但是久而久之，你的文件会变得非常凌乱。对于少量文件或许行得通，但是一涉及包含大量文件的项目。光整理文件就足以让人头痛:-(</p>
+<p>这个时候你就需要有一个版本管理工具来辅助你完成这些恼人且琐碎的工作，没错，它就是git。不要怕，git只是一个版本管理工具罢了，我们只需要学习如何使用它。</p>
+<p><img src="http://ww4.sinaimg.cn/bmiddle/9150e4e5gy1fssxfpndxhj20hq0d0t95.jpg" alt="img" style="zoom: 33%;" /></p>
+<h3 id="1-1-git能干什么"><a href="#1-1-git能干什么" class="headerlink" title="1.1 git能干什么"></a>1.1 git能干什么</h3><p>   git功能很强大，它可以：</p>
+<ul>
+<li>帮助你管理不同的代码版本<ul>
+<li>代码存档，读档，就像玩游戏一样方便</li>
+<li>在不改变原有代码的基础上，同时开发不同版本代码，听起来很魔法对吧~</li>
+<li>结合远程服务器(这里是github)，本地代码丢失也不怕！</li>
+</ul>
+</li>
+<li>多人协同开发，也可以使自己的笔记本和台式机之间协同。</li>
+</ul>
+<h3 id="1-2-github是什么"><a href="#1-2-github是什么" class="headerlink" title="1.2 github是什么"></a>1.2 github是什么</h3><p> github我们多少已经熟悉了，知道它是全球最大的<del>同性交友网站</del>开源社区。这篇文档中我们主要是为了使用它的仓库（respositories）功能。我们只需要简单把仓库理解为一个远程的存储服务器就好了，就像百度云或Onedrive之类的。</p>
+<blockquote>
+<p>你可能不理解大家为什么要公开自己的代码。开源是一种精神，大家去分享自己的智慧，解放生产力，避免重复造轮子。其实早先github上只有公开仓库是免费的，直到财大气粗的微软爸爸收购github之后，github才提供四人以下的免费私人仓库。</p>
+</blockquote>
+<h2 id="2-准备"><a href="#2-准备" class="headerlink" title="2.准备"></a>2.准备</h2><p>现在我们知道了：</p>
+<ul>
+<li>git是一个版本管理工具，用于管理你的代码</li>
+<li>github是一个远程仓库，用于远程保管你的代码以及多人协同工作</li>
+</ul>
+<p>那么我们在学习git之前需要一些准备，我们需要：</p>
+<ul>
+<li><p>一个github账号</p>
+</li>
+<li><p>git客户端，windows下直接去<a href="https://git-scm.com/download/win" target="_blank" rel="noopener">官方网站</a>下载git.exe就好啦</p>
+</li>
+<li><p>vscode</p>
+<blockquote>
+<p>git涉及到一些命令行操作, 不过请不要害怕, 只需要掌握几条简单的命令就可以帮助我们熟练的使用git。这篇文档也会尽量简单并且图文并茂的讲述每条命令的使用方式。</p>
+<p>如果你还是不能接受，也请看完第三章，理解整个工作流程后使用VScode无代码化的使用git。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="2-1-git的安装"><a href="#2-1-git的安装" class="headerlink" title="2.1 git的安装"></a>2.1 git的安装</h3><p>只有一点需要注意，在执行到这一步时需要选择使用其它编辑器(比如vscode)作为git的默认编辑器，当然如果你能够灵活的使用vim也可以选择vim作为默认编辑器。其他的一路ok就好！</p>
+<p><img src="https://i.loli.net/2020/06/17/Mwz5VB1eg2CSbLx.png" alt="1574419008585"></p>
+<p><img src="https://i.loli.net/2020/06/17/rTeE3d1YgBmypHi.png" alt="1574419098015"></p>
+<p>打开git bash，输入以下命令完成注册：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git config --global user.name "user.name" #你的用户名</span><br><span class="line">git config --global user.email "yourmail@youremail.com.cn" #你的邮箱</span><br></pre></td></tr></table></figure>
+<p>新建ssh keys，没有ssh keys无法上传文件到github。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa -C "你的邮箱名" #新建ssh keys</span><br></pre></td></tr></table></figure>
+<p>你可以指定ssh keys的存放路径，下图第一个是默认路径，第二个箭头是你的指定。不指定直接回车就是默认路径。</p>
+<p><img src="https://i.loli.net/2020/06/17/qiM3fXQNLCOpm7G.png" alt="1574570114514"></p>
+<p> 然后找到rd_rsa和id_rsa.pub所在目录打开idb_rsa.pub,登录自己的GitHub账号，找到Settings,</p>
+<p><img src="https://i.loli.net/2020/06/17/hcPfLu1wIak3egD.png" alt="1574570638254"></p>
+<p><img src="https://i.loli.net/2020/06/17/qQybxAPdG7S34HZ.png" alt="image-20200617142820627"></p>
+<p><img src="https://i.loli.net/2020/06/17/5PBKUICvNtF2My4.png" alt="image-20200617143111205"></p>
+<p> 然后，将idb_rsa.pub里的内容拷贝到Key内，Title内容随便填，确定即可。 </p>
+<p><img src="https://i.loli.net/2020/06/17/7tOu1S9nNhXvETR.png" alt="image-20200617142909156"></p>
+<p>添加完成。。</p>
+<h2 id="3-git使用教程"><a href="#3-git使用教程" class="headerlink" title="3.git使用教程"></a>3.git使用教程</h2><h3 id="3-1-建立版本仓库"><a href="#3-1-建立版本仓库" class="headerlink" title="3.1 建立版本仓库"></a>3.1 建立版本仓库</h3><p>在介绍github时我们提到了仓库，其实仓库就是你用于存放代码的文件夹，放在远程服务器的叫做<strong>远端仓库</strong>(简称远端)，放在自己电脑上的叫做<strong>本地仓库</strong>(简称本地)。</p>
+<h4 id="3-1-1-建立本地仓库"><a href="#3-1-1-建立本地仓库" class="headerlink" title="3.1.1  建立本地仓库"></a>3.1.1  建立本地仓库</h4><ol>
+<li><p>新建一个文件夹（这里我新建了Code），或者是打开存放有你自己项目的文件夹，<strong>注意，不能包含中文路径</strong>。</p>
+</li>
+<li><p>在文件夹中右键，点击Git Bash Here。当然你也可以在任意地方打开Git bash然后使用cd命令进入你想要去的文件夹。</p>
+<p><img src="https://i.loli.net/2020/06/17/JDi6pWLjRSBgrOc.png" alt="1574420614404"></p>
+</li>
+<li><p>在打开的git bash中输入</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git init #这条命令代表在当前文件夹下建立一个版本仓库</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2020/06/17/ri5eG9jagDJP4TB.png" alt="1574474899359"></p>
+<p>如果看到文件夹下多出了一个.git文件（默认隐藏，你可能要在“查看”里打开查看隐藏文件才能看到）就说明版本仓库建立成功。这个文件是git用于管理版本的，我们不用去管它。git bash中路径的后面还出现了一个”(master)”，这是你的版本库所在的当前分支。</p>
+<p>现在Code文件夹已经从一个普通的文件夹变成了我们的仓库。</p>
+</li>
+</ol>
+<h4 id="3-1-2-在github中建立仓库"><a href="#3-1-2-在github中建立仓库" class="headerlink" title="3.1.2 在github中建立仓库"></a>3.1.2 在github中建立仓库</h4><p>经验告诉我们，我们的计算机是不可靠的，死机、误删、磁盘坏道、重装系统，这一切你想得到想不到的问题都可能导致我们用于交差的东西毁于一旦。</p>
+<p>我们当然可以用网盘或者U盘即使备份，但是有github这样简单、免费又好用的工具，只要几步，我们就可以在github上建立自己的远程仓库！</p>
+<ol>
+<li><p>登录github，在主页左上角点击NEW，新建一个respository</p>
+<p><img src="https://i.loli.net/2020/06/17/gAvnx9QBF6Mycmt.png" alt="1574477727084"></p>
+</li>
+<li><p>指明以下信息：</p>
+<ul>
+<li><p>仓库的名字</p>
+</li>
+<li><p>仓库的描述</p>
+</li>
+<li><p>仓库的类型</p>
+<ul>
+<li>公开：所有人都能看到你的仓库，别人可以在你的仓库上建立分支，修改你的代码以及进行提交，由你来决定是否接收他人的提交</li>
+<li>私人：你可以选择最多3个人(现在已经不限人数)，只有被你选召的孩子可以执行上述操作，他们的提交不需要你同意！</li>
+</ul>
+</li>
+<li><p>是否要在新建仓库的同时建立一个readme文件</p>
+<ul>
+<li><p>强烈建议不要勾选，很坑。代码一般存放在本地，勾选后远端就会出现一个你本地没有的文件，这会造成冲突！</p>
+<p><img src="https://i.loli.net/2020/06/17/3oUlsubapIBq1xj.png" alt="1574479176608"></p>
+</li>
+</ul>
+</li>
+<li><p>是否增加.gitignore和license</p>
+<ul>
+<li>同样建议不要选，理由同上。</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2020/06/17/zxI3TCtaluo7w2y.png" alt="1574477683881"  /></p>
+</li>
+</ol>
+<h3 id="3-2-提交自己的代码"><a href="#3-2-提交自己的代码" class="headerlink" title="3.2 提交自己的代码"></a>3.2 提交自己的代码</h3><h4 id="3-2-1-工作区，暂存区和版本库"><a href="#3-2-1-工作区，暂存区和版本库" class="headerlink" title="3.2.1 工作区，暂存区和版本库"></a>3.2.1 工作区，暂存区和版本库</h4><p>仓库建立好后我们的就可以正式开始工作了，Code文件夹下的文档变动都会被git察觉。假设我们在Code文件夹下写好或者拷贝了一个文件“12345.txt”，让我们输入下面的命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git status #查看工作区状态</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2020/06/17/8VOE21dMe45ABSi.png" alt="1574498025597"></p>
+<p><img src="https://i.loli.net/2020/06/17/eva8cjkVDtnpJGB.png" alt="1574480666077"></p>
+<p>提示我们有一个未跟踪的文件“12345.txt”，这是什么意思呢？想要git管理我们的代码我们就必须先提交它，提交是分两步实现的。一是把文件加入到暂存区，二是把暂存区的文件提交到版本库。</p>
+<p><img src="https://i.loli.net/2020/06/17/HhrxSRg3jdn6BOq.png" alt="1574496386379"></p>
+<ul>
+<li><p>工作区：是你真正正在修改、使用的文件</p>
+</li>
+<li><p>暂存区：存放你要提交的文件</p>
+</li>
+<li><p>版本库：存放代码的不同版本，相当于你代码的档案室</p>
+</li>
+</ul>
+<h4 id="3-2-2-暂存文件"><a href="#3-2-2-暂存文件" class="headerlink" title="3.2.2 暂存文件"></a>3.2.2 暂存文件</h4><p>因为我们尽量希望自己的版本都是干净的代码，所以暂存和提交有必要分开，否则会造成版本过多，管理混乱。暂存文件的命令是</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git add [文件名] #加入某个文件到暂存区</span><br><span class="line">或</span><br><span class="line">git add . # . 不可省略， 默认为将修改操作的文件和未跟踪新添加的文件添加到git系统的暂存区，注意不包括删除</span><br><span class="line">git add -A . #-A 表示将所有的已跟踪的文件的修改与删除和新增的未跟踪的文件都添加到暂存区</span><br></pre></td></tr></table></figure>
+<p>让我们试一下，发现12345.txt被成功暂存了！</p>
+<p><img src="https://i.loli.net/2020/06/17/Hn4SzvistFjMTJr.png" alt="1574496897728"></p>
+<p>我们删掉它，用”add .” 试试</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git rm --cached 12345.txt #rm表示移除 --cached表示缓存区的，所以这条命令指删除缓存区中的12345.txt</span><br><span class="line"><span class="meta">#</span><span class="bash">不常用的命令，毕竟修改文件后直接add就可以更新</span></span><br></pre></td></tr></table></figure>
+<p>然后</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git add . #这条命令更常用，毕竟我们不能一个个的指定修改的文件吧</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2020/06/17/WCguehGZxJt4c7k.png" alt="1574497811333"></p>
+<p>大功告成！</p>
+<blockquote>
+<p>建议经常使用add命令stage自己的代码，如果你修改了代码但是不stage是无法提交的。</p>
+</blockquote>
+<h4 id="3-2-3-存档和读档——后悔药"><a href="#3-2-3-存档和读档——后悔药" class="headerlink" title="3.2.3 存档和读档——后悔药"></a>3.2.3 存档和读档——后悔药</h4><ol>
+<li><p>提交</p>
+<p>让我们修改文件再试试，这里我在12345.txt中加入了一行代码，并新增加了一个文件。</p>
+<p><img src="https://i.loli.net/2020/06/17/ORICuv5i1Y7kb6V.png" alt="1574498426812"></p>
+<p><img src="https://i.loli.net/2020/06/17/lBQfqo9RbmZdDpv.png" alt="1574498820234"></p>
+</li>
+</ol>
+<p>   这些文件变动都被追踪到了。</p>
+<p>   <img src="https://i.loli.net/2020/06/17/jlBga1dPhtv7ACm.png" alt="1574498714119"></p>
+<p>   想象自己是在玩游戏，如果我们进入到某个重要节点例如即将进入Boss战，我们通常都会及时存档以免自己损失惨重。同样写代码也该及时“存档”。输入commit(提交)命令进行提交，可见git知道我们提交了两个文件，增加了一行代码！</p>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git commit -m "版本说明" </span><br><span class="line"><span class="meta">#</span><span class="bash">双引号是提交代码时必须的说明，这是强制的，不写就无法提交</span></span><br></pre></td></tr></table></figure>
+<p>   <img src="https://i.loli.net/2020/06/17/Gxy5iqTnU7IZrAc.png" alt="1574499410230"></p>
+<p>   修改文件这两个文件再提交一次！</p>
+<p>   <img src="https://i.loli.net/2020/06/17/UOL8reAQgnPamt9.png" alt="1574499977077"  /></p>
+<p>   <img src="https://i.loli.net/2020/06/17/yAHYVovs51nhk8M.png" alt="1574500001341"></p>
+<p>   <img src="https://i.loli.net/2020/06/17/Yu1b6DzZgyOARmE.png" alt="1574500348047"></p>
+<p>   输入git log以查看版本，箭头指向的是commit的版本号，我们可以用它回到任一版本。带有HEAD标志的就是当前版本库中存放的版本。</p>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git log #查看版本日志</span><br><span class="line">git log --graph ##以树状图的形式查看版本日志</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>回退版本</p>
+<p>假如我刚刚的代码出现了无法修复的重大bug怎么办？别担心，我们可以随时回退到之前的任意版本，因为我们存档了！</p>
+<ul>
+<li>如果我们只是在工作区更改，还没有提交，比如我刚刚加入了一堆bug，试下这条命令就变回来了，很方便吧！这也是为什么我们要常常stage我们的文件。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout -- [文件名] #将工作区文件状态恢复成最新的一次commit或者add的状态（取决于最后一次操作）</span><br><span class="line">git checkout -- .    	#撤销对所有文件的更改</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2020/06/17/HVopLJ1muArxisg.png" alt="image-20200617143345272" style="zoom: 67%;" /></p>
+<p><img src="https://i.loli.net/2020/06/17/FuKEev8dk1CSrqX.png" alt="1574501873507"></p>
+<p><img src="https://i.loli.net/2020/06/17/KX9dmilMBvJz71k.png" alt="1574501778180" style="zoom:80%;" /></p>
+<ul>
+<li><p>如果我们已经把更改暂存甚至提交了，可以用reset命令回退到工作区，然后再使用checkout撤销更改</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git reset HEAD [文件名] #将某个文件回退到最近一次提交，记得吧，HEAD表示当前版本</span><br><span class="line">git reset HEAD 	       #省略文件名表示回退所有文件</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2020/06/17/hZ9aVJT8l4sWX3O.png" alt="1574516044571"></p>
+</li>
+<li><p>如果我们觉得整个版本都不想要，就是想回某一个版本，还记的commit会出现一个版本号对吧，我们会用到的。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git reset --hard HEAD^ #一个^表示回到上一个版本</span><br><span class="line">git reset --hard HEAD^^#两个^表示回退一个版本</span><br><span class="line">git reset --hard [版本号，前5位就够了]#回退到版本号指定的版本</span><br></pre></td></tr></table></figure>
+<p>我们先用git log看一下现在HEAD指向我们的第二次提交，回退一个版本后指向了第一次提交</p>
+<p><img src="https://i.loli.net/2020/06/17/CDTH4bvNIgmiu75.png" alt="1574516513801"></p>
+<p>再看看我们的文件，变回来了呢。</p>
+<p><img src="https://i.loli.net/2020/06/17/SVm97FYteGN4Pcf.png" alt="1574516729966"></p>
+<p>这时细心的你发现了，git log里没有第二次的版本号了，我又双叒叕反悔了怎么办，不要紧可以reflog一下</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git reflog #查看历史命令，可以看到回退之前的版本号</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<pre><code> ![1574516864487](https://i.loli.net/2020/06/17/P7y3OfWUEb4wjFI.png)
+
+ 版本号就回来啦！我们重新回到第二个版本，使用版本号“回退”一次
+
+ ![1574517009092](https://i.loli.net/2020/06/17/OZJPGd3rKwxD2ea.png)
+
+ 存档读档，妈妈再也不用担心我打不过boss了！
+
+ &gt; 建议多用add暂存你的文件，在有关键更改时才提交，避免回退时面对茫茫多的版本不知所措。
+</code></pre><h3 id="3-3-分支"><a href="#3-3-分支" class="headerlink" title="3.3  分支"></a>3.3  分支</h3><p>就算有了版本管理，老是回退版本也不是办法，别人总在你的版本上做更改也不方便。有没有我们一边开发一边还不影响已经稳定的版本的办法呢?git 给了这个机会，这就是分支。</p>
+<p>记得我们新建仓库后路径后多出了一个master吧，这个就是git生成的默认分支，我们把它理解为树的主干。枝叶在主干上成长，树木的枝叶可以有很多，但是主干只能有一个。我们的开发应该是在枝叶上完成的。枝叶的生长不应该影响我们的主干。</p>
+<p><img src="https://i.loli.net/2020/06/17/FBW9uVM7PQJivRs.png" alt="1574517843101"></p>
+<p>在开发项目时我们要遵循以下几个原则：</p>
+<ul>
+<li>master分支只能是稳定的版本</li>
+<li>分支可以尽量多，每个分支的功能应该明确</li>
+<li>严禁在master分支上开发，应该在其他分支开发，修复bug，最后合并到master上</li>
+</ul>
+<h4 id="3-3-1-建立分支"><a href="#3-3-1-建立分支" class="headerlink" title="3.3.1 建立分支"></a>3.3.1 建立分支</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git branch [分支名] #新建分支</span><br><span class="line">git checkout [分支名] #切换到某一分支，注意撤销操作是checkout --，不加--就是切换分支</span><br><span class="line">git switch [分支名] #等价于上一条，建议用switch，更好理解</span><br></pre></td></tr></table></figure>
+<p>下面的例子我新建了dev分支，然后使用switch而不是checkout进行切换</p>
+<p><img src="https://i.loli.net/2020/06/17/2suFb41jwLfPJoi.png" alt="1574518245023"></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout -b [分支名] #新建分支并转到该分支</span><br><span class="line"><span class="meta">#</span><span class="bash">相当于一次执行下面两条命令</span></span><br><span class="line">git branch [分支名]</span><br><span class="line">git checkout [分支名]</span><br></pre></td></tr></table></figure>
+<p>现在我们在刚刚的新建的进行开发，这里我修改12345.txt中的文件内容并且新建了develop.txt，然后提交</p>
+<p><img src="https://i.loli.net/2020/06/17/oNvgLkrqlSJ95bh.png" alt="1574561916685"></p>
+<p><img src="https://i.loli.net/2020/06/17/dFzTkqhPrfLjn1v.png" alt="1574562000782"></p>
+<p>切回master分支看一下</p>
+<p><img src="https://i.loli.net/2020/06/17/qHtGKN1pbURMcey.png" alt="1574562220417"></p>
+<p>可以看到master分支下12345.txt并没有收到改变，这样我们就可以在不影响原有代码的基础上进行开发。</p>
+<p><img src="https://i.loli.net/2020/06/17/yZwBFKDTlvmHbfS.png" alt="1574562249277"></p>
+<h4 id="3-3-1-合并分支"><a href="#3-3-1-合并分支" class="headerlink" title="3.3.1 合并分支"></a>3.3.1 合并分支</h4><p>如果我们在dev分支上的开发已经稳定，认为可以将master前进一个版本，我们就可以使用merge命令进行分支合并。首先我们要切换到master分支。然后使用</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git merge dev #将dev合并到当前分支上，这里的dev可以是任意分支名</span><br></pre></td></tr></table></figure>
+<p>再看看master分支下的内容，已经和dev分支一样了。</p>
+<p><img src="https://i.loli.net/2020/06/17/UBJsYFMrTnbhqZz.png" alt="1574563214269"></p>
+<p><img src="https://i.loli.net/2020/06/17/dRmPjXo5VkpiSnz.png" alt="1574563395685"></p>
+<p>因为我们的dev分支是在master的基础上前进了一步，所以合并时没有冲突。但是如果我在开发dev的同时手贱更改了master中的内容，又该怎么办呢？这就涉及到冲突的解决。</p>
+<p><img src="https://i.loli.net/2020/06/17/A8TxCsXb4VRMI2z.png" alt="1574564519494"></p>
+<p><img src="https://i.loli.net/2020/06/17/CLcHF7hpJPRU4lT.png" alt="1574564562140"></p>
+<h4 id="3-3-2-解决冲突"><a href="#3-3-2-解决冲突" class="headerlink" title="3.3.2 解决冲突"></a>3.3.2 解决冲突</h4><blockquote>
+<p>冲突在个人开发时很少遇到，你可以酌情先跳过本节。</p>
+</blockquote>
+<p>我们更改master分支下develop.txt的内容如下，然后提交：</p>
+<p><img src="https://i.loli.net/2020/06/17/bLCoMp4tZmEU2ux.png" alt="1574563921647"></p>
+<p>切换到dev分之下修改develop.txt的内容如下，然后提交：</p>
+<p><img src="https://i.loli.net/2020/06/17/896bt1VieT3JnOx.png" alt="1574564171623"></p>
+<p>再试试吧dev上的内容合并到master上，结果出错了。</p>
+<p><img src="https://i.loli.net/2020/06/17/2JigvsomXGRNKYO.png" alt="1574564284348"></p>
+<p>因为master和dev同时前进了一步，对相同的文件做了不同修改，git不知道哪个修改是你要的，只好提示你手动修改。不过你放心，git只会比较文件中不同的地方，如果你没用在同一处做了不一样的改动，是不会引起冲突的。</p>
+<p><img src="https://i.loli.net/2020/06/17/YNxWXoJrzIdZkbj.png" alt="1574564467758"></p>
+<p>我们看一下develop.txt，git已经帮我们标记出了冲突的地方。</p>
+<blockquote>
+<p>这里是用vscode打开的，你也可以用其他工具，例如更加强大的visual stuido，或者更挫的记事本。用vscode只是因为它轻量而且方便，足够我们使用。</p>
+</blockquote>
+<p><img src="https://i.loli.net/2020/06/17/BoMFCkY2ptewyuR.png" alt="1574565354909"></p>
+<p>我们们只需要更改自己想要的代码，然后点击采用当前或者传入的更改问题就解决了！</p>
+<p><img src="https://i.loli.net/2020/06/17/jwZki4p8XJTLBo1.png" alt="1574565759381"></p>
+<p><img src="https://i.loli.net/2020/06/17/YgPBKkiC6bmwUlR.png" alt="1574565786283"></p>
+<p>然后提交，ok冲突解决了！</p>
+<p><img src="https://i.loli.net/2020/06/17/v7FWcwmJLIBsfV6.png" alt="1574566655509"></p>
+<h3 id="3-4-同步代码到github"><a href="#3-4-同步代码到github" class="headerlink" title="3.4 同步代码到github"></a>3.4 同步代码到github</h3><p>虽然只在本地使用git已经足够方便，但是结合github或者其他服务器进行多人或者多设备开发才是git的完全体。</p>
+<h4 id="3-4-1-关联本地到远端"><a href="#3-4-1-关联本地到远端" class="headerlink" title="3.4.1 关联本地到远端"></a>3.4.1 关联本地到远端</h4><p>在github中找到我们在3.1.2中建立的仓库，复制地址</p>
+<p><img src="https://i.loli.net/2020/06/17/tqahvODxyC4gwFf.png" alt="1574570751233"></p>
+<p>在本地的git bash中输入</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git remote add origin git@github.com:shawer96/Code.git #origin是默认的远程主机名，后面的地址应该填你自己刚刚复制的</span><br></pre></td></tr></table></figure>
+<h4 id="3-4-2-推送代码到远端"><a href="#3-4-2-推送代码到远端" class="headerlink" title="3.4.2 推送代码到远端"></a>3.4.2 推送代码到远端</h4><p>推送是指将你的代码上传到远端，以便其他设备或者他人下载使用。</p>
+<p>我们之前在git上建立了一个空仓库，可以使用下述命令进行提交</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git push -u origin master #-u表示在远端建立一个同名分支（因为远端是空的），master可以换成其他你想推送的分支</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2020/06/17/AmboLpfR98FZXxe.png" alt="1574572578570"></p>
+<p><img src="https://i.loli.net/2020/06/17/CTD4auMtQI96XPc.png" alt="1574574475359"></p>
+<p>之后想要在master分支上提交其他内容就不需要-u了</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git push origin 本地分支名：远端分支名 #将本地分支推送到远端分支</span><br><span class="line">git push origin 本地分支名  #省略远端分支名(常见)，将本地分支推送到远端同名分支</span><br></pre></td></tr></table></figure>
+<h4 id="3-4-3-拉去代码到本地"><a href="#3-4-3-拉去代码到本地" class="headerlink" title="3.4.3 拉去代码到本地"></a>3.4.3 拉去代码到本地</h4><p>有的时候我们在别的设备上完成开发，并且推送到了远端，你想要下载代码到本地。只需要使用pull命令，比如我现在在github的网页上修改了12345.txt来模拟多设备或者多人的开发情况。</p>
+<p><img src="https://i.loli.net/2020/06/17/fBp5LogQalNCmRy.png" alt="1574575282941"></p>
+<p>只要使用</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git pull origin 远端分支名:本地分支名 #将本地分支拉取到远端分支</span><br><span class="line">git pull origin 远端分支名 #省略本地分支名(常见)，将远端分支拉取到本地同名分支</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2020/06/17/nLaAyTmOjv1xhCk.png" alt="1574575535115"></p>
+<p><img src="https://i.loli.net/2020/06/17/pDLrzG2Col4MaUw.png" alt="1574576045808"></p>
+<p>要注意，拉取其实相当于将远端分支取回到本地暂存区，再合并到本地分支。所以在远端和本地文件不同时也会出现冲突，可以按照3.3.2中的方法解决。</p>
+<h2 id="4-Vscode使用git"><a href="#4-Vscode使用git" class="headerlink" title="4. Vscode使用git"></a>4. Vscode使用git</h2><ol>
+<li><p>选择文件-&gt;打开-&gt;打卡文件夹，打开你设为git仓库的文件夹</p>
+<p><img src="https://i.loli.net/2020/06/17/UAtIsbjF3SzMfwE.png" alt="1574576153117"></p>
+</li>
+<li><p>点击左侧的按钮</p>
+<p><img src="https://i.loli.net/2020/06/17/x2V4YeINv5jzDEZ.png" alt="1574576231294"></p>
+</li>
+<li><p>可以看到工作区中修改过的文件</p>
+<p><img src="https://i.loli.net/2020/06/17/CRzGlV2vm5xPakK.png" alt="1574576326763"></p>
+</li>
+<li><p>右键可以选择对文件执行哪些操作</p>
+<p><img src="https://i.loli.net/2020/06/17/myuTdiPZRBgMAe5.png" alt="1574576394125"></p>
+<ul>
+<li><p>打开更改：比较工作区文件和暂存区区别，如上图，很方便的功能</p>
+</li>
+<li><p>暂存(stage)，相当于add</p>
+</li>
+</ul>
+</li>
+<li><p>暂存后可以选择提交</p>
+<p><img src="https://i.loli.net/2020/06/17/moqYW7Tvfzr1KDF.png" alt="1574576520054"></p>
+<p><img src="https://i.loli.net/2020/06/17/PTWoVJLI6hcaKX5.png" alt="1574576685215"></p>
+<p>看看日志，提交成功了</p>
+<p><img src="https://i.loli.net/2020/06/17/v8yxGWstq7R29FS.png" alt="1574576749510"></p>
+</li>
+<li><p>还有更多功能自己去试试吧</p>
+<p><img src="https://i.loli.net/2020/06/17/onE8FMQGW4TbuVN.png" alt="1574576891330"></p>
+</li>
+</ol>
+]]></content>
       <categories>
-        <category>随笔</category>
+        <category>git</category>
       </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
   </entry>
   <entry>
     <title>经典论文系列--Buffet</title>
@@ -226,6 +499,48 @@
       </categories>
       <tags>
         <tag>计算机体系结构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>我的第一篇博客</title>
+    <url>/2019/12/29/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<div id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <div class="hbe-input-container">
+  <input type="password" id="hbePass" placeholder="" />
+    <label for="hbePass">Hey, password is required here.</label>
+    <div class="bottom-line"></div>
+  </div>
+  <script id="hbeData" type="hbeData" data-hmacdigest="c60b1ad9f22f09a9905fa786aac12ca23e35ac28ef82a4d384ba02338c7309b0">2daa0e43d16059575e0358eeb13204c9334f10fe9f5b4c4ca9e491347ae1aac787a653f3bfdff483154faa9c306499459a543d8e0e9fdb7cb6a5691a3868df52cad9689da85c8199db4aac1924b04b538bf91d99cddcb7f67e38171e7d09e6b5597213a8b0d8533be2784f8c387f9f0e68d0da8bb048934a16c72aa145f07ad7ad2b10054f7f6b1d80b0d972ac6485d319be33fd5c92fbe1131f89956e7073ea85085780b1c6a34ebadafa0d52784ba9f0261bdd30c89b38edda4c7efe264159e6e8a362df38552661363061bfa6a36abe0affed58798e5a6d70904733b2ad67d59ed42e7b388d29ddb4d8010b266ca05db60cbedc9060a428ca1bad408deceeab54380c354fdfb78225304e7d4c88b8e72446d8af33f4178fb27faf0449b805d486d93cb7785dd7dbb3392434262aab7a601b8088edb79def0f6fdb4926f9d04f2c1e1aead921142879cb84a484b8e4dfcd34931c5fcea43e424ded1d1812eba22ca16c330fd68f276497435047212117eeb1a62d4c93242d72e10d6724aaad4dcfb180bc95b3f5b99e65330158bd894ce97a9c4fb53d4f5c1ea52ef8ff5dbe2648adca06564933bdac07b21b3cad5c719d3e3240f6c8552d75e8f2915a921e6d0843ea372193f682b95dcd3bf10c782b69c7ce44d3b0090bc7d681e2fc7b223cf6d6d0250200d0783bc24ad9075ab73f86040d8f679046798f5cd3a1ca8209329d43d6f89d643546670e222bb26ffd8b10a56ce2af5dbc3e12ae65c3f3216d657241a0657c72df14798ba83b10ccddbb47eef59f497761a407577164474a0c2e03e28634c6f9912748f2d6dd6a69b188d8cc2e21686e42bab33415c5f368932f753d1fd62ace6bbf3c7b75a9e2a799ed4d386784a9ce1405719dc52e00dc1f0c85e5c6ac756e1e14c66a268140ebf1b1ecfa515901fd273c9351202425498ae9b937346baa409fcfe66635c516435b9a929ec339333d2d8e0091b8bc155b1f24d6fe55d4d17d8a760648d92ccd7983b79df3cd5e2aa01f015c75216019495aabe0fedd9b61d1b5672d5643de5e7b7adff4dd66c76df3f67193d7e3812aca14eb90b0badc2dc2461c8a98524cb119b47ca1302e93962a861f229c0fdcc505cfb12451ec1bad993b4e8e23dee748821febba58e44b376a927b5b7a3d19439c3b9878319c543f34f7dec63c58fcf910fe08bb7335c34f277eedb08d61ac013b1c887783e609bfe2f17fe64abd6d402da318e9668de1a6d5b6ce48ceb45da8337e001be83a04e4351b653c4bbd9ee42d16b3c8639da1f7e5636130c198a212e168bc4dc35121d604ba0de0cb781467df42</script>
+</div>
+<script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>计算力参数FLOPS,GOPS,GMACS辨析</title>
+    <url>/2020/06/16/%E8%AE%A1%E7%AE%97%E5%8A%9B%E5%8F%82%E6%95%B0FLOPS-GOPS-GMACS%E8%A7%A3%E6%9E%90/</url>
+    <content><![CDATA[<h2 id="FLOPS"><a href="#FLOPS" class="headerlink" title="FLOPS"></a>FLOPS</h2><p>FLOPS是“每秒所执行的浮点运算次数”（floating-point operations per second）的缩写。它常被用来估算电脑的执行效能，尤其是在使用到大量浮点运算的科学计算领域中。正因为FLOPS字尾的那个S，代表秒，而不是复数，所以不能省略掉。</p>
+<p>在这里所谓的“浮点运算”，实际上包括了所有涉及小数的运算。这类运算在某类应用软件中常常出现，而它们也比整数运算更花时间。现今大部分的处理器中，都有一个专门用来处理浮点运算的“浮点运算器”（FPU）。也因此FLOPS所量测的，实际上就是FPU的执行速度。而最常用来测量FLOPS的基准程式（benchmark）之一，就是Linpack。</p>
+<p>使用时常加数量级前缀如M, G, T等。</p>
+<a id="more"></a>
+<h2 id="OPS"><a href="#OPS" class="headerlink" title="OPS"></a>OPS</h2><p>OPS与FLOPS类似，只不过OPS一个是操作次数，FLOPS一个是浮点操作次数。</p>
+<p>使用时常加数量级前缀如M, G, T等。</p>
+<h2 id="MACS"><a href="#MACS" class="headerlink" title="MACS"></a>MACS</h2><p>MACS 指每秒执行的定点<strong>乘累加</strong>操作次数的缩写，它是衡量计算机定点处理能力的量，这个量经常用在那些需要大量定点乘法累加运算的科学运算中，记为MACS。</p>
+<p>使用时常加数量级前缀如M, G, T等。</p>
+<h2 id="易混辨析—FLOPS-FLOPs-FLOP-s"><a href="#易混辨析—FLOPS-FLOPs-FLOP-s" class="headerlink" title="易混辨析—FLOPS,FLOPs,FLOP/s"></a>易混辨析—FLOPS,FLOPs,FLOP/s</h2><p>FLOPS：注意全大写，是floating point operations per second的缩写，意指每秒浮点运算次数，理解为计算速度。是一个衡量硬件性能的指标。</p>
+<p>FLOPs：注意s小写，是floating point operations的缩写（s表复数），意指浮点运算数，理解为计算量。可以用来衡量算法/模型的复杂度。</p>
+<p>FLOP/s：等同于FLOPS。</p>
+<p>简化到计算机只拥有一块CPU的情况时，可以使用以下公式：</p>
+<script type="math/tex; mode=display">
+{\displaystyle {\text{FLOPS}}={\text{cores}}\times {\frac {\text{cycles}}{\text{second}}}\times {\frac {\text{FLOPs}}{\text{cycle}}}}</script><p>同样的对于OPS和MACS也适用上述规则。</p>
+]]></content>
+      <categories>
+        <category>神经网络加速器</category>
+      </categories>
+      <tags>
+        <tag>计算机体系结构</tag>
+        <tag>神经网络加速器</tag>
       </tags>
   </entry>
   <entry>
@@ -418,7 +733,7 @@
 <p><img src="https://i.loli.net/2020/06/17/iAv5g2pm8eOsSH1.png" alt="image-20200617102152077"></p>
 <p>BUF2PE数据总线的详细设计如图13所示。来自输入缓冲区的像素被加载到相应的寄存器中，如蓝色虚线框到蓝色实线框所示。然后，像素在周期0~5期间发送到PE或MAC单元，还发送到FIFO，等待相邻寄存器阵列重用。如图13中的紫色像素所示，除最右边的寄存器阵列外，在周期3开始从FIFO读取输入像素。同时，新像素从缓冲区馈入最右边的寄存器阵列。在本文中，由west zero padding引起的偏移是通过移动缓冲区和寄存器阵列之间的连接来处理的，而[15]必须通过填充偏移来更改输入缓冲区的一个地址内的存储模式，这会增加数据传输的复杂性从DRAM到缓冲区。</p>
 <p>图14中以stride=1 和stride=2在特征图行级别上显示了粗粒度数据流。图14（a）中的数据流与图13相同，展示了8个周期之后更多的操作。</p>
-<p>图14（b）给出了stride= 2, padding= 3的数据流,  它与stride= 1遵循相同的模式, 根据不同的stride和padding设置来调整缓冲区存储模式。由于north zero padding of 3将三行零添加到缓冲区。在stride= 2的情况下，每两行像素在$Poy$ buffer banks中连续分布。在从DRAM接收像素期间，这些调整由缓冲区写使能和地址信号处理。</p>
+<p>图14（b）给出了stride= 2, padding= 3的数据流,  它与stride= 1遵循相同的模式, 根据不同的stride和padding设置来调整缓冲区存储模式。由于north zero padding of 3将三行零添加到缓冲区。在stride= 2的情况下，每两行像素在$Poy$个 buffer banks中连续分布。在从DRAM接收像素期间，这些调整由缓冲区写使能和地址信号处理。</p>
 <p>由于padding和stride的设置不同, 每个数据流都需要各种BUF2PE数据总线，并且这组数据总线称为数据路由器。全局控制逻辑控制数据路由器内部不同BUF2PE总线之间的切换。</p>
 <p><img src="https://i.loli.net/2020/06/17/mIVRtsjuiB2T9l1.png" alt="image-20200617103126427"></p>
 <h3 id="2-PE体系结构"><a href="#2-PE体系结构" class="headerlink" title="2. PE体系结构"></a>2. PE体系结构</h3><p>根据建议的加速策略和数据流设计图15所示的卷积层的PE体系结构。它由$Pox×Poy×Pof $个PE组成，我们体系结构中的每个PE都是一个独立的MAC单元，由一个乘法器和一个累加器组成。由于Loop-1和Loop-2不会展开，因此不需要加法器树即可对乘法器输出求和。在每个MAC单元内消耗部分和，直到获得最终结果为止，</p>
@@ -434,32 +749,6 @@
 ]]></content>
       <categories>
         <category>经典论文系列</category>
-      </categories>
-      <tags>
-        <tag>计算机体系结构</tag>
-        <tag>神经网络加速器</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>计算力参数FLOPS,GOPS,GMACS辨析</title>
-    <url>/2020/06/16/%E8%AE%A1%E7%AE%97%E5%8A%9B%E5%8F%82%E6%95%B0FLOPS-GOPS-GMACS%E8%A7%A3%E6%9E%90/</url>
-    <content><![CDATA[<h2 id="FLOPS"><a href="#FLOPS" class="headerlink" title="FLOPS"></a>FLOPS</h2><p>FLOPS是“每秒所执行的浮点运算次数”（floating-point operations per second）的缩写。它常被用来估算电脑的执行效能，尤其是在使用到大量浮点运算的科学计算领域中。正因为FLOPS字尾的那个S，代表秒，而不是复数，所以不能省略掉。</p>
-<p>在这里所谓的“浮点运算”，实际上包括了所有涉及小数的运算。这类运算在某类应用软件中常常出现，而它们也比整数运算更花时间。现今大部分的处理器中，都有一个专门用来处理浮点运算的“浮点运算器”（FPU）。也因此FLOPS所量测的，实际上就是FPU的执行速度。而最常用来测量FLOPS的基准程式（benchmark）之一，就是Linpack。</p>
-<p>使用时常加数量级前缀如M, G, T等。</p>
-<a id="more"></a>
-<h2 id="OPS"><a href="#OPS" class="headerlink" title="OPS"></a>OPS</h2><p>OPS与FLOPS类似，只不过OPS一个是操作次数，FLOPS一个是浮点操作次数。</p>
-<p>使用时常加数量级前缀如M, G, T等。</p>
-<h2 id="MACS"><a href="#MACS" class="headerlink" title="MACS"></a>MACS</h2><p>MACS 指每秒执行的定点<strong>乘累加</strong>操作次数的缩写，它是衡量计算机定点处理能力的量，这个量经常用在那些需要大量定点乘法累加运算的科学运算中，记为MACS。</p>
-<p>使用时常加数量级前缀如M, G, T等。</p>
-<h2 id="易混辨析—FLOPS-FLOPs-FLOP-s"><a href="#易混辨析—FLOPS-FLOPs-FLOP-s" class="headerlink" title="易混辨析—FLOPS,FLOPs,FLOP/s"></a>易混辨析—FLOPS,FLOPs,FLOP/s</h2><p>FLOPS：注意全大写，是floating point operations per second的缩写，意指每秒浮点运算次数，理解为计算速度。是一个衡量硬件性能的指标。</p>
-<p>FLOPs：注意s小写，是floating point operations的缩写（s表复数），意指浮点运算数，理解为计算量。可以用来衡量算法/模型的复杂度。</p>
-<p>FLOP/s：等同于FLOPS。</p>
-<p>简化到计算机只拥有一块CPU的情况时，可以使用以下公式：</p>
-<script type="math/tex; mode=display">
-{\displaystyle {\text{FLOPS}}={\text{cores}}\times {\frac {\text{cycles}}{\text{second}}}\times {\frac {\text{FLOPs}}{\text{cycle}}}}</script><p>同样的对于OPS和MACS也适用上述规则。</p>
-]]></content>
-      <categories>
-        <category>神经网络加速器</category>
       </categories>
       <tags>
         <tag>计算机体系结构</tag>
