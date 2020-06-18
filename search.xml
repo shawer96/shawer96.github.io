@@ -67,7 +67,7 @@
 <p> 然后找到rd_rsa和id_rsa.pub所在目录打开idb_rsa.pub,登录自己的GitHub账号，找到Settings,</p>
 <p><img src="https://i.loli.net/2020/06/17/hcPfLu1wIak3egD.png" alt="1574570638254"></p>
 <p><img src="https://i.loli.net/2020/06/17/qQybxAPdG7S34HZ.png" alt="image-20200617142820627"></p>
-<p><img src="https://i.loli.net/2020/06/17/5PBKUICvNtF2My4.png" alt="image-20200617143111205"></p>
+<p><img src="https://i.loli.net/2020/06/18/celnpDAWbF9ztoX.png" alt="1574570467035"></p>
 <p> 然后，将idb_rsa.pub里的内容拷贝到Key内，Title内容随便填，确定即可。 </p>
 <p><img src="https://i.loli.net/2020/06/17/7tOu1S9nNhXvETR.png" alt="image-20200617142909156"></p>
 <p>添加完成。。</p>
