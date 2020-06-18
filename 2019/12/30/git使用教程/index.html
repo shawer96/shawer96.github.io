@@ -119,7 +119,7 @@
 <meta property="og:image" content="https://i.loli.net/2020/06/17/v8yxGWstq7R29FS.png">
 <meta property="og:image" content="https://i.loli.net/2020/06/17/onE8FMQGW4TbuVN.png">
 <meta property="article:published_time" content="2019-12-30T06:34:31.000Z">
-<meta property="article:modified_time" content="2020-06-17T07:45:48.219Z">
+<meta property="article:modified_time" content="2020-06-18T02:06:40.810Z">
 <meta property="article:author" content="Shaw">
 <meta property="article:tag" content="git">
 <meta name="twitter:card" content="summary">
@@ -303,7 +303,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-17 15:45:48" itemprop="dateModified" datetime="2020-06-17T15:45:48+08:00">2020-06-17</time>
+                <time title="修改时间：2020-06-18 10:06:40" itemprop="dateModified" datetime="2020-06-18T10:06:40+08:00">2020-06-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -456,40 +456,32 @@
 <blockquote>
 <p>建议经常使用add命令stage自己的代码，如果你修改了代码但是不stage是无法提交的。</p>
 </blockquote>
-<h4 id="3-2-3-存档和读档——后悔药"><a href="#3-2-3-存档和读档——后悔药" class="headerlink" title="3.2.3 存档和读档——后悔药"></a>3.2.3 存档和读档——后悔药</h4><ol>
-<li><p>提交</p>
+<h4 id="3-2-3-存档和读档——后悔药"><a href="#3-2-3-存档和读档——后悔药" class="headerlink" title="3.2.3 存档和读档——后悔药"></a>3.2.3 存档和读档——后悔药</h4><p><strong>1.提交</strong></p>
 <p>让我们修改文件再试试，这里我在12345.txt中加入了一行代码，并新增加了一个文件。</p>
 <p><img src="https://i.loli.net/2020/06/17/ORICuv5i1Y7kb6V.png" alt="1574498426812"></p>
 <p><img src="https://i.loli.net/2020/06/17/lBQfqo9RbmZdDpv.png" alt="1574498820234"></p>
-</li>
-</ol>
-<p>   这些文件变动都被追踪到了。</p>
-<p>   <img src="https://i.loli.net/2020/06/17/jlBga1dPhtv7ACm.png" alt="1574498714119"></p>
-<p>   想象自己是在玩游戏，如果我们进入到某个重要节点例如即将进入Boss战，我们通常都会及时存档以免自己损失惨重。同样写代码也该及时“存档”。输入commit(提交)命令进行提交，可见git知道我们提交了两个文件，增加了一行代码！</p>
-   <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git commit -m "版本说明" </span><br><span class="line"><span class="meta">#</span><span class="bash">双引号是提交代码时必须的说明，这是强制的，不写就无法提交</span></span><br></pre></td></tr></table></figure>
-<p>   <img src="https://i.loli.net/2020/06/17/Gxy5iqTnU7IZrAc.png" alt="1574499410230"></p>
-<p>   修改文件这两个文件再提交一次！</p>
-<p>   <img src="https://i.loli.net/2020/06/17/UOL8reAQgnPamt9.png" alt="1574499977077"  /></p>
-<p>   <img src="https://i.loli.net/2020/06/17/yAHYVovs51nhk8M.png" alt="1574500001341"></p>
-<p>   <img src="https://i.loli.net/2020/06/17/Yu1b6DzZgyOARmE.png" alt="1574500348047"></p>
-<p>   输入git log以查看版本，箭头指向的是commit的版本号，我们可以用它回到任一版本。带有HEAD标志的就是当前版本库中存放的版本。</p>
-   <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git log #查看版本日志</span><br><span class="line">git log --graph ##以树状图的形式查看版本日志</span><br></pre></td></tr></table></figure>
-<ol>
-<li><p>回退版本</p>
+<p>这些文件变动都被追踪到了。</p>
+<p><img src="https://i.loli.net/2020/06/17/jlBga1dPhtv7ACm.png" alt="1574498714119"></p>
+<p>想象自己是在玩游戏，如果我们进入到某个重要节点例如即将进入Boss战，我们通常都会及时存档以免自己损失惨重。同样写代码也该及时“存档”。输入commit(提交)命令进行提交，可见git知道我们提交了两个文件，增加了一行代码！</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git commit -m "版本说明" </span><br><span class="line"><span class="meta">#</span><span class="bash">双引号是提交代码时必须的说明，这是强制的，不写就无法提交</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2020/06/17/Gxy5iqTnU7IZrAc.png" alt="1574499410230"></p>
+<p>修改文件这两个文件再提交一次！</p>
+<p><img src="https://i.loli.net/2020/06/17/UOL8reAQgnPamt9.png" alt="1574499977077"  /></p>
+<p><img src="https://i.loli.net/2020/06/17/yAHYVovs51nhk8M.png" alt="1574500001341"></p>
+<p><img src="https://i.loli.net/2020/06/17/Yu1b6DzZgyOARmE.png" alt="1574500348047"></p>
+<p>输入git log以查看版本，箭头指向的是commit的版本号，我们可以用它回到任一版本。带有HEAD标志的就是当前版本库中存放的版本。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git log #查看版本日志</span><br><span class="line">git log --graph ##以树状图的形式查看版本日志</span><br></pre></td></tr></table></figure>
+<p><strong>2.回退版本</strong></p>
 <p>假如我刚刚的代码出现了无法修复的重大bug怎么办？别担心，我们可以随时回退到之前的任意版本，因为我们存档了！</p>
-<ul>
-<li>如果我们只是在工作区更改，还没有提交，比如我刚刚加入了一堆bug，试下这条命令就变回来了，很方便吧！这也是为什么我们要常常stage我们的文件。</li>
-</ul>
+<p>如果我们只是在工作区更改，还没有提交，比如我刚刚加入了一堆bug，试下这条命令就变回来了，很方便吧！这也是为什么我们要常常stage我们的文件。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout -- [文件名] #将工作区文件状态恢复成最新的一次commit或者add的状态（取决于最后一次操作）</span><br><span class="line">git checkout -- .    	#撤销对所有文件的更改</span><br></pre></td></tr></table></figure>
 <p><img src="https://i.loli.net/2020/06/17/HVopLJ1muArxisg.png" alt="image-20200617143345272" style="zoom: 67%;" /></p>
 <p><img src="https://i.loli.net/2020/06/17/FuKEev8dk1CSrqX.png" alt="1574501873507"></p>
 <p><img src="https://i.loli.net/2020/06/17/KX9dmilMBvJz71k.png" alt="1574501778180" style="zoom:80%;" /></p>
-<ul>
-<li><p>如果我们已经把更改暂存甚至提交了，可以用reset命令回退到工作区，然后再使用checkout撤销更改</p>
+<p>如果我们已经把更改暂存甚至提交了，可以用reset命令回退到工作区，然后再使用checkout撤销更改</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD [文件名] #将某个文件回退到最近一次提交，记得吧，HEAD表示当前版本</span><br><span class="line">git reset HEAD 	       #省略文件名表示回退所有文件</span><br></pre></td></tr></table></figure>
 <p><img src="https://i.loli.net/2020/06/17/hZ9aVJT8l4sWX3O.png" alt="1574516044571"></p>
-</li>
-<li><p>如果我们觉得整个版本都不想要，就是想回某一个版本，还记的commit会出现一个版本号对吧，我们会用到的。</p>
+<p>如果我们觉得整个版本都不想要，就是想回某一个版本，还记的commit会出现一个版本号对吧，我们会用到的。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD^ #一个^表示回到上一个版本</span><br><span class="line">git reset --hard HEAD^^#两个^表示回退一个版本</span><br><span class="line">git reset --hard [版本号，前5位就够了]#回退到版本号指定的版本</span><br></pre></td></tr></table></figure>
 <p>我们先用git log看一下现在HEAD指向我们的第二次提交，回退一个版本后指向了第一次提交</p>
 <p><img src="https://i.loli.net/2020/06/17/CDTH4bvNIgmiu75.png" alt="1574516513801"></p>
@@ -497,15 +489,11 @@
 <p><img src="https://i.loli.net/2020/06/17/SVm97FYteGN4Pcf.png" alt="1574516729966"></p>
 <p>这时细心的你发现了，git log里没有第二次的版本号了，我又双叒叕反悔了怎么办，不要紧可以reflog一下</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reflog #查看历史命令，可以看到回退之前的版本号</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ol>
 <p><img src="https://i.loli.net/2020/06/17/P7y3OfWUEb4wjFI.png" alt="1574516864487"></p>
 <p>版本号就回来啦！我们重新回到第二个版本，使用版本号“回退”一次 </p>
 <p><img src="https://i.loli.net/2020/06/17/OZJPGd3rKwxD2ea.png" alt="1574517009092"></p>
-<p>​                存档读档，妈妈再也不用担心我打不过boss了！</p>
-<p>​                建议多用add暂存你的文件，在有关键更改时才提交，避免回退时面对茫茫多的版本不知所措。</p>
+<p>存档读档，妈妈再也不用担心我打不过boss了！</p>
+<p>建议多用add暂存你的文件，在有关键更改时才提交，避免回退时面对茫茫多的版本不知所措。</p>
 <h3 id="3-3-分支"><a href="#3-3-分支" class="headerlink" title="3.3  分支"></a>3.3  分支</h3><p>就算有了版本管理，老是回退版本也不是办法，别人总在你的版本上做更改也不方便。有没有我们一边开发一边还不影响已经稳定的版本的办法呢?git 给了这个机会，这就是分支。</p>
 <p>记得我们新建仓库后路径后多出了一个master吧，这个就是git生成的默认分支，我们把它理解为树的主干。枝叶在主干上成长，树木的枝叶可以有很多，但是主干只能有一个。我们的开发应该是在枝叶上完成的。枝叶的生长不应该影响我们的主干。</p>
 <p><img src="https://i.loli.net/2020/06/17/FBW9uVM7PQJivRs.png" alt="1574517843101"></p>
@@ -729,7 +717,13 @@
         <a href="https://github.com/shawer96" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;shawer96" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
+        <a href="mailto:shawer607@gmail.com" title="E-Mail → mailto:shawer607@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
         <a href="https://www.zhihu.com/people/zhui-luo-de-jian-dan" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;zhui-luo-de-jian-dan" rel="noopener" target="_blank"><i class="fa fa-fw fa-quora"></i>ZhiHu</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_42043613" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_42043613" rel="noopener" target="_blank"><i class="fa fa-fw fa-copyright"></i>CSDN</a>
       </span>
   </div>
 
