@@ -469,7 +469,7 @@ O(1)\lt O(\log n) \lt O(n) \lt O(n\log n) \lt  O(n^2) \lt O(n^3) \lt O(2^n) \lt 
 </li>
 </ul>
 <h2 id="3-算法的空间复杂度"><a href="#3-算法的空间复杂度" class="headerlink" title="3. 算法的空间复杂度"></a>3. 算法的空间复杂度</h2><h3 id="3-1-定义"><a href="#3-1-定义" class="headerlink" title="3.1 定义"></a>3.1 定义</h3><p>算法的空间复杂度通过计算算法所需的存储空间实现, 算法空间复杂度计算公式记作: S(n) = O(f(n)), 其中n为问题的规模, f(n)为语句所占空间的函数.</p>
-<p>一般情况下, 一个程序在机器上执行时,除了需要存储程序本身的指令、常数、变量和输入数据外,还需要存储对数据操作的存储单元,若输入数据所占空间只取决于问题本身,和算法无关,这样只需要分析该算法在实现时所需的辅助单元即可。若算法执行时所需的辅助空间相对于输入数据量而言是个常数, 则称此算法为原地工作, 空间复杂度为 0(1) 。</p>
+<p>一般情况下, 一个程序在机器上执行时,除了需要存储程序本身的指令、常数、变量和输入数据外,还需要存储对数据操作的存储单元,若输入数据所占空间只取决于问题本身,和算法无关,这样只需要分析该算法在实现时所需的辅助单元即可。若算法执行时所需的辅助空间相对于输入数据量而言是个常数, 则称此算法为原地工作, 空间复杂度为 O(1) 。</p>
 <p>在写代码时完全可以通过空间换时间.  通常我们不用限定词使用”复杂度”时通常都指时间复杂度. </p>
 <h3 id="3-2-计算方法"><a href="#3-2-计算方法" class="headerlink" title="3.2 计算方法"></a>3.2 计算方法</h3><p><strong>1. 空间复杂度 O(1)</strong><br>如果算法执行所需要的临时空间不随着某个变量n的大小而变化，即此算法空间复杂度为一个常量，可表示为 O(1)</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> j = <span class="number">2</span>;</span><br><span class="line">++i;</span><br><span class="line">j++;</span><br><span class="line"><span class="keyword">int</span> m = i + j;</span><br><span class="line"><span class="number">12345</span></span><br></pre></td></tr></table></figure>
@@ -638,6 +638,32 @@ O(1)\lt O(\log n) \lt O(n) \lt O(n\log n) \lt  O(n^2) \lt O(n^3) \lt O(2^n) \lt 
       </categories>
       <tags>
         <tag>计算机体系结构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算力参数FLOPS,GOPS,GMACS辨析</title>
+    <url>/2020/06/16/%E8%AE%A1%E7%AE%97%E5%8A%9B%E5%8F%82%E6%95%B0FLOPS-GOPS-GMACS%E8%A7%A3%E6%9E%90/</url>
+    <content><![CDATA[<h2 id="FLOPS"><a href="#FLOPS" class="headerlink" title="FLOPS"></a>FLOPS</h2><p>FLOPS是“每秒所执行的浮点运算次数”（floating-point operations per second）的缩写。它常被用来估算电脑的执行效能，尤其是在使用到大量浮点运算的科学计算领域中。正因为FLOPS字尾的那个S，代表秒，而不是复数，所以不能省略掉。</p>
+<p>在这里所谓的“浮点运算”，实际上包括了所有涉及小数的运算。这类运算在某类应用软件中常常出现，而它们也比整数运算更花时间。现今大部分的处理器中，都有一个专门用来处理浮点运算的“浮点运算器”（FPU）。也因此FLOPS所量测的，实际上就是FPU的执行速度。而最常用来测量FLOPS的基准程式（benchmark）之一，就是Linpack。</p>
+<p>使用时常加数量级前缀如M, G, T等。</p>
+<a id="more"></a>
+<h2 id="OPS"><a href="#OPS" class="headerlink" title="OPS"></a>OPS</h2><p>OPS与FLOPS类似，只不过OPS一个是操作次数，FLOPS一个是浮点操作次数。</p>
+<p>使用时常加数量级前缀如M, G, T等。</p>
+<h2 id="MACS"><a href="#MACS" class="headerlink" title="MACS"></a>MACS</h2><p>MACS 指每秒执行的定点<strong>乘累加</strong>操作次数的缩写，它是衡量计算机定点处理能力的量，这个量经常用在那些需要大量定点乘法累加运算的科学运算中，记为MACS。</p>
+<p>使用时常加数量级前缀如M, G, T等。</p>
+<h2 id="易混辨析—FLOPS-FLOPs-FLOP-s"><a href="#易混辨析—FLOPS-FLOPs-FLOP-s" class="headerlink" title="易混辨析—FLOPS,FLOPs,FLOP/s"></a>易混辨析—FLOPS,FLOPs,FLOP/s</h2><p>FLOPS：注意全大写，是floating point operations per second的缩写，意指每秒浮点运算次数，理解为计算速度。是一个衡量硬件性能的指标。</p>
+<p>FLOPs：注意s小写，是floating point operations的缩写（s表复数），意指浮点运算数，理解为计算量。可以用来衡量算法/模型的复杂度。</p>
+<p>FLOP/s：等同于FLOPS。</p>
+<p>简化到计算机只拥有一块CPU的情况时，可以使用以下公式：</p>
+<script type="math/tex; mode=display">
+{\displaystyle {\text{FLOPS}}={\text{cores}}\times {\frac {\text{cycles}}{\text{second}}}\times {\frac {\text{FLOPs}}{\text{cycle}}}}</script><p>同样的对于OPS和MACS也适用上述规则。</p>
+]]></content>
+      <categories>
+        <category>神经网络加速器</category>
+      </categories>
+      <tags>
+        <tag>计算机体系结构</tag>
+        <tag>神经网络加速器</tag>
       </tags>
   </entry>
   <entry>
@@ -846,32 +872,6 @@ O(1)\lt O(\log n) \lt O(n) \lt O(n\log n) \lt  O(n^2) \lt O(n^3) \lt O(2^n) \lt 
 ]]></content>
       <categories>
         <category>经典论文系列</category>
-      </categories>
-      <tags>
-        <tag>计算机体系结构</tag>
-        <tag>神经网络加速器</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>计算力参数FLOPS,GOPS,GMACS辨析</title>
-    <url>/2020/06/16/%E8%AE%A1%E7%AE%97%E5%8A%9B%E5%8F%82%E6%95%B0FLOPS-GOPS-GMACS%E8%A7%A3%E6%9E%90/</url>
-    <content><![CDATA[<h2 id="FLOPS"><a href="#FLOPS" class="headerlink" title="FLOPS"></a>FLOPS</h2><p>FLOPS是“每秒所执行的浮点运算次数”（floating-point operations per second）的缩写。它常被用来估算电脑的执行效能，尤其是在使用到大量浮点运算的科学计算领域中。正因为FLOPS字尾的那个S，代表秒，而不是复数，所以不能省略掉。</p>
-<p>在这里所谓的“浮点运算”，实际上包括了所有涉及小数的运算。这类运算在某类应用软件中常常出现，而它们也比整数运算更花时间。现今大部分的处理器中，都有一个专门用来处理浮点运算的“浮点运算器”（FPU）。也因此FLOPS所量测的，实际上就是FPU的执行速度。而最常用来测量FLOPS的基准程式（benchmark）之一，就是Linpack。</p>
-<p>使用时常加数量级前缀如M, G, T等。</p>
-<a id="more"></a>
-<h2 id="OPS"><a href="#OPS" class="headerlink" title="OPS"></a>OPS</h2><p>OPS与FLOPS类似，只不过OPS一个是操作次数，FLOPS一个是浮点操作次数。</p>
-<p>使用时常加数量级前缀如M, G, T等。</p>
-<h2 id="MACS"><a href="#MACS" class="headerlink" title="MACS"></a>MACS</h2><p>MACS 指每秒执行的定点<strong>乘累加</strong>操作次数的缩写，它是衡量计算机定点处理能力的量，这个量经常用在那些需要大量定点乘法累加运算的科学运算中，记为MACS。</p>
-<p>使用时常加数量级前缀如M, G, T等。</p>
-<h2 id="易混辨析—FLOPS-FLOPs-FLOP-s"><a href="#易混辨析—FLOPS-FLOPs-FLOP-s" class="headerlink" title="易混辨析—FLOPS,FLOPs,FLOP/s"></a>易混辨析—FLOPS,FLOPs,FLOP/s</h2><p>FLOPS：注意全大写，是floating point operations per second的缩写，意指每秒浮点运算次数，理解为计算速度。是一个衡量硬件性能的指标。</p>
-<p>FLOPs：注意s小写，是floating point operations的缩写（s表复数），意指浮点运算数，理解为计算量。可以用来衡量算法/模型的复杂度。</p>
-<p>FLOP/s：等同于FLOPS。</p>
-<p>简化到计算机只拥有一块CPU的情况时，可以使用以下公式：</p>
-<script type="math/tex; mode=display">
-{\displaystyle {\text{FLOPS}}={\text{cores}}\times {\frac {\text{cycles}}{\text{second}}}\times {\frac {\text{FLOPs}}{\text{cycle}}}}</script><p>同样的对于OPS和MACS也适用上述规则。</p>
-]]></content>
-      <categories>
-        <category>神经网络加速器</category>
       </categories>
       <tags>
         <tag>计算机体系结构</tag>
