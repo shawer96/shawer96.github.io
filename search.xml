@@ -85,6 +85,157 @@
       </tags>
   </entry>
   <entry>
+    <title>散列表查找(哈希表)概述</title>
+    <url>/2020/06/24/3_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%A3%E5%88%97%E8%A1%A8%E6%9F%A5%E6%89%BE-%E5%93%88%E5%B8%8C%E8%A1%A8-%E6%A6%82%E8%BF%B0/</url>
+    <content><![CDATA[<h1 id="散列表-Hash表"><a href="#散列表-Hash表" class="headerlink" title="散列表(Hash表)"></a>散列表(Hash表)</h1><h2 id="1-Hash表查找定义"><a href="#1-Hash表查找定义" class="headerlink" title="1. Hash表查找定义"></a>1. Hash表查找定义</h2><ul>
+<li><p>散列技术是在记录的存储位置和它的关键字之间建立一个确定的对应关系f, 是的每个关键字key对应一个存储位置 f(key).</p>
+</li>
+<li><p>查找时, 根据这个确定的对应关系找到给定key值对应的映射 f(key), 若在查找集合中存在这个记录, 则必定在f(key)的位置上.</p>
+</li>
+<li>我们把这种对应关系 f 称为<strong>散列函数</strong>, 又称<strong>哈希(Hash)函数</strong>. 采用散列技术将记录存储在一块连续的存储空间中, 这块连续的存储空间称为<strong>散列表</strong>或者<strong>哈希表(Hash table)</strong>.</li>
+</ul>
+<h2 id="2-查找步骤"><a href="#2-查找步骤" class="headerlink" title="2. 查找步骤"></a>2. 查找步骤</h2><ol>
+<li><p>存储时: 通过散列函数计算记录的散列地址, 并按此散列地址存储该记录(先计算地址再储存)</p>
+<p><img src="https://i.loli.net/2020/06/28/3MieavkfDp8J7Wb.png" alt="image-20200628155831116"></p>
+</li>
+<li><p>查找记录时: 通过同样的散列函数计算记录的散列地址, 按此散列地址访问该记录</p>
+</li>
+</ol>
+<p>散列技术既是一种存储方法, 又是一种查找方法. 散列的记录之间不存在什么逻辑关系, 它只与关键字有关.<strong>散列技术最适合的求解问题是查找与给定值相等的记录.</strong></p>
+<p>拥有同样关键字但是对应多重记录情况的不适合使用散列.比如利用性别查找一个学生, 相反, 利用学号或者身份证号来散列存储才比较合适.</p>
+<h2 id="3-构造方法"><a href="#3-构造方法" class="headerlink" title="3. 构造方法"></a>3. 构造方法</h2><p><strong>原则</strong></p>
+<ol>
+<li><p>计算简单</p>
+<p>散列函数的计算时间不应该超过其他查找技术和关键字比对时间</p>
+</li>
+<li><p>地址均匀分布</p>
+</li>
+</ol>
+<h3 id="3-1-直接定址法"><a href="#3-1-直接定址法" class="headerlink" title="3.1 直接定址法"></a>3.1 直接定址法</h3><p>取关键字的某个线性函数作为散列地址, 即</p>
+<script type="math/tex; mode=display">
+f(key)=a\times key +b</script><p>比如统计80年后出生年份人口数, 可以对出生年份这个关键字减去1980此时<code>f(key)=key-1980</code></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>地址</th>
+<th>出生年份</th>
+<th>人口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>00</td>
+<td>1980</td>
+<td>1500万</td>
+</tr>
+<tr>
+<td>01</td>
+<td>1981</td>
+<td>1600万</td>
+</tr>
+<tr>
+<td>…</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>优点是简单均匀不产生冲突, 但是需要预先知道关键字分布情况, 只适合查找表较小且连续的情况.</p>
+<h3 id="3-2-数字分析法"><a href="#3-2-数字分析法" class="headerlink" title="3.2 数字分析法"></a>3.2 数字分析法</h3><p>如果关键字位数较多, 可以<strong>抽取(使用关键字的一部分)</strong>其中某几位数字, 比如手机号的后四位. 可以对抽取的数字进行翻转, 右环位移, 左环位移等方法避免冲突.</p>
+<p>适合于关键字数字较大的情况, 如果知道关键字分布情况而且若干位分布均匀可以用此方法. </p>
+<h3 id="3-3-平方取中法"><a href="#3-3-平方取中法" class="headerlink" title="3.3 平方取中法"></a>3.3 平方取中法</h3><p>如, 关键字是1234, 平方就是1522756, 取中间三位为227, 用作散列地址.</p>
+<p>适合于不知道关键字分布, 位数也不是很大的方法.</p>
+<h3 id="3-4-折叠法"><a href="#3-4-折叠法" class="headerlink" title="3.4 折叠法"></a>3.4 折叠法</h3><p>将关键字左右分割为相等的几部分, 将这几部分叠加求和, 按照散列表表长, 取最后几位作为地址.</p>
+<p>如9876543210, 987+654+321+0=1962, 以962作为地址.</p>
+<p>为保证分布均匀也可以将一端反转后再相加如789+654+123+0=1566, 此时散列地址为566.</p>
+<p>适合关键字较长的情况.</p>
+<h3 id="3-5-除留余数法"><a href="#3-5-除留余数法" class="headerlink" title="3.5 除留余数法"></a>3.5 除留余数法</h3><p>对于散列表长度为m的散列函数公式为：</p>
+<script type="math/tex; mode=display">
+f(key)=key \ mod \ p (p\leq m)</script><p>例如下表, 采用<code>f(key) = key mod 12</code></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>关键字</th>
+<th>12</th>
+<th>25</th>
+<th>38</th>
+<th>15</th>
+<th>16</th>
+<th>29</th>
+<th>78</th>
+<th>67</th>
+<th>56</th>
+<th>21</th>
+<th>22</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>下标</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="3-6-随机数法"><a href="#3-6-随机数法" class="headerlink" title="3.6 随机数法"></a>3.6 随机数法</h3><p>取关键字的随机函数作为它的散列地址:</p>
+<script type="math/tex; mode=display">
+f(key)=random(key)</script><p>实际中应该视不同情况采用不同的散列函数, 可以考虑以下因素:</p>
+<ol>
+<li>计算散列地址所需时间</li>
+<li>关键字的长度</li>
+<li>散列表的大小</li>
+<li>关键字的分布情况</li>
+<li>记录的查找频率</li>
+</ol>
+<h2 id="4-处理散列冲突的方法"><a href="#4-处理散列冲突的方法" class="headerlink" title="4. 处理散列冲突的方法"></a>4. 处理散列冲突的方法</h2><p><strong>散列冲突:</strong> 对于关键字 <code>key1!= key2</code>, 却有 <code>f(key1) = f(key2)</code></p>
+<h3 id="4-1-开放定址法"><a href="#4-1-开放定址法" class="headerlink" title="4.1 开放定址法"></a>4.1 开放定址法</h3><p>开放定址法是指一旦发生了冲突, 就去寻找下一个空的散列地址, 只要散列表足够大, 空的散列地址总能找到.</p>
+<p>公式是:</p>
+<script type="math/tex; mode=display">
+f_i(key)=(f(key)+d_i)\ MOD\  m \ (d_i=1,2,3,\ldots,m-1)</script><p>比如我们采用散列函数<code>f(key)=key mod 12</code>可以发现f(25)=1, 当key=37时就出现了冲突, 于是依照上面的公式有<code>f(37)=(f(37)+1) mod12=2</code>.</p>
+<p>假如key=48也发生了冲突, 那么按上述公式应该为<code>f(48)=(f(48)+1) mod12=1</code>, 这又和25所在位置冲突, 于是<code>f(48)=(f(48)+2) mod12=2</code>, 还是冲突, 一直到<code>f(48)=(f(48)+3) mod12=3</code>, 才出现空位.</p>
+<p>上述这种解决办法<strong>称为线性探索法.</strong> 像48和37这种本来不是同义词却要争夺相同地址的情况称为<strong>堆积</strong>.</p>
+<p>为了避免关键词都聚集在某一区域, 可以对上述公式进行优化, 增加平方运算来改进di:</p>
+<script type="math/tex; mode=display">
+f_i(key)=(f(key)+d_i)\ MOD\  m\  (d_i=1^2,(-1)^2,2^2,(-2)^2,\ldots,q^2,(-q)^2, q\leq m/2)</script><p>这种方法称为 <strong>二次探测法</strong>.</p>
+<p>还有一种解决办法是, 对于位移量di采用随机函数得到, 称为随机探测法:</p>
+<script type="math/tex; mode=display">
+f_i(key)=(f(key)+d_i)\ MOD\  m \ (d_i是一个随机数列)</script><h3 id="4-2-再散列函数法"><a href="#4-2-再散列函数法" class="headerlink" title="4.2 再散列函数法"></a>4.2 再散列函数法</h3><script type="math/tex; mode=display">
+f_i(key)=RH_i(key)\ (i=1,2,3,\dots,k)</script><p>事先准备多个散列函数, 这里的$RH_i$就是不同的散列函数, 每当发生散列冲突就换一个散列计算函数, 当然也相应的增加了计算时间.</p>
+<h3 id="4-3-链地址法"><a href="#4-3-链地址法" class="headerlink" title="4.3 链地址法"></a>4.3 链地址法</h3><p>不需要冲突换址, 将所有关键词的同义词记录在一个单链表中,称为, 同义词表, 在哈希表中只存储同义词表的头指针. 无论有多少冲突, 都这是在当前位置给单链表增加节点.</p>
+<p>在哈希表每一个单元中设置链表，某个数据项对的关键字还是像通常一样映射到哈希表的单元中，而数据项本身插入到单元的链表中。简单理解如下：</p>
+<p><img src="https://pic3.zhimg.com/v2-482e5ff497e9dc709d1c760bcff3c12e_r.jpg" alt="img"></p>
+<p>优点为所有冲突提供了地址保障.</p>
+<p>缺点是带来了查找时需要遍历单链表的性能损耗.</p>
+<h3 id="4-4-公共溢出区法"><a href="#4-4-公共溢出区法" class="headerlink" title="4.4 公共溢出区法"></a>4.4 公共溢出区法</h3><p>为有冲突的关键字提供<strong>公共溢出区</strong>来存放.</p>
+<p>在查找时对给定值通过散列函数计算散列地址后, 先与基本表对应位置进行对比, 如果相等则查找成果, 如果不相等则到溢出表去进行顺序查找.</p>
+<h2 id="5-散列表查找实现"><a href="#5-散列表查找实现" class="headerlink" title="5. 散列表查找实现"></a>5. 散列表查找实现</h2><h3 id="5-1-代码"><a href="#5-1-代码" class="headerlink" title="5.1 代码"></a>5.1 代码</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SUCCESS 1</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> UNSUCCESS 0</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> HASH_SIZE 12</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NULL_KEY -32768</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hash</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="comment">/* data */</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Hash();</span><br><span class="line">    ~Hash();</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">hashFunc</span><span class="params">(<span class="keyword">int</span> key)</span></span>; <span class="comment">//hash function</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">insertHash</span><span class="params">(<span class="keyword">int</span> key)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">searchHash</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> *addr)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> *elemArr; <span class="comment">//数据存储元素基地址, 动态分配数组</span></span><br><span class="line">    <span class="keyword">int</span> count;    <span class="comment">//当前元素个数</span></span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">size</span>;     <span class="comment">//散列表长</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//initialize hash table</span></span><br><span class="line">Hash::Hash()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">size</span> = HASH_SIZE;</span><br><span class="line">    count = <span class="built_in">size</span>;</span><br><span class="line">    elemArr = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="built_in">size</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">size</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        elemArr[i] = NULL_KEY;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Hash::~Hash()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (elemArr != <span class="literal">nullptr</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">delete</span>[] elemArr;</span><br><span class="line">        elemArr = <span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Hash::hashFunc</span><span class="params">(<span class="keyword">int</span> key)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> key % <span class="built_in">size</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Hash::insertHash</span><span class="params">(<span class="keyword">int</span> key)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> addr = hashFunc(key);</span><br><span class="line">    <span class="keyword">while</span> (elemArr[addr] != NULL_KEY)   <span class="comment">//不为空</span></span><br><span class="line">    &#123;</span><br><span class="line">        addr = (addr + <span class="number">1</span>) % <span class="built_in">size</span>;       <span class="comment">//线性探测</span></span><br><span class="line">    &#125;</span><br><span class="line">    elemArr[addr] = key;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Hash::searchHash</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> *addr)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    *addr = hashFunc(key);          <span class="comment">//求散列地址</span></span><br><span class="line">    <span class="keyword">while</span> (elemArr[*addr] != key)   <span class="comment">//如果不为空, 则冲突</span></span><br><span class="line">    &#123;</span><br><span class="line">        *addr = (*addr + <span class="number">1</span>) % <span class="built_in">size</span>;</span><br><span class="line">        <span class="keyword">if</span> (elemArr[*addr] == NULL_KEY || *addr == hashFunc(key))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> UNSUCCESS;       <span class="comment">//如果循环回到原点则说明关键字不存在</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> SUCCESS;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Hash Hash;</span><br><span class="line">    <span class="keyword">int</span> arr[HASH_SIZE] = &#123;<span class="number">12</span>, <span class="number">67</span>, <span class="number">56</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">37</span>, <span class="number">22</span>, <span class="number">29</span>, <span class="number">15</span>, <span class="number">47</span>, <span class="number">48</span>, <span class="number">34</span>&#125;;</span><br><span class="line">    <span class="comment">// int len = sizeof(arr)/sizeof(int);</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; HASH_SIZE; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        Hash.insertHash(arr[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; HASH_SIZE; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; Hash.elemArr[i] &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-2-性能分析"><a href="#5-2-性能分析" class="headerlink" title="5.2 性能分析"></a>5.2 性能分析</h3><p>如果没有冲突, 那么Hash表查找的时间复杂度为O(1), 但是冲突往往无法避免, 那么Hash查找的平均查找长度取决于:</p>
+<ol>
+<li>散列是否均匀, 不太影响.</li>
+<li>处理冲突的方法, 线性探测冲突可能产生堆积, 链地址法不产生任何堆积. 因此后者平均性能更好. </li>
+<li>Hash表的装填因子, $\alpha= $表中记录的个数/散列表长度. 越大越容易产生冲突. 通常设置Hash表空间比集合大, 以空间换时间.</li>
+</ol>
+]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
+      <tags>
+        <tag>数据结构</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>git使用教程</title>
     <url>/2019/12/30/2_git/git%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/</url>
     <content><![CDATA[<h1 id="git使用教程"><a href="#git使用教程" class="headerlink" title="git使用教程"></a>git使用教程</h1><h2 id="1-为什么要使用git和github"><a href="#1-为什么要使用git和github" class="headerlink" title="1.为什么要使用git和github"></a>1.为什么要使用git和github</h2><p>无论是写文档还是码代码，你一定遇到过这些情况：某句我想先删掉，但是我又怕找不回来了怎么办？我有别的想法，但是又不敢随便改动这段代码怎么办？我在稳定的代码基础上做修改，结果GG了，更悲催的是忘了改了什么地方…</p>
@@ -361,155 +512,311 @@
       </tags>
   </entry>
   <entry>
-    <title>散列表查找(哈希表)概述</title>
-    <url>/2020/06/24/3_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%A3%E5%88%97%E8%A1%A8%E6%9F%A5%E6%89%BE-%E5%93%88%E5%B8%8C%E8%A1%A8-%E6%A6%82%E8%BF%B0/</url>
-    <content><![CDATA[<h1 id="散列表-Hash表"><a href="#散列表-Hash表" class="headerlink" title="散列表(Hash表)"></a>散列表(Hash表)</h1><h2 id="1-Hash表查找定义"><a href="#1-Hash表查找定义" class="headerlink" title="1. Hash表查找定义"></a>1. Hash表查找定义</h2><ul>
-<li><p>散列技术是在记录的存储位置和它的关键字之间建立一个确定的对应关系f, 是的每个关键字key对应一个存储位置 f(key).</p>
+    <title>经典论文系列--Buffet</title>
+    <url>/2020/06/12/5_%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97-Buffet/</url>
+    <content><![CDATA[<h1 id="Buffets-An-Efficient-and-Composable-Storage-Idiom-for-Explicit-Decoupled-Data-Orchestration"><a href="#Buffets-An-Efficient-and-Composable-Storage-Idiom-for-Explicit-Decoupled-Data-Orchestration" class="headerlink" title="Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration"></a>Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration</h1><blockquote>
+<p>原文: Pellauer, M., et al. (2019). Buffets. Proceedings of the Twenty-Fourth International Conference on Architectural Support for Programming Languages and Operating Systems - ASPLOS ‘19: 137-151.</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><h3 id="1-要解决什么问题"><a href="#1-要解决什么问题" class="headerlink" title="1. 要解决什么问题"></a>1. 要解决什么问题</h3><p>提出针对加速器不同需求通用的, 可重用的storage idiom, 它独立于任何特定的设计.</p>
+<h3 id="2-通过什么理论或者模型来解决"><a href="#2-通过什么理论或者模型来解决" class="headerlink" title="2. 通过什么理论或者模型来解决"></a>2. 通过什么理论或者模型来解决</h3><ul>
+<li><p>Buffet</p>
 </li>
-<li><p>查找时, 根据这个确定的对应关系找到给定key值对应的映射 f(key), 若在查找集合中存在这个记录, 则必定在f(key)的位置上.</p>
+<li><p>Decoupled fills and accesses with fine-grained synchronization.</p>
 </li>
-<li>我们把这种对应关系 f 称为<strong>散列函数</strong>, 又称<strong>哈希(Hash)函数</strong>. 采用散列技术将记录存储在一块连续的存储空间中, 这块连续的存储空间称为<strong>散列表</strong>或者<strong>哈希表(Hash table)</strong>.</li>
+<li><p>Hierarchical composition, and efficient multi-casting. </p>
+</li>
 </ul>
-<h2 id="2-查找步骤"><a href="#2-查找步骤" class="headerlink" title="2. 查找步骤"></a>2. 查找步骤</h2><ol>
-<li><p>存储时: 通过散列函数计算记录的散列地址, 并按此散列地址存储该记录(先计算地址再储存)</p>
-<p><img src="https://i.loli.net/2020/06/28/3MieavkfDp8J7Wb.png" alt="image-20200628155831116"></p>
-</li>
-<li><p>查找记录时: 通过同样的散列函数计算记录的散列地址, 按此散列地址访问该记录</p>
-</li>
+<h3 id="3-给出了什么答案"><a href="#3-给出了什么答案" class="headerlink" title="3. 给出了什么答案"></a>3. 给出了什么答案</h3><p>在8KB RAM上仅仅增加2%的控制开销,与DMA管理的double-buffer scratched pad和跨各种工作负载的cache相比，Buffet分别将能量延迟乘积提高了1.53倍和5.39倍。</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><h3 id="1-研究意义"><a href="#1-研究意义" class="headerlink" title="1. 研究意义"></a>1. 研究意义</h3><p>相较于通用芯片, 数据编排(data orchestration)—即将数据移入或者移出buffer heirarchy, 是专用加速芯片实现高性能的重要方法.</p>
+<p><img src="https://i.loli.net/2020/06/11/4sbALD7TirONE19.png" alt="image-20200611104101471" style="zoom:80%;" /></p>
+<p>加速器在定制的片上缓冲上花费了大量的精力。不幸的是，这些解决方案与特定设计紧密相关，从而妨碍了其他加速器领域的可重用性。</p>
+<h3 id="2-研究背景"><a href="#2-研究背景" class="headerlink" title="2. 研究背景"></a>2. 研究背景</h3><p>Existing reusable buffer idiom:</p>
+<p>cache</p>
+<ul>
+<li>过多面积和功耗用于隐式数据编排, 与加速器需求不一致.</li>
+</ul>
+<p>scratched pad</p>
+<ul>
+<li>不灵活, 不满足复杂数据重用和更新模式需求.</li>
+</ul>
+<p>FIFO</p>
+<ul>
+<li>缺乏同步性, 难以层次化..</li>
+</ul>
+<h3 id="3-基于哪些假设"><a href="#3-基于哪些假设" class="headerlink" title="3. 基于哪些假设"></a>3. 基于哪些假设</h3><ol>
+<li>显式解耦合(EDDO)方式.</li>
+<li>同步实现方式.</li>
+<li>Buffet与层次化存储结合, buffet间同步, 支持单buffet多数据广播.</li>
 </ol>
-<p>散列技术既是一种存储方法, 又是一种查找方法. 散列的记录之间不存在什么逻辑关系, 它只与关键字有关.<strong>散列技术最适合的求解问题是查找与给定值相等的记录.</strong></p>
-<p>拥有同样关键字但是对应多重记录情况的不适合使用散列.比如利用性别查找一个学生, 相反, 利用学号或者身份证号来散列存储才比较合适.</p>
-<h2 id="3-构造方法"><a href="#3-构造方法" class="headerlink" title="3. 构造方法"></a>3. 构造方法</h2><p><strong>原则</strong></p>
+<h2 id="Classifying-Data-Orchestration"><a href="#Classifying-Data-Orchestration" class="headerlink" title="Classifying Data Orchestration"></a>Classifying Data Orchestration</h2><p>加速器架构师利用他们在设计时对工作负载特征和访问模式的了解，可以获得以下收益：</p>
+<ul>
+<li>预取—提前准确的取来将被使用的数据,</li>
+<li>在最小，最快和最节能的缓冲区中最大程度地访问数据,</li>
+<li><del>将数据暂存到层次结构中共享者之间最小上限的缓冲区中,</del></li>
+<li>将下一个数据图块的填充与当前数据图块的消耗重叠，</li>
+<li>同时向访问的数据的所有使用者广播（或multi-casting）缓冲区访问的结果，</li>
+<li>精确且廉价地同步数据可用性,</li>
+<li>准确删除不再需要的数据</li>
+</ul>
+<p>传统应用场景下的resuable buffering idioms分类:</p>
+<p>​        implict/explict: workload在何种程度上决定暂存, 缓存策略.</p>
+<p>​        coupled/decoupled: 访存请求是round-trip还是flow-forward.</p>
+<p><img src="https://i.loli.net/2020/06/11/HG2x6trF9miWDl8.png" alt="image-20200611115419792" style="zoom: 67%;" /></p>
+<h3 id="1-Implicit-versus-Explicit-Orchestration"><a href="#1-Implicit-versus-Explicit-Orchestration" class="headerlink" title="1. Implicit versus Explicit Orchestration"></a>1. Implicit versus Explicit Orchestration</h3><ul>
+<li>cache<ul>
+<li>可重用的模块化的buffer抽象</li>
+<li>implict: 发起请求的程序并不指定数据何时重用和清空</li>
+<li>启发式(Heuristic)替换策略, 与workload无关</li>
+<li>但对于特定领域的加速器, tag匹配等带来的面积和功耗开销也难以忍受</li>
+</ul>
+</li>
+<li>Scratched Pad<ul>
+<li>指定存储的地址范围, 实现显示数据编排和精确控制</li>
+<li>常用于GPU的shared mem</li>
+<li>避免了cache的硬件开销</li>
+<li>Across fill和overlaping fill繁琐且易出错, 难组成层级化的存储</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-Coupled-versus-Decoupled-Orchestration"><a href="#2-Coupled-versus-Decoupled-Orchestration" class="headerlink" title="2.  Coupled versus Decoupled Orchestration"></a>2.  Coupled versus Decoupled Orchestration</h3><ul>
+<li><p>Coupled</p>
+<ul>
+<li>存取请求的发起者也接收响应.</li>
+<li>Pros: <ul>
+<li>数据需求和使用之前的同步性高效且直观</li>
+</ul>
+</li>
+<li>Cons: <ul>
+<li>难以实现数据填充(fill)和访问(access)之间的overlap—请求/响应者要来在请求者和消费者之间回变换角色</li>
+</ul>
+</li>
+<li>必须为整个往返负载延迟保留传入数据图块的“着陆区(landing zone)”，这会增加对RAM资源的压力</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>Decoupled</p>
+<ul>
+<li><p>单独的硬件模块（例如DMA或地址生成器（AGEN））负责将数据推送到一个或多个功能单元的staging buffer中.</p>
+</li>
+<li><p>为了掩盖延时, ==这些buffer通常是ping-pong buffers[1,2].</p>
+</li>
+<li><p>Pros:</p>
+<ul>
+<li>请求者可以以自己的速度运行, 返回的数据可以广播到多个使用者.</li>
+<li>访存是feed-forward的, 只需要与相邻层级的存储结构之间的lantancy相关的landing zong,  而不是在整个层次结构之间round-trip(比如cache如果miss还要去访问高一级存储, 如果decoupled那么buffer的大小只需要掩盖L1到L2的延时)</li>
+</ul>
+</li>
+<li><p>Cons:</p>
+<ul>
+<li>传统的DAE数据编排依然是隐式的, 使用cache的管理机制</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2020/06/12/HYUbECoueQTwhqa.png" alt=""></p>
+<h3 id="3-Synchronization-Concerns"><a href="#3-Synchronization-Concerns" class="headerlink" title="3. Synchronization Concerns"></a>3. Synchronization Concerns</h3><p>何时load一个new tile? 过早会导致数据被覆盖, 过晚会导致性能损失. </p>
+<p>通过脉动阵列来约束tile的执行时间是一种办法. 对于涉及片外访问或者条件执行的系统, 这些时限过于保守.</p>
+<p>本文采用ready-valid握手协议, 也可以使用其他micro-protocols(例如TRY/ACK). 本文提供了一个EDDO storage idiom，它在staging buffer操作本身中封装了细粒度的同步。</p>
+<h2 id="The-Buffet-Storage-Idiom"><a href="#The-Buffet-Storage-Idiom" class="headerlink" title="The Buffet Storage Idiom"></a>The Buffet Storage Idiom</h2><p><img src="https://i.loli.net/2020/06/12/omPiChJxk5trX1S.png" style="zoom: 67%;" /></p>
+<p>上图给出了buffet的数据编排模型, 它属于表1中的EDDO象限. 相较于DMA, 采用decoupled AGEN扩大了解耦的范围.</p>
+<p>在buffet中，有限状态机控制四个基本存储操作：</p>
 <ol>
-<li><p>计算简单</p>
-<p>散列函数的计算时间不应该超过其他查找技术和关键字比对时间</p>
+<li>Fill(data)</li>
+<li>Read(index)</li>
+<li>Update(index, data): </li>
+<li>Shrink(num)</li>
+</ol>
+<p>上级存储如DRAM通过<strong>FILL</strong>操作填入数据. 下级模块（例如DataPath）则通过<strong>Read</strong>和<strong>Update</strong>操作来处理buffet中的数据. <strong>Shrink</strong>操作从窗口中删除数据.</p>
+<p><img src="https://i.loli.net/2020/06/12/kprVbnS1IgGwmxu.png" style="zoom:67%;" /></p>
+<h3 id="1-Buffet-Operational-Behavior"><a href="#1-Buffet-Operational-Behavior" class="headerlink" title="1. Buffet Operational Behavior"></a>1. Buffet Operational Behavior</h3><p><img src="https://i.loli.net/2020/06/12/PcMjgDhnptIOEfV.png" alt="image-20200611205302228" style="zoom: 50%;" /></p>
+<p>❶新传输的数据通过Fill逻辑装入RAM, 这一步类似于传统的FIFO, 数据不带有地址信息. Local地址的生成依赖于填充顺序.</p>
+<p>❷与FIFO不同的是Read请求包含一个额外的Index, 允许以与接收数据不同的顺序读取数据. 这一index是相对于staging buffer中的oldest installed datum. 这一缩影不能超出RAM的大小.  传统的FIFO只要为非空，就会声明Pop.Vld. 在buffet中，请求数据的存在是索引的函数.  只有被请求的数据已被填充, 才会设置ReadRsp.VLD.</p>
+<p>❸除了索引读取之外，与FIFO的一个显着区别是活动窗口内的数据元素可以就地修改，我们将其称为Update路径.</p>
+<p>❹ shrink路径描述了从buffet中删除暂存数据的逻辑。此操作采用size参数，并从活动窗口中删除那么多元素。此操作仅更新内部记分板-不会发生数据移动。credits被释放到Fill AGEN，表明有空间可以进行另一次批量传输. 主张谁使用数据(生成index)谁shrink.</p>
+<p><img src="https://i.loli.net/2020/06/12/uZ1agqPvn9zxKRo.png" alt="image-20200611211210544" style="zoom:80%;" /></p>
+<h3 id="2-Buffet-Synchronization-Details"><a href="#2-Buffet-Synchronization-Details" class="headerlink" title="2. Buffet Synchronization Details"></a>2. Buffet Synchronization Details</h3><ul>
+<li>需要显式硬件同步的情况由算法1中的“wait_until”调用表示。</li>
+<li>由于公式1中的操作顺序，许多其他同步情况都可以在不需要显式硬件支持的情况下处理，如图4所示。</li>
+<li>RAW冒险检查—计分板<ul>
+<li>will_update 用于表示datapath即将修改当前阶段的值</li>
+<li>如果后续的<strong>Read</strong>请求正在被修改的索引，则响应将stall—这与读取尚未填充的索引没有区别</li>
+<li><strong>FILL</strong>写入时不需要检查</li>
+<li>定制化—如果确定没有RAW冒险, 可以删除RAW检查, 如果<strong>FILL</strong>与<strong>UPDATE</strong>互斥, 可以共享一个写端口. </li>
+</ul>
 </li>
-<li><p>地址均匀分布</p>
+<li><strong>SHRINK</strong>与<strong>FILL</strong>之间的同步<ul>
+<li>算法1中对<strong>SHRINK</strong>保守的使用显示同步—wait_until(num&lt;occupancy).</li>
+<li>图4将其描述为隐式同步, 详见第四节</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2020/06/12/On4vEXflL9IuGKk.png" alt="image-20200611212533286" style="zoom:67%;" /></p>
+<h3 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h3><h3 id="4-Composition-of-Buffets"><a href="#4-Composition-of-Buffets" class="headerlink" title="4. Composition of Buffets"></a>4. Composition of Buffets</h3><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><h3 id="1-文章的主要内容"><a href="#1-文章的主要内容" class="headerlink" title="1. 文章的主要内容"></a>1. 文章的主要内容</h3><h3 id="2-存在哪些缺陷"><a href="#2-存在哪些缺陷" class="headerlink" title="2. 存在哪些缺陷"></a>2. 存在哪些缺陷</h3><h3 id="3-有什么构思"><a href="#3-有什么构思" class="headerlink" title="3. 有什么构思"></a>3. 有什么构思</h3><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><blockquote>
+<p>[1] J. Cong, M. A. Ghodrat, M. Gill, B. Grigorian, K. Gururaj, and G. Reinman. Accelerator-rich architectures: Opportunities and progresses. In Proceedings of the Design Automation Conference (DAC), 2014.<br>[2] E. G. Cota, P. Mantovani, G. D. Guglielmo, and L. P. Carloni. An analysis of accelerator coupling in heterogeneous architectures. In 2015 52nd ACM/EDAC/IEEE Design Automation Conference (DAC), pages 1–6, June 2015.</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>经典论文系列</category>
+      </categories>
+      <tags>
+        <tag>计算机体系结构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>算法及算法的复杂度</title>
+    <url>/2020/06/24/3_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E7%AE%97%E6%B3%95%E5%8F%8A%E5%A4%8D%E6%9D%82%E5%BA%A6/</url>
+    <content><![CDATA[<h1 id="算法及算法效率的度量方法"><a href="#算法及算法效率的度量方法" class="headerlink" title="算法及算法效率的度量方法"></a>算法及算法效率的度量方法</h1><h2 id="1-算法"><a href="#1-算法" class="headerlink" title="1. 算法"></a>1. 算法</h2><h3 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义:"></a>1.1 定义:</h3><p>算法是解决特定问题求解步骤的描述, 在计算机中为指令的有限序列, 并且每条指令表示一个或多个操作.</p>
+<h3 id="1-2-算法的特性"><a href="#1-2-算法的特性" class="headerlink" title="1.2 算法的特性"></a>1.2 算法的特性</h3><ul>
+<li>输入和输出</li>
+<li>有穷性: 有合理边界</li>
+<li>可行性: 每一步都可以通过有限步骤实现</li>
+<li>确定性: 每一步都有确定含义, 不存在二义性</li>
+</ul>
+<h3 id="1-3-算法设计的要求"><a href="#1-3-算法设计的要求" class="headerlink" title="1.3 算法设计的要求"></a>1.3 算法设计的要求</h3><ul>
+<li>正确性: 输入,输出和加工处理无歧义性, 能正确反映问题的需求, 能得到问题的正确答案</li>
+<li>可读性: 便于阅读理解和交流</li>
+<li>健壮性: 当输入数据不合法时也能得到相关处理</li>
+<li>时间效率低空间效率高</li>
+</ul>
+<p>经过分析发现, 一个用高级语言编写的程序在计算机上运行所消耗的时间取决于下列因素:</p>
+<ol>
+<li>算法的策略方法</li>
+<li>编译产生的代码质量</li>
+<li>问题的输入规模</li>
+<li>机器执行指令的速度</li>
+</ol>
+<p>第一条是算法好坏的根本, 一个程序的运行时间, 依赖于<strong>算法的好坏</strong>和<strong>问题的输入规模</strong>.</p>
+<h2 id="2-算法的时间复杂度"><a href="#2-算法的时间复杂度" class="headerlink" title="2. 算法的时间复杂度"></a>2. 算法的时间复杂度</h2><h3 id="2-1-定义"><a href="#2-1-定义" class="headerlink" title="2.1 定义"></a>2.1 定义</h3><p>在进行算法分析时，语句总的执行次数T(n)是关于问题规模n的函数，进而分析T(n)随n的变化情况并确定T(n)的数量级。算法的时间复杂度，也就是算法的时间量度，记作：T(n) = O(f(n))。它表示随问题规模n的增大，算法执行时间的增长率和f(n)的增长率相同，称作算法的渐近时间复杂度，简称为时间复杂度。其中f(n)是问题规模n的某个函数。</p>
+<p>通过大写O[ ]的方法体现时间复杂度的计法, 称为大O记法.</p>
+<h3 id="2-2-推导大O阶方法"><a href="#2-2-推导大O阶方法" class="headerlink" title="2.2 推导大O阶方法"></a>2.2 推导大O阶方法</h3><p>O(1)叫做常数阶；O(n)叫做线性阶；O(n^2)叫做平方阶。 </p>
+<ol>
+<li><p>用常数1取代运行时间中的所有加法常数, 没有加法的常数不予考虑。</p>
+</li>
+<li><p>在修改后的运行次数函数中，只保留最高阶项。</p>
+</li>
+<li><p>如果最高阶项存在且不是1，则去除与这个项相乘的常数。</p>
 </li>
 </ol>
-<h3 id="3-1-直接定址法"><a href="#3-1-直接定址法" class="headerlink" title="3.1 直接定址法"></a>3.1 直接定址法</h3><p>取关键字的某个线性函数作为散列地址, 即</p>
-<script type="math/tex; mode=display">
-f(key)=a\times key +b</script><p>比如统计80年后出生年份人口数, 可以对出生年份这个关键字减去1980此时<code>f(key)=key-1980</code></p>
-<div class="table-container">
+<p>得到的结果就是大O阶。 </p>
+<p>如果你没看懂，那继续往下看，笔者以例子与你详细介绍：</p>
+<p><strong>例子1：</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum=<span class="number">0</span>,i = <span class="number">0</span>;i &lt; N;i++)  <span class="comment">//1、</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>;j &lt;N;j++)     <span class="comment">//2、</span></span><br><span class="line">        sum=sum+i*j;            <span class="comment">//3、</span></span><br></pre></td></tr></table></figure>
+<p>我们以一个语句记为1次来分析：</p>
+<p>1、1+ (N+1)+N （这里定义两个变量共一次，而中间循环 理论是判断是N次,但是实际上应该是N+1 最后等于N时还有判断1次 0~N 故为N+1，循环变量的递增一共是N次）</p>
+<p>2、N+N(N+1)+NN（这里由第一个循环进入第二个循环，一共是N次，那么将会定义N次，单独分析判断语句它将会像第一层循环一样，一个判断N次 再算上 第一次循环进入第二次循环共有N次 故 为N(N+1) 后面类似 NN ）</p>
+<p>3、NN（第二层循环进入最里面语句 N次 第一层循环进入第二层循环 共N次 故实际为NN次）</p>
+<p>那么累加一下:<br>1+(N+1)+N+N(N+1)+NN+NN 保留最高项 N * N, 故算法的时间复杂度为O(N^2)</p>
+<p><strong>例子2:</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum = <span class="number">0</span>,i = <span class="number">1</span>;i &lt; N;i = i*<span class="number">2</span>)   <span class="comment">//1、</span></span><br><span class="line">        sum = sum+i*j;                 <span class="comment">//2、</span></span><br></pre></td></tr></table></figure>
+<p>看到这程序片段，你是不是一眼就得出答案了？如果你不注意的话，你的答案肯定是O(N)，对了吗？<br>先告诉你答案为O(log(N))，你可以试试代个确切的N值进去 看一下次数,自己体会一下，那么下面我和大家一起分析下：</p>
+<p>1、1+log(N)+1+log(N)</p>
+<p>2、log(N)</p>
+<p>其实这里做判断的时候，应该看一下循环变量的递增方式，这里它是i = i * 2 也就是 $2^x=N$ 那么$X=\log_2(N)$, X是次数，在计算复杂度里面，一般省略底数，也就是直接写log(N), 其他的计算方法与上面的解释一致。</p>
+<p><strong>例子3:</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum=<span class="number">0</span>,i = <span class="number">0</span>;i&lt;N;i++)          <span class="comment">//1、</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>;j &lt; N;j = j*<span class="number">2</span>)      <span class="comment">//2、</span></span><br><span class="line">        sum=sum+i*j;                  <span class="comment">//3、</span></span><br></pre></td></tr></table></figure>
+<p>分析:<br>1、1+N+1+N</p>
+<p>2、N+N(log(N)+1)+Nlog(N)</p>
+<p>3、Nlog(N)</p>
+<p>将它们累加并保留高阶项并去除常数, 得到时间复杂度O(Nlog(N))</p>
+<p><strong>例子4</strong>:</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum = <span class="number">0</span>,i = <span class="number">0</span>; i &lt; n; i++)    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = i; j &lt; n; j++)        </span><br><span class="line">       sum += i*j</span><br></pre></td></tr></table></figure>
+<p>分析:</p>
+<p>总的执行次数为n+(n-1)+(n-2)+…+1=(N^2)/2+n/2</p>
+<p>只保留高阶项并去除与这个项相乘的常数, 最终这段代码的复杂度为O(n^2)</p>
+<h3 id="2-3-常见的时间复杂度"><a href="#2-3-常见的时间复杂度" class="headerlink" title="2.3 常见的时间复杂度"></a>2.3 常见的时间复杂度</h3><div class="table-container">
 <table>
 <thead>
 <tr>
-<th>地址</th>
-<th>出生年份</th>
-<th>人口</th>
+<th>执行次数函数</th>
+<th>阶</th>
+<th>描述</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>00</td>
-<td>1980</td>
-<td>1500万</td>
+<td>$42$(常数)</td>
+<td>O(1)</td>
+<td>常数阶</td>
 </tr>
 <tr>
-<td>01</td>
-<td>1981</td>
-<td>1600万</td>
+<td>$2n+3$</td>
+<td>O(n)</td>
+<td>线性阶</td>
 </tr>
 <tr>
-<td>…</td>
-<td></td>
+<td>$3n^2+2n+1$</td>
+<td>O(n^2)</td>
+<td>平方阶</td>
+</tr>
+<tr>
+<td>$5\log_2n+19$</td>
+<td>O(log(n))</td>
+<td>对数阶</td>
+</tr>
+<tr>
+<td>$2n+3n\log_2n+19$</td>
+<td>O(nlog(n))</td>
+<td>nlog(n)阶</td>
+</tr>
+<tr>
+<td>$6n^3 + 2n^2 + 3n +4$</td>
+<td>O(n^3)</td>
+<td>立方阶</td>
+</tr>
+<tr>
+<td>$2^n$</td>
+<td>O(2^n)</td>
+<td>指数阶</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>优点是简单均匀不产生冲突, 但是需要预先知道关键字分布情况, 只适合查找表较小且连续的情况.</p>
-<h3 id="3-2-数字分析法"><a href="#3-2-数字分析法" class="headerlink" title="3.2 数字分析法"></a>3.2 数字分析法</h3><p>如果关键字位数较多, 可以<strong>抽取(使用关键字的一部分)</strong>其中某几位数字, 比如手机号的后四位. 可以对抽取的数字进行翻转, 右环位移, 左环位移等方法避免冲突.</p>
-<p>适合于关键字数字较大的情况, 如果知道关键字分布情况而且若干位分布均匀可以用此方法. </p>
-<h3 id="3-3-平方取中法"><a href="#3-3-平方取中法" class="headerlink" title="3.3 平方取中法"></a>3.3 平方取中法</h3><p>如, 关键字是1234, 平方就是1522756, 取中间三位为227, 用作散列地址.</p>
-<p>适合于不知道关键字分布, 位数也不是很大的方法.</p>
-<h3 id="3-4-折叠法"><a href="#3-4-折叠法" class="headerlink" title="3.4 折叠法"></a>3.4 折叠法</h3><p>将关键字左右分割为相等的几部分, 将这几部分叠加求和, 按照散列表表长, 取最后几位作为地址.</p>
-<p>如9876543210, 987+654+321+0=1962, 以962作为地址.</p>
-<p>为保证分布均匀也可以将一端反转后再相加如789+654+123+0=1566, 此时散列地址为566.</p>
-<p>适合关键字较长的情况.</p>
-<h3 id="3-5-除留余数法"><a href="#3-5-除留余数法" class="headerlink" title="3.5 除留余数法"></a>3.5 除留余数法</h3><p>对于散列表长度为m的散列函数公式为：</p>
+<p>常用时间复杂度耗费时间排序:</p>
 <script type="math/tex; mode=display">
-f(key)=key \ mod \ p (p\leq m)</script><p>例如下表, 采用<code>f(key) = key mod 12</code></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>关键字</th>
-<th>12</th>
-<th>25</th>
-<th>38</th>
-<th>15</th>
-<th>16</th>
-<th>29</th>
-<th>78</th>
-<th>67</th>
-<th>56</th>
-<th>21</th>
-<th>22</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>下标</td>
-<td>0</td>
-<td>1</td>
-<td>2</td>
-<td>3</td>
-<td>4</td>
-<td>5</td>
-<td>6</td>
-<td>7</td>
-<td>8</td>
-<td>9</td>
-<td>10</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h3 id="3-6-随机数法"><a href="#3-6-随机数法" class="headerlink" title="3.6 随机数法"></a>3.6 随机数法</h3><p>取关键字的随机函数作为它的散列地址:</p>
-<script type="math/tex; mode=display">
-f(key)=random(key)</script><p>实际中应该视不同情况采用不同的散列函数, 可以考虑以下因素:</p>
-<ol>
-<li>计算散列地址所需时间</li>
-<li>关键字的长度</li>
-<li>散列表的大小</li>
-<li>关键字的分布情况</li>
-<li>记录的查找频率</li>
-</ol>
-<h2 id="4-处理散列冲突的方法"><a href="#4-处理散列冲突的方法" class="headerlink" title="4. 处理散列冲突的方法"></a>4. 处理散列冲突的方法</h2><p><strong>散列冲突:</strong> 对于关键字 <code>key1!= key2</code>, 却有 <code>f(key1) = f(key2)</code></p>
-<h3 id="4-1-开放定址法"><a href="#4-1-开放定址法" class="headerlink" title="4.1 开放定址法"></a>4.1 开放定址法</h3><p>开放定址法是指一旦发生了冲突, 就去寻找下一个空的散列地址, 只要散列表足够大, 空的散列地址总能找到.</p>
-<p>公式是:</p>
-<script type="math/tex; mode=display">
-f_i(key)=(f(key)+d_i)\ MOD\  m \ (d_i=1,2,3,\ldots,m-1)</script><p>比如我们采用散列函数<code>f(key)=key mod 12</code>可以发现f(25)=1, 当key=37时就出现了冲突, 于是依照上面的公式有<code>f(37)=(f(37)+1) mod12=2</code>.</p>
-<p>假如key=48也发生了冲突, 那么按上述公式应该为<code>f(48)=(f(48)+1) mod12=1</code>, 这又和25所在位置冲突, 于是<code>f(48)=(f(48)+2) mod12=2</code>, 还是冲突, 一直到<code>f(48)=(f(48)+3) mod12=3</code>, 才出现空位.</p>
-<p>上述这种解决办法<strong>称为线性探索法.</strong> 像48和37这种本来不是同义词却要争夺相同地址的情况称为<strong>堆积</strong>.</p>
-<p>为了避免关键词都聚集在某一区域, 可以对上述公式进行优化, 增加平方运算来改进di:</p>
-<script type="math/tex; mode=display">
-f_i(key)=(f(key)+d_i)\ MOD\  m\  (d_i=1^2,(-1)^2,2^2,(-2)^2,\ldots,q^2,(-q)^2, q\leq m/2)</script><p>这种方法称为 <strong>二次探测法</strong>.</p>
-<p>还有一种解决办法是, 对于位移量di采用随机函数得到, 称为随机探测法:</p>
-<script type="math/tex; mode=display">
-f_i(key)=(f(key)+d_i)\ MOD\  m \ (d_i是一个随机数列)</script><h3 id="4-2-再散列函数法"><a href="#4-2-再散列函数法" class="headerlink" title="4.2 再散列函数法"></a>4.2 再散列函数法</h3><script type="math/tex; mode=display">
-f_i(key)=RH_i(key)\ (i=1,2,3,\dots,k)</script><p>事先准备多个散列函数, 这里的$RH_i$就是不同的散列函数, 每当发生散列冲突就换一个散列计算函数, 当然也相应的增加了计算时间.</p>
-<h3 id="4-3-链地址法"><a href="#4-3-链地址法" class="headerlink" title="4.3 链地址法"></a>4.3 链地址法</h3><p>不需要冲突换址, 将所有关键词的同义词记录在一个单链表中,称为, 同义词表, 在哈希表中只存储同义词表的头指针. 无论有多少冲突, 都这是在当前位置给单链表增加节点.</p>
-<p>在哈希表每一个单元中设置链表，某个数据项对的关键字还是像通常一样映射到哈希表的单元中，而数据项本身插入到单元的链表中。简单理解如下：</p>
-<p><img src="https://pic3.zhimg.com/v2-482e5ff497e9dc709d1c760bcff3c12e_r.jpg" alt="img"></p>
-<p>优点为所有冲突提供了地址保障.</p>
-<p>缺点是带来了查找时需要遍历单链表的性能损耗.</p>
-<h3 id="4-4-公共溢出区法"><a href="#4-4-公共溢出区法" class="headerlink" title="4.4 公共溢出区法"></a>4.4 公共溢出区法</h3><p>为有冲突的关键字提供<strong>公共溢出区</strong>来存放.</p>
-<p>在查找时对给定值通过散列函数计算散列地址后, 先与基本表对应位置进行对比, 如果相等则查找成果, 如果不相等则到溢出表去进行顺序查找.</p>
-<h2 id="5-散列表查找实现"><a href="#5-散列表查找实现" class="headerlink" title="5. 散列表查找实现"></a>5. 散列表查找实现</h2><h3 id="5-1-代码"><a href="#5-1-代码" class="headerlink" title="5.1 代码"></a>5.1 代码</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SUCCESS 1</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> UNSUCCESS 0</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> HASH_SIZE 12</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NULL_KEY -32768</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hash</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="comment">/* data */</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Hash();</span><br><span class="line">    ~Hash();</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">hashFunc</span><span class="params">(<span class="keyword">int</span> key)</span></span>; <span class="comment">//hash function</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">insertHash</span><span class="params">(<span class="keyword">int</span> key)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">searchHash</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> *addr)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> *elemArr; <span class="comment">//数据存储元素基地址, 动态分配数组</span></span><br><span class="line">    <span class="keyword">int</span> count;    <span class="comment">//当前元素个数</span></span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">size</span>;     <span class="comment">//散列表长</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//initialize hash table</span></span><br><span class="line">Hash::Hash()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">size</span> = HASH_SIZE;</span><br><span class="line">    count = <span class="built_in">size</span>;</span><br><span class="line">    elemArr = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="built_in">size</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">size</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        elemArr[i] = NULL_KEY;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Hash::~Hash()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (elemArr != <span class="literal">nullptr</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">delete</span>[] elemArr;</span><br><span class="line">        elemArr = <span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Hash::hashFunc</span><span class="params">(<span class="keyword">int</span> key)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> key % <span class="built_in">size</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Hash::insertHash</span><span class="params">(<span class="keyword">int</span> key)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> addr = hashFunc(key);</span><br><span class="line">    <span class="keyword">while</span> (elemArr[addr] != NULL_KEY)   <span class="comment">//不为空</span></span><br><span class="line">    &#123;</span><br><span class="line">        addr = (addr + <span class="number">1</span>) % <span class="built_in">size</span>;       <span class="comment">//线性探测</span></span><br><span class="line">    &#125;</span><br><span class="line">    elemArr[addr] = key;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Hash::searchHash</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> *addr)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    *addr = hashFunc(key);          <span class="comment">//求散列地址</span></span><br><span class="line">    <span class="keyword">while</span> (elemArr[*addr] != key)   <span class="comment">//如果不为空, 则冲突</span></span><br><span class="line">    &#123;</span><br><span class="line">        *addr = (*addr + <span class="number">1</span>) % <span class="built_in">size</span>;</span><br><span class="line">        <span class="keyword">if</span> (elemArr[*addr] == NULL_KEY || *addr == hashFunc(key))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> UNSUCCESS;       <span class="comment">//如果循环回到原点则说明关键字不存在</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> SUCCESS;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Hash Hash;</span><br><span class="line">    <span class="keyword">int</span> arr[HASH_SIZE] = &#123;<span class="number">12</span>, <span class="number">67</span>, <span class="number">56</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">37</span>, <span class="number">22</span>, <span class="number">29</span>, <span class="number">15</span>, <span class="number">47</span>, <span class="number">48</span>, <span class="number">34</span>&#125;;</span><br><span class="line">    <span class="comment">// int len = sizeof(arr)/sizeof(int);</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; HASH_SIZE; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        Hash.insertHash(arr[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; HASH_SIZE; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; Hash.elemArr[i] &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="5-2-性能分析"><a href="#5-2-性能分析" class="headerlink" title="5.2 性能分析"></a>5.2 性能分析</h3><p>如果没有冲突, 那么Hash表查找的时间复杂度为O(1), 但是冲突往往无法避免, 那么Hash查找的平均查找长度取决于:</p>
-<ol>
-<li>散列是否均匀, 不太影响.</li>
-<li>处理冲突的方法, 线性探测冲突可能产生堆积, 链地址法不产生任何堆积. 因此后者平均性能更好. </li>
-<li>Hash表的装填因子, $\alpha= $表中记录的个数/散列表长度. 越大越容易产生冲突. 通常设置Hash表空间比集合大, 以空间换时间.</li>
-</ol>
+O(1)\lt O(\log n) \lt O(n) \lt O(n\log n) \lt  O(n^2) \lt O(n^3) \lt O(2^n) \lt O(n!)\lt O(n^n)</script><p>一般而言, 指数阶$O(2^n)$和阶乘阶$O(n!)$会使运行时间大到不可估计, 一般不考虑这种不切实际的算法时间复杂度.</p>
+<h3 id="2-4-最坏情况与平均情况"><a href="#2-4-最坏情况与平均情况" class="headerlink" title="2.4  最坏情况与平均情况"></a>2.4  最坏情况与平均情况</h3><p>比如查找数组中的某个数字, 最好情况是第一次找到, 复杂度为O(1), 最差是最后一次找到, 那么复杂度为O(n)</p>
+<ul>
+<li><p><strong>最坏情况</strong>是一种保障, 保证运行时间不会再坏了, <strong>除非特殊指定, 我们提到的运行时间都是最坏情况的运行时间</strong></p>
+</li>
+<li><p><strong>平均时间</strong>是所有情况中最有意义的, 因为它是期望运行的时间, 一般很难估算得到, 往往是通过一定量的数据实验得到</p>
+</li>
+</ul>
+<h2 id="3-算法的空间复杂度"><a href="#3-算法的空间复杂度" class="headerlink" title="3. 算法的空间复杂度"></a>3. 算法的空间复杂度</h2><h3 id="3-1-定义"><a href="#3-1-定义" class="headerlink" title="3.1 定义"></a>3.1 定义</h3><p>算法的空间复杂度通过计算算法所需的存储空间实现, 算法空间复杂度计算公式记作: S(n) = O(f(n)), 其中n为问题的规模, f(n)为语句所占空间的函数.</p>
+<p>一般情况下, 一个程序在机器上执行时,除了需要存储程序本身的指令、常数、变量和输入数据外,还需要存储对数据操作的存储单元,若输入数据所占空间只取决于问题本身,和算法无关,这样只需要分析该算法在实现时所需的辅助单元即可。若算法执行时所需的辅助空间相对于输入数据量而言是个常数, 则称此算法为原地工作, 空间复杂度为 O(1) 。</p>
+<p>在写代码时完全可以通过空间换时间.  通常我们不用限定词使用”复杂度”时通常都指时间复杂度. </p>
+<h3 id="3-2-计算方法"><a href="#3-2-计算方法" class="headerlink" title="3.2 计算方法"></a>3.2 计算方法</h3><p><strong>1. 空间复杂度 O(1)</strong><br>如果算法执行所需要的临时空间不随着某个变量n的大小而变化，即此算法空间复杂度为一个常量，可表示为 O(1)</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> j = <span class="number">2</span>;</span><br><span class="line">++i;</span><br><span class="line">j++;</span><br><span class="line"><span class="keyword">int</span> m = i + j;</span><br></pre></td></tr></table></figure>
+<p>变量 i、j、m 所分配的空间都不随着处理数据量变化，因此它的空间复杂度 S(n) = O(1)</p>
+<p><strong>2. 空间复杂度 O(n)</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[] m = <span class="keyword">new</span> <span class="keyword">int</span>[n]</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">1</span>; i&lt;=n; ++i)</span><br><span class="line">&#123;</span><br><span class="line">   j = i;</span><br><span class="line">   j++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这段代码中，第一行new了一个数组出来，这个数据占用的大小为n，这段代码的2-6行，虽然有循环，但没有再分配新的空间，因此，这段代码的空间复杂度主要看第一行即可，即 S(n) = O(n)</p>
 ]]></content>
       <categories>
         <category>数据结构</category>
       </categories>
       <tags>
         <tag>数据结构</tag>
+        <tag>算法</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>我的第一篇博客</title>
+    <url>/2019/12/29/6_%E9%9A%8F%E7%AC%94/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<div id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <div class="hbe-input-container">
+  <input type="password" id="hbePass" placeholder="" />
+    <label for="hbePass">Hey, password is required here.</label>
+    <div class="bottom-line"></div>
+  </div>
+  <script id="hbeData" type="hbeData" data-hmacdigest="c60b1ad9f22f09a9905fa786aac12ca23e35ac28ef82a4d384ba02338c7309b0">2daa0e43d16059575e0358eeb13204c9334f10fe9f5b4c4ca9e491347ae1aac787a653f3bfdff483154faa9c306499459a543d8e0e9fdb7cb6a5691a3868df52cad9689da85c8199db4aac1924b04b538bf91d99cddcb7f67e38171e7d09e6b5597213a8b0d8533be2784f8c387f9f0e68d0da8bb048934a16c72aa145f07ad7ad2b10054f7f6b1d80b0d972ac6485d319be33fd5c92fbe1131f89956e7073ea85085780b1c6a34ebadafa0d52784ba9f0261bdd30c89b38edda4c7efe264159e6e8a362df38552661363061bfa6a36abe0affed58798e5a6d70904733b2ad67d59ed42e7b388d29ddb4d8010b266ca05db60cbedc9060a428ca1bad408deceeab54380c354fdfb78225304e7d4c88b8e72446d8af33f4178fb27faf0449b805d486d93cb7785dd7dbb3392434262aab7a601b8088edb79def0f6fdb4926f9d04f2c1e1aead921142879cb84a484b8e4dfcd34931c5fcea43e424ded1d1812eba22ca16c330fd68f276497435047212117eeb1a62d4c93242d72e10d6724aaad4dcfb180bc95b3f5b99e65330158bd894ce97a9c4fb53d4f5c1ea52ef8ff5dbe2648adca06564933bdac07b21b3cad5c719d3e3240f6c8552d75e8f2915a921e6d0843ea372193f682b95dcd3bf10c782b69c7ce44d3b0090bc7d681e2fc7b223cf6d6d0250200d0783bc24ad9075ab73f86040d8f679046798f5cd3a1ca8209329d43d6f89d643546670e222bb26ffd8b10a56ce2af5dbc3e12ae65c3f3216d657241a0657c72df14798ba83b10ccddbb47eef59f497761a407577164474a0c2e03e28634c6f9912748f2d6dd6a69b188d8cc2e21686e42bab33415c5f368932f753d1fd62ace6bbf3c7b75a9e2a799ed4d386784a9ce1405719dc52e00dc1f0c85e5c6ac756e1e14c66a268140ebf1b1ecfa515901fd273c9351202425498ae9b937346baa409fcfe66635c516435b9a929ec339333d2d8e0091b8bc155b1f24d6fe55d4d17d8a760648d92ccd7983b79df3cd5e2aa01f015c75216019495aabe0fedd9b61d1b5672d5643de5e7b7adff4dd66c76df3f67193d7e3812aca14eb90b0badc2dc2461c8a98524cb119b47ca1302e93962a861f229c0fdcc505cfb12451ec1bad993b4e8e23dee748821febba58e44b376a927b5b7a3d19439c3b9878319c543f34f7dec63c58fcf910fe08bb7335c34f277eedb08d61ac013b1c887783e609bfe2f17fe64abd6d402da318e9668de1a6d5b6ce48ceb45da8337e001be83a04e4351b653c4bbd9ee42d16b3c8639da1f7e5636130c198a212e168bc4dc35121d604ba0de0cb781467df42</script>
+</div>
+<script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
   </entry>
   <entry>
     <title>经典论文系列--卷积神经网络加速器最优设计空间</title>
@@ -721,313 +1028,6 @@ f_i(key)=RH_i(key)\ (i=1,2,3,\dots,k)</script><p>事先准备多个散列函数,
       <tags>
         <tag>神经网络加速器</tag>
         <tag>计算机体系结构</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>经典论文系列--Buffet</title>
-    <url>/2020/06/12/5_%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97-Buffet/</url>
-    <content><![CDATA[<h1 id="Buffets-An-Efficient-and-Composable-Storage-Idiom-for-Explicit-Decoupled-Data-Orchestration"><a href="#Buffets-An-Efficient-and-Composable-Storage-Idiom-for-Explicit-Decoupled-Data-Orchestration" class="headerlink" title="Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration"></a>Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration</h1><blockquote>
-<p>原文: Pellauer, M., et al. (2019). Buffets. Proceedings of the Twenty-Fourth International Conference on Architectural Support for Programming Languages and Operating Systems - ASPLOS ‘19: 137-151.</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><h3 id="1-要解决什么问题"><a href="#1-要解决什么问题" class="headerlink" title="1. 要解决什么问题"></a>1. 要解决什么问题</h3><p>提出针对加速器不同需求通用的, 可重用的storage idiom, 它独立于任何特定的设计.</p>
-<h3 id="2-通过什么理论或者模型来解决"><a href="#2-通过什么理论或者模型来解决" class="headerlink" title="2. 通过什么理论或者模型来解决"></a>2. 通过什么理论或者模型来解决</h3><ul>
-<li><p>Buffet</p>
-</li>
-<li><p>Decoupled fills and accesses with fine-grained synchronization.</p>
-</li>
-<li><p>Hierarchical composition, and efficient multi-casting. </p>
-</li>
-</ul>
-<h3 id="3-给出了什么答案"><a href="#3-给出了什么答案" class="headerlink" title="3. 给出了什么答案"></a>3. 给出了什么答案</h3><p>在8KB RAM上仅仅增加2%的控制开销,与DMA管理的double-buffer scratched pad和跨各种工作负载的cache相比，Buffet分别将能量延迟乘积提高了1.53倍和5.39倍。</p>
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><h3 id="1-研究意义"><a href="#1-研究意义" class="headerlink" title="1. 研究意义"></a>1. 研究意义</h3><p>相较于通用芯片, 数据编排(data orchestration)—即将数据移入或者移出buffer heirarchy, 是专用加速芯片实现高性能的重要方法.</p>
-<p><img src="https://i.loli.net/2020/06/11/4sbALD7TirONE19.png" alt="image-20200611104101471" style="zoom:80%;" /></p>
-<p>加速器在定制的片上缓冲上花费了大量的精力。不幸的是，这些解决方案与特定设计紧密相关，从而妨碍了其他加速器领域的可重用性。</p>
-<h3 id="2-研究背景"><a href="#2-研究背景" class="headerlink" title="2. 研究背景"></a>2. 研究背景</h3><p>Existing reusable buffer idiom:</p>
-<p>cache</p>
-<ul>
-<li>过多面积和功耗用于隐式数据编排, 与加速器需求不一致.</li>
-</ul>
-<p>scratched pad</p>
-<ul>
-<li>不灵活, 不满足复杂数据重用和更新模式需求.</li>
-</ul>
-<p>FIFO</p>
-<ul>
-<li>缺乏同步性, 难以层次化..</li>
-</ul>
-<h3 id="3-基于哪些假设"><a href="#3-基于哪些假设" class="headerlink" title="3. 基于哪些假设"></a>3. 基于哪些假设</h3><ol>
-<li>显式解耦合(EDDO)方式.</li>
-<li>同步实现方式.</li>
-<li>Buffet与层次化存储结合, buffet间同步, 支持单buffet多数据广播.</li>
-</ol>
-<h2 id="Classifying-Data-Orchestration"><a href="#Classifying-Data-Orchestration" class="headerlink" title="Classifying Data Orchestration"></a>Classifying Data Orchestration</h2><p>加速器架构师利用他们在设计时对工作负载特征和访问模式的了解，可以获得以下收益：</p>
-<ul>
-<li>预取—提前准确的取来将被使用的数据,</li>
-<li>在最小，最快和最节能的缓冲区中最大程度地访问数据,</li>
-<li><del>将数据暂存到层次结构中共享者之间最小上限的缓冲区中,</del></li>
-<li>将下一个数据图块的填充与当前数据图块的消耗重叠，</li>
-<li>同时向访问的数据的所有使用者广播（或multi-casting）缓冲区访问的结果，</li>
-<li>精确且廉价地同步数据可用性,</li>
-<li>准确删除不再需要的数据</li>
-</ul>
-<p>传统应用场景下的resuable buffering idioms分类:</p>
-<p>​        implict/explict: workload在何种程度上决定暂存, 缓存策略.</p>
-<p>​        coupled/decoupled: 访存请求是round-trip还是flow-forward.</p>
-<p><img src="https://i.loli.net/2020/06/11/HG2x6trF9miWDl8.png" alt="image-20200611115419792" style="zoom: 67%;" /></p>
-<h3 id="1-Implicit-versus-Explicit-Orchestration"><a href="#1-Implicit-versus-Explicit-Orchestration" class="headerlink" title="1. Implicit versus Explicit Orchestration"></a>1. Implicit versus Explicit Orchestration</h3><ul>
-<li>cache<ul>
-<li>可重用的模块化的buffer抽象</li>
-<li>implict: 发起请求的程序并不指定数据何时重用和清空</li>
-<li>启发式(Heuristic)替换策略, 与workload无关</li>
-<li>但对于特定领域的加速器, tag匹配等带来的面积和功耗开销也难以忍受</li>
-</ul>
-</li>
-<li>Scratched Pad<ul>
-<li>指定存储的地址范围, 实现显示数据编排和精确控制</li>
-<li>常用于GPU的shared mem</li>
-<li>避免了cache的硬件开销</li>
-<li>Across fill和overlaping fill繁琐且易出错, 难组成层级化的存储</li>
-</ul>
-</li>
-</ul>
-<h3 id="2-Coupled-versus-Decoupled-Orchestration"><a href="#2-Coupled-versus-Decoupled-Orchestration" class="headerlink" title="2.  Coupled versus Decoupled Orchestration"></a>2.  Coupled versus Decoupled Orchestration</h3><ul>
-<li><p>Coupled</p>
-<ul>
-<li>存取请求的发起者也接收响应.</li>
-<li>Pros: <ul>
-<li>数据需求和使用之前的同步性高效且直观</li>
-</ul>
-</li>
-<li>Cons: <ul>
-<li>难以实现数据填充(fill)和访问(access)之间的overlap—请求/响应者要来在请求者和消费者之间回变换角色</li>
-</ul>
-</li>
-<li>必须为整个往返负载延迟保留传入数据图块的“着陆区(landing zone)”，这会增加对RAM资源的压力</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><p>Decoupled</p>
-<ul>
-<li><p>单独的硬件模块（例如DMA或地址生成器（AGEN））负责将数据推送到一个或多个功能单元的staging buffer中.</p>
-</li>
-<li><p>为了掩盖延时, ==这些buffer通常是ping-pong buffers[1,2].</p>
-</li>
-<li><p>Pros:</p>
-<ul>
-<li>请求者可以以自己的速度运行, 返回的数据可以广播到多个使用者.</li>
-<li>访存是feed-forward的, 只需要与相邻层级的存储结构之间的lantancy相关的landing zong,  而不是在整个层次结构之间round-trip(比如cache如果miss还要去访问高一级存储, 如果decoupled那么buffer的大小只需要掩盖L1到L2的延时)</li>
-</ul>
-</li>
-<li><p>Cons:</p>
-<ul>
-<li>传统的DAE数据编排依然是隐式的, 使用cache的管理机制</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://i.loli.net/2020/06/12/HYUbECoueQTwhqa.png" alt=""></p>
-<h3 id="3-Synchronization-Concerns"><a href="#3-Synchronization-Concerns" class="headerlink" title="3. Synchronization Concerns"></a>3. Synchronization Concerns</h3><p>何时load一个new tile? 过早会导致数据被覆盖, 过晚会导致性能损失. </p>
-<p>通过脉动阵列来约束tile的执行时间是一种办法. 对于涉及片外访问或者条件执行的系统, 这些时限过于保守.</p>
-<p>本文采用ready-valid握手协议, 也可以使用其他micro-protocols(例如TRY/ACK). 本文提供了一个EDDO storage idiom，它在staging buffer操作本身中封装了细粒度的同步。</p>
-<h2 id="The-Buffet-Storage-Idiom"><a href="#The-Buffet-Storage-Idiom" class="headerlink" title="The Buffet Storage Idiom"></a>The Buffet Storage Idiom</h2><p><img src="https://i.loli.net/2020/06/12/omPiChJxk5trX1S.png" style="zoom: 67%;" /></p>
-<p>上图给出了buffet的数据编排模型, 它属于表1中的EDDO象限. 相较于DMA, 采用decoupled AGEN扩大了解耦的范围.</p>
-<p>在buffet中，有限状态机控制四个基本存储操作：</p>
-<ol>
-<li>Fill(data)</li>
-<li>Read(index)</li>
-<li>Update(index, data): </li>
-<li>Shrink(num)</li>
-</ol>
-<p>上级存储如DRAM通过<strong>FILL</strong>操作填入数据. 下级模块（例如DataPath）则通过<strong>Read</strong>和<strong>Update</strong>操作来处理buffet中的数据. <strong>Shrink</strong>操作从窗口中删除数据.</p>
-<p><img src="https://i.loli.net/2020/06/12/kprVbnS1IgGwmxu.png" style="zoom:67%;" /></p>
-<h3 id="1-Buffet-Operational-Behavior"><a href="#1-Buffet-Operational-Behavior" class="headerlink" title="1. Buffet Operational Behavior"></a>1. Buffet Operational Behavior</h3><p><img src="https://i.loli.net/2020/06/12/PcMjgDhnptIOEfV.png" alt="image-20200611205302228" style="zoom: 50%;" /></p>
-<p>❶新传输的数据通过Fill逻辑装入RAM, 这一步类似于传统的FIFO, 数据不带有地址信息. Local地址的生成依赖于填充顺序.</p>
-<p>❷与FIFO不同的是Read请求包含一个额外的Index, 允许以与接收数据不同的顺序读取数据. 这一index是相对于staging buffer中的oldest installed datum. 这一缩影不能超出RAM的大小.  传统的FIFO只要为非空，就会声明Pop.Vld. 在buffet中，请求数据的存在是索引的函数.  只有被请求的数据已被填充, 才会设置ReadRsp.VLD.</p>
-<p>❸除了索引读取之外，与FIFO的一个显着区别是活动窗口内的数据元素可以就地修改，我们将其称为Update路径.</p>
-<p>❹ shrink路径描述了从buffet中删除暂存数据的逻辑。此操作采用size参数，并从活动窗口中删除那么多元素。此操作仅更新内部记分板-不会发生数据移动。credits被释放到Fill AGEN，表明有空间可以进行另一次批量传输. 主张谁使用数据(生成index)谁shrink.</p>
-<p><img src="https://i.loli.net/2020/06/12/uZ1agqPvn9zxKRo.png" alt="image-20200611211210544" style="zoom:80%;" /></p>
-<h3 id="2-Buffet-Synchronization-Details"><a href="#2-Buffet-Synchronization-Details" class="headerlink" title="2. Buffet Synchronization Details"></a>2. Buffet Synchronization Details</h3><ul>
-<li>需要显式硬件同步的情况由算法1中的“wait_until”调用表示。</li>
-<li>由于公式1中的操作顺序，许多其他同步情况都可以在不需要显式硬件支持的情况下处理，如图4所示。</li>
-<li>RAW冒险检查—计分板<ul>
-<li>will_update 用于表示datapath即将修改当前阶段的值</li>
-<li>如果后续的<strong>Read</strong>请求正在被修改的索引，则响应将stall—这与读取尚未填充的索引没有区别</li>
-<li><strong>FILL</strong>写入时不需要检查</li>
-<li>定制化—如果确定没有RAW冒险, 可以删除RAW检查, 如果<strong>FILL</strong>与<strong>UPDATE</strong>互斥, 可以共享一个写端口. </li>
-</ul>
-</li>
-<li><strong>SHRINK</strong>与<strong>FILL</strong>之间的同步<ul>
-<li>算法1中对<strong>SHRINK</strong>保守的使用显示同步—wait_until(num&lt;occupancy).</li>
-<li>图4将其描述为隐式同步, 详见第四节</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://i.loli.net/2020/06/12/On4vEXflL9IuGKk.png" alt="image-20200611212533286" style="zoom:67%;" /></p>
-<h3 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h3><h3 id="4-Composition-of-Buffets"><a href="#4-Composition-of-Buffets" class="headerlink" title="4. Composition of Buffets"></a>4. Composition of Buffets</h3><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><h3 id="1-文章的主要内容"><a href="#1-文章的主要内容" class="headerlink" title="1. 文章的主要内容"></a>1. 文章的主要内容</h3><h3 id="2-存在哪些缺陷"><a href="#2-存在哪些缺陷" class="headerlink" title="2. 存在哪些缺陷"></a>2. 存在哪些缺陷</h3><h3 id="3-有什么构思"><a href="#3-有什么构思" class="headerlink" title="3. 有什么构思"></a>3. 有什么构思</h3><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><blockquote>
-<p>[1] J. Cong, M. A. Ghodrat, M. Gill, B. Grigorian, K. Gururaj, and G. Reinman. Accelerator-rich architectures: Opportunities and progresses. In Proceedings of the Design Automation Conference (DAC), 2014.<br>[2] E. G. Cota, P. Mantovani, G. D. Guglielmo, and L. P. Carloni. An analysis of accelerator coupling in heterogeneous architectures. In 2015 52nd ACM/EDAC/IEEE Design Automation Conference (DAC), pages 1–6, June 2015.</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>经典论文系列</category>
-      </categories>
-      <tags>
-        <tag>计算机体系结构</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>我的第一篇博客</title>
-    <url>/2019/12/29/6_%E9%9A%8F%E7%AC%94/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<div id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
-  <div class="hbe-input-container">
-  <input type="password" id="hbePass" placeholder="" />
-    <label for="hbePass">Hey, password is required here.</label>
-    <div class="bottom-line"></div>
-  </div>
-  <script id="hbeData" type="hbeData" data-hmacdigest="c60b1ad9f22f09a9905fa786aac12ca23e35ac28ef82a4d384ba02338c7309b0">2daa0e43d16059575e0358eeb13204c9334f10fe9f5b4c4ca9e491347ae1aac787a653f3bfdff483154faa9c306499459a543d8e0e9fdb7cb6a5691a3868df52cad9689da85c8199db4aac1924b04b538bf91d99cddcb7f67e38171e7d09e6b5597213a8b0d8533be2784f8c387f9f0e68d0da8bb048934a16c72aa145f07ad7ad2b10054f7f6b1d80b0d972ac6485d319be33fd5c92fbe1131f89956e7073ea85085780b1c6a34ebadafa0d52784ba9f0261bdd30c89b38edda4c7efe264159e6e8a362df38552661363061bfa6a36abe0affed58798e5a6d70904733b2ad67d59ed42e7b388d29ddb4d8010b266ca05db60cbedc9060a428ca1bad408deceeab54380c354fdfb78225304e7d4c88b8e72446d8af33f4178fb27faf0449b805d486d93cb7785dd7dbb3392434262aab7a601b8088edb79def0f6fdb4926f9d04f2c1e1aead921142879cb84a484b8e4dfcd34931c5fcea43e424ded1d1812eba22ca16c330fd68f276497435047212117eeb1a62d4c93242d72e10d6724aaad4dcfb180bc95b3f5b99e65330158bd894ce97a9c4fb53d4f5c1ea52ef8ff5dbe2648adca06564933bdac07b21b3cad5c719d3e3240f6c8552d75e8f2915a921e6d0843ea372193f682b95dcd3bf10c782b69c7ce44d3b0090bc7d681e2fc7b223cf6d6d0250200d0783bc24ad9075ab73f86040d8f679046798f5cd3a1ca8209329d43d6f89d643546670e222bb26ffd8b10a56ce2af5dbc3e12ae65c3f3216d657241a0657c72df14798ba83b10ccddbb47eef59f497761a407577164474a0c2e03e28634c6f9912748f2d6dd6a69b188d8cc2e21686e42bab33415c5f368932f753d1fd62ace6bbf3c7b75a9e2a799ed4d386784a9ce1405719dc52e00dc1f0c85e5c6ac756e1e14c66a268140ebf1b1ecfa515901fd273c9351202425498ae9b937346baa409fcfe66635c516435b9a929ec339333d2d8e0091b8bc155b1f24d6fe55d4d17d8a760648d92ccd7983b79df3cd5e2aa01f015c75216019495aabe0fedd9b61d1b5672d5643de5e7b7adff4dd66c76df3f67193d7e3812aca14eb90b0badc2dc2461c8a98524cb119b47ca1302e93962a861f229c0fdcc505cfb12451ec1bad993b4e8e23dee748821febba58e44b376a927b5b7a3d19439c3b9878319c543f34f7dec63c58fcf910fe08bb7335c34f277eedb08d61ac013b1c887783e609bfe2f17fe64abd6d402da318e9668de1a6d5b6ce48ceb45da8337e001be83a04e4351b653c4bbd9ee42d16b3c8639da1f7e5636130c198a212e168bc4dc35121d604ba0de0cb781467df42</script>
-</div>
-<script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>算法及算法的复杂度</title>
-    <url>/2020/06/24/3_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E7%AE%97%E6%B3%95%E5%8F%8A%E5%A4%8D%E6%9D%82%E5%BA%A6/</url>
-    <content><![CDATA[<h1 id="算法及算法效率的度量方法"><a href="#算法及算法效率的度量方法" class="headerlink" title="算法及算法效率的度量方法"></a>算法及算法效率的度量方法</h1><h2 id="1-算法"><a href="#1-算法" class="headerlink" title="1. 算法"></a>1. 算法</h2><h3 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义:"></a>1.1 定义:</h3><p>算法是解决特定问题求解步骤的描述, 在计算机中为指令的有限序列, 并且每条指令表示一个或多个操作.</p>
-<h3 id="1-2-算法的特性"><a href="#1-2-算法的特性" class="headerlink" title="1.2 算法的特性"></a>1.2 算法的特性</h3><ul>
-<li>输入和输出</li>
-<li>有穷性: 有合理边界</li>
-<li>可行性: 每一步都可以通过有限步骤实现</li>
-<li>确定性: 每一步都有确定含义, 不存在二义性</li>
-</ul>
-<h3 id="1-3-算法设计的要求"><a href="#1-3-算法设计的要求" class="headerlink" title="1.3 算法设计的要求"></a>1.3 算法设计的要求</h3><ul>
-<li>正确性: 输入,输出和加工处理无歧义性, 能正确反映问题的需求, 能得到问题的正确答案</li>
-<li>可读性: 便于阅读理解和交流</li>
-<li>健壮性: 当输入数据不合法时也能得到相关处理</li>
-<li>时间效率低空间效率高</li>
-</ul>
-<p>经过分析发现, 一个用高级语言编写的程序在计算机上运行所消耗的时间取决于下列因素:</p>
-<ol>
-<li>算法的策略方法</li>
-<li>编译产生的代码质量</li>
-<li>问题的输入规模</li>
-<li>机器执行指令的速度</li>
-</ol>
-<p>第一条是算法好坏的根本, 一个程序的运行时间, 依赖于<strong>算法的好坏</strong>和<strong>问题的输入规模</strong>.</p>
-<h2 id="2-算法的时间复杂度"><a href="#2-算法的时间复杂度" class="headerlink" title="2. 算法的时间复杂度"></a>2. 算法的时间复杂度</h2><h3 id="2-1-定义"><a href="#2-1-定义" class="headerlink" title="2.1 定义"></a>2.1 定义</h3><p>在进行算法分析时，语句总的执行次数T(n)是关于问题规模n的函数，进而分析T(n)随n的变化情况并确定T(n)的数量级。算法的时间复杂度，也就是算法的时间量度，记作：T(n) = O(f(n))。它表示随问题规模n的增大，算法执行时间的增长率和f(n)的增长率相同，称作算法的渐近时间复杂度，简称为时间复杂度。其中f(n)是问题规模n的某个函数。</p>
-<p>通过大写O[ ]的方法体现时间复杂度的计法, 称为大O记法.</p>
-<h3 id="2-2-推导大O阶方法"><a href="#2-2-推导大O阶方法" class="headerlink" title="2.2 推导大O阶方法"></a>2.2 推导大O阶方法</h3><p>O(1)叫做常数阶；O(n)叫做线性阶；O(n^2)叫做平方阶。 </p>
-<ol>
-<li><p>用常数1取代运行时间中的所有加法常数, 没有加法的常数不予考虑。</p>
-</li>
-<li><p>在修改后的运行次数函数中，只保留最高阶项。</p>
-</li>
-<li><p>如果最高阶项存在且不是1，则去除与这个项相乘的常数。</p>
-</li>
-</ol>
-<p>得到的结果就是大O阶。 </p>
-<p>如果你没看懂，那继续往下看，笔者以例子与你详细介绍：</p>
-<p><strong>例子1：</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum=<span class="number">0</span>,i = <span class="number">0</span>;i &lt; N;i++)  <span class="comment">//1、</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>;j &lt;N;j++)     <span class="comment">//2、</span></span><br><span class="line">        sum=sum+i*j;            <span class="comment">//3、</span></span><br></pre></td></tr></table></figure>
-<p>我们以一个语句记为1次来分析：</p>
-<p>1、1+ (N+1)+N （这里定义两个变量共一次，而中间循环 理论是判断是N次,但是实际上应该是N+1 最后等于N时还有判断1次 0~N 故为N+1，循环变量的递增一共是N次）</p>
-<p>2、N+N(N+1)+NN（这里由第一个循环进入第二个循环，一共是N次，那么将会定义N次，单独分析判断语句它将会像第一层循环一样，一个判断N次 再算上 第一次循环进入第二次循环共有N次 故 为N(N+1) 后面类似 NN ）</p>
-<p>3、NN（第二层循环进入最里面语句 N次 第一层循环进入第二层循环 共N次 故实际为NN次）</p>
-<p>那么累加一下:<br>1+(N+1)+N+N(N+1)+NN+NN 保留最高项 N * N, 故算法的时间复杂度为O(N^2)</p>
-<p><strong>例子2:</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum = <span class="number">0</span>,i = <span class="number">1</span>;i &lt; N;i = i*<span class="number">2</span>)   <span class="comment">//1、</span></span><br><span class="line">        sum = sum+i*j;                 <span class="comment">//2、</span></span><br></pre></td></tr></table></figure>
-<p>看到这程序片段，你是不是一眼就得出答案了？如果你不注意的话，你的答案肯定是O(N)，对了吗？<br>先告诉你答案为O(log(N))，你可以试试代个确切的N值进去 看一下次数,自己体会一下，那么下面我和大家一起分析下：</p>
-<p>1、1+log(N)+1+log(N)</p>
-<p>2、log(N)</p>
-<p>其实这里做判断的时候，应该看一下循环变量的递增方式，这里它是i = i * 2 也就是 $2^x=N$ 那么$X=\log_2(N)$, X是次数，在计算复杂度里面，一般省略底数，也就是直接写log(N), 其他的计算方法与上面的解释一致。</p>
-<p><strong>例子3:</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum=<span class="number">0</span>,i = <span class="number">0</span>;i&lt;N;i++)          <span class="comment">//1、</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>;j &lt; N;j = j*<span class="number">2</span>)      <span class="comment">//2、</span></span><br><span class="line">        sum=sum+i*j;                  <span class="comment">//3、</span></span><br></pre></td></tr></table></figure>
-<p>分析:<br>1、1+N+1+N</p>
-<p>2、N+N(log(N)+1)+Nlog(N)</p>
-<p>3、Nlog(N)</p>
-<p>将它们累加并保留高阶项并去除常数, 得到时间复杂度O(Nlog(N))</p>
-<p><strong>例子4</strong>:</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum = <span class="number">0</span>,i = <span class="number">0</span>; i &lt; n; i++)    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = i; j &lt; n; j++)        </span><br><span class="line">       sum += i*j</span><br></pre></td></tr></table></figure>
-<p>分析:</p>
-<p>总的执行次数为n+(n-1)+(n-2)+…+1=(N^2)/2+n/2</p>
-<p>只保留高阶项并去除与这个项相乘的常数, 最终这段代码的复杂度为O(n^2)</p>
-<h3 id="2-3-常见的时间复杂度"><a href="#2-3-常见的时间复杂度" class="headerlink" title="2.3 常见的时间复杂度"></a>2.3 常见的时间复杂度</h3><div class="table-container">
-<table>
-<thead>
-<tr>
-<th>执行次数函数</th>
-<th>阶</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>$42$(常数)</td>
-<td>O(1)</td>
-<td>常数阶</td>
-</tr>
-<tr>
-<td>$2n+3$</td>
-<td>O(n)</td>
-<td>线性阶</td>
-</tr>
-<tr>
-<td>$3n^2+2n+1$</td>
-<td>O(n^2)</td>
-<td>平方阶</td>
-</tr>
-<tr>
-<td>$5\log_2n+19$</td>
-<td>O(log(n))</td>
-<td>对数阶</td>
-</tr>
-<tr>
-<td>$2n+3n\log_2n+19$</td>
-<td>O(nlog(n))</td>
-<td>nlog(n)阶</td>
-</tr>
-<tr>
-<td>$6n^3 + 2n^2 + 3n +4$</td>
-<td>O(n^3)</td>
-<td>立方阶</td>
-</tr>
-<tr>
-<td>$2^n$</td>
-<td>O(2^n)</td>
-<td>指数阶</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>常用时间复杂度耗费时间排序:</p>
-<script type="math/tex; mode=display">
-O(1)\lt O(\log n) \lt O(n) \lt O(n\log n) \lt  O(n^2) \lt O(n^3) \lt O(2^n) \lt O(n!)\lt O(n^n)</script><p>一般而言, 指数阶$O(2^n)$和阶乘阶$O(n!)$会使运行时间大到不可估计, 一般不考虑这种不切实际的算法时间复杂度.</p>
-<h3 id="2-4-最坏情况与平均情况"><a href="#2-4-最坏情况与平均情况" class="headerlink" title="2.4  最坏情况与平均情况"></a>2.4  最坏情况与平均情况</h3><p>比如查找数组中的某个数字, 最好情况是第一次找到, 复杂度为O(1), 最差是最后一次找到, 那么复杂度为O(n)</p>
-<ul>
-<li><p><strong>最坏情况</strong>是一种保障, 保证运行时间不会再坏了, <strong>除非特殊指定, 我们提到的运行时间都是最坏情况的运行时间</strong></p>
-</li>
-<li><p><strong>平均时间</strong>是所有情况中最有意义的, 因为它是期望运行的时间, 一般很难估算得到, 往往是通过一定量的数据实验得到</p>
-</li>
-</ul>
-<h2 id="3-算法的空间复杂度"><a href="#3-算法的空间复杂度" class="headerlink" title="3. 算法的空间复杂度"></a>3. 算法的空间复杂度</h2><h3 id="3-1-定义"><a href="#3-1-定义" class="headerlink" title="3.1 定义"></a>3.1 定义</h3><p>算法的空间复杂度通过计算算法所需的存储空间实现, 算法空间复杂度计算公式记作: S(n) = O(f(n)), 其中n为问题的规模, f(n)为语句所占空间的函数.</p>
-<p>一般情况下, 一个程序在机器上执行时,除了需要存储程序本身的指令、常数、变量和输入数据外,还需要存储对数据操作的存储单元,若输入数据所占空间只取决于问题本身,和算法无关,这样只需要分析该算法在实现时所需的辅助单元即可。若算法执行时所需的辅助空间相对于输入数据量而言是个常数, 则称此算法为原地工作, 空间复杂度为 O(1) 。</p>
-<p>在写代码时完全可以通过空间换时间.  通常我们不用限定词使用”复杂度”时通常都指时间复杂度. </p>
-<h3 id="3-2-计算方法"><a href="#3-2-计算方法" class="headerlink" title="3.2 计算方法"></a>3.2 计算方法</h3><p><strong>1. 空间复杂度 O(1)</strong><br>如果算法执行所需要的临时空间不随着某个变量n的大小而变化，即此算法空间复杂度为一个常量，可表示为 O(1)</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> j = <span class="number">2</span>;</span><br><span class="line">++i;</span><br><span class="line">j++;</span><br><span class="line"><span class="keyword">int</span> m = i + j;</span><br></pre></td></tr></table></figure>
-<p>变量 i、j、m 所分配的空间都不随着处理数据量变化，因此它的空间复杂度 S(n) = O(1)</p>
-<p><strong>2. 空间复杂度 O(n)</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[] m = <span class="keyword">new</span> <span class="keyword">int</span>[n]</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">1</span>; i&lt;=n; ++i)</span><br><span class="line">&#123;</span><br><span class="line">   j = i;</span><br><span class="line">   j++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这段代码中，第一行new了一个数组出来，这个数据占用的大小为n，这段代码的2-6行，虽然有循环，但没有再分配新的空间，因此，这段代码的空间复杂度主要看第一行即可，即 S(n) = O(n)</p>
-]]></content>
-      <categories>
-        <category>数据结构</category>
-      </categories>
-      <tags>
-        <tag>数据结构</tag>
-        <tag>算法</tag>
       </tags>
   </entry>
 </search>
