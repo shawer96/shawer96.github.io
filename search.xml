@@ -513,160 +513,6 @@ f_i(key)=RH_i(key)\ (i=1,2,3,\dots,k)</script><p>事先准备多个散列函数,
       </tags>
   </entry>
   <entry>
-    <title>论文阅读笔记--Buffet</title>
-    <url>/2020/06/12/5_%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97-Buffet/</url>
-    <content><![CDATA[<h1 id="Buffets-An-Efficient-and-Composable-Storage-Idiom-for-Explicit-Decoupled-Data-Orchestration"><a href="#Buffets-An-Efficient-and-Composable-Storage-Idiom-for-Explicit-Decoupled-Data-Orchestration" class="headerlink" title="Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration"></a>Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration</h1><blockquote>
-<p>原文: Pellauer, M., et al. (2019). Buffets. Proceedings of the Twenty-Fourth International Conference on Architectural Support for Programming Languages and Operating Systems - ASPLOS ‘19: 137-151.</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><h3 id="1-要解决什么问题"><a href="#1-要解决什么问题" class="headerlink" title="1. 要解决什么问题"></a>1. 要解决什么问题</h3><p>提出针对加速器不同需求通用的, 可重用的storage idiom, 它独立于任何特定的设计.</p>
-<h3 id="2-通过什么理论或者模型来解决"><a href="#2-通过什么理论或者模型来解决" class="headerlink" title="2. 通过什么理论或者模型来解决"></a>2. 通过什么理论或者模型来解决</h3><ul>
-<li><p>Buffet</p>
-</li>
-<li><p>Decoupled fills and accesses with fine-grained synchronization.</p>
-</li>
-<li><p>Hierarchical composition, and efficient multi-casting. </p>
-</li>
-</ul>
-<h3 id="3-给出了什么答案"><a href="#3-给出了什么答案" class="headerlink" title="3. 给出了什么答案"></a>3. 给出了什么答案</h3><p>在8KB RAM上仅仅增加2%的控制开销,与DMA管理的double-buffer scratched pad和跨各种工作负载的cache相比，Buffet分别将能量延迟乘积提高了1.53倍和5.39倍。</p>
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><h3 id="1-研究意义"><a href="#1-研究意义" class="headerlink" title="1. 研究意义"></a>1. 研究意义</h3><p>相较于通用芯片, 数据编排(data orchestration)—即将数据移入或者移出buffer heirarchy, 是专用加速芯片实现高性能的重要方法.</p>
-<p><img src="https://i.loli.net/2020/06/11/4sbALD7TirONE19.png" alt="image-20200611104101471" style="zoom:80%;" /></p>
-<p>加速器在定制的片上缓冲上花费了大量的精力。不幸的是，这些解决方案与特定设计紧密相关，从而妨碍了其他加速器领域的可重用性。</p>
-<h3 id="2-研究背景"><a href="#2-研究背景" class="headerlink" title="2. 研究背景"></a>2. 研究背景</h3><p>Existing reusable buffer idiom:</p>
-<p>cache</p>
-<ul>
-<li>过多面积和功耗用于隐式数据编排, 与加速器需求不一致.</li>
-</ul>
-<p>scratched pad</p>
-<ul>
-<li>不灵活, 不满足复杂数据重用和更新模式需求.</li>
-</ul>
-<p>FIFO</p>
-<ul>
-<li>缺乏同步性, 难以层次化..</li>
-</ul>
-<h3 id="3-基于哪些假设"><a href="#3-基于哪些假设" class="headerlink" title="3. 基于哪些假设"></a>3. 基于哪些假设</h3><ol>
-<li>显式解耦合(EDDO)方式.</li>
-<li>同步实现方式.</li>
-<li>Buffet与层次化存储结合, buffet间同步, 支持单buffet多数据广播.</li>
-</ol>
-<h2 id="Classifying-Data-Orchestration"><a href="#Classifying-Data-Orchestration" class="headerlink" title="Classifying Data Orchestration"></a>Classifying Data Orchestration</h2><p>加速器架构师利用他们在设计时对工作负载特征和访问模式的了解，可以获得以下收益：</p>
-<ul>
-<li>预取—提前准确的取来将被使用的数据,</li>
-<li>在最小，最快和最节能的缓冲区中最大程度地访问数据,</li>
-<li><del>将数据暂存到层次结构中共享者之间最小上限的缓冲区中,</del></li>
-<li>将下一个数据图块的填充与当前数据图块的消耗重叠，</li>
-<li>同时向访问的数据的所有使用者广播（或multi-casting）缓冲区访问的结果，</li>
-<li>精确且廉价地同步数据可用性,</li>
-<li>准确删除不再需要的数据</li>
-</ul>
-<p>传统应用场景下的resuable buffering idioms分类:</p>
-<p>​        implict/explict: workload在何种程度上决定暂存, 缓存策略.</p>
-<p>​        coupled/decoupled: 访存请求是round-trip还是flow-forward.</p>
-<p><img src="https://i.loli.net/2020/06/11/HG2x6trF9miWDl8.png" alt="image-20200611115419792" style="zoom: 67%;" /></p>
-<h3 id="1-Implicit-versus-Explicit-Orchestration"><a href="#1-Implicit-versus-Explicit-Orchestration" class="headerlink" title="1. Implicit versus Explicit Orchestration"></a>1. Implicit versus Explicit Orchestration</h3><ul>
-<li>cache<ul>
-<li>可重用的模块化的buffer抽象</li>
-<li>implict: 发起请求的程序并不指定数据何时重用和清空</li>
-<li>启发式(Heuristic)替换策略, 与workload无关</li>
-<li>但对于特定领域的加速器, tag匹配等带来的面积和功耗开销也难以忍受</li>
-</ul>
-</li>
-<li>Scratched Pad<ul>
-<li>指定存储的地址范围, 实现显示数据编排和精确控制</li>
-<li>常用于GPU的shared mem</li>
-<li>避免了cache的硬件开销</li>
-<li>Across fill和overlaping fill繁琐且易出错, 难组成层级化的存储</li>
-</ul>
-</li>
-</ul>
-<h3 id="2-Coupled-versus-Decoupled-Orchestration"><a href="#2-Coupled-versus-Decoupled-Orchestration" class="headerlink" title="2.  Coupled versus Decoupled Orchestration"></a>2.  Coupled versus Decoupled Orchestration</h3><ul>
-<li><p>Coupled</p>
-<ul>
-<li>存取请求的发起者也接收响应.</li>
-<li>Pros: <ul>
-<li>数据需求和使用之前的同步性高效且直观</li>
-</ul>
-</li>
-<li>Cons: <ul>
-<li>难以实现数据填充(fill)和访问(access)之间的overlap—请求/响应者要来在请求者和消费者之间回变换角色</li>
-</ul>
-</li>
-<li>必须为整个往返负载延迟保留传入数据图块的“着陆区(landing zone)”，这会增加对RAM资源的压力</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><p>Decoupled</p>
-<ul>
-<li><p>单独的硬件模块（例如DMA或地址生成器（AGEN））负责将数据推送到一个或多个功能单元的staging buffer中.</p>
-</li>
-<li><p>为了掩盖延时, ==这些buffer通常是ping-pong buffers[1,2].</p>
-</li>
-<li><p>Pros:</p>
-<ul>
-<li>请求者可以以自己的速度运行, 返回的数据可以广播到多个使用者.</li>
-<li>访存是feed-forward的, 只需要与相邻层级的存储结构之间的lantancy相关的landing zong,  而不是在整个层次结构之间round-trip(比如cache如果miss还要去访问高一级存储, 如果decoupled那么buffer的大小只需要掩盖L1到L2的延时)</li>
-</ul>
-</li>
-<li><p>Cons:</p>
-<ul>
-<li>传统的DAE数据编排依然是隐式的, 使用cache的管理机制</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://i.loli.net/2020/06/12/HYUbECoueQTwhqa.png" alt=""></p>
-<h3 id="3-Synchronization-Concerns"><a href="#3-Synchronization-Concerns" class="headerlink" title="3. Synchronization Concerns"></a>3. Synchronization Concerns</h3><p>何时load一个new tile? 过早会导致数据被覆盖, 过晚会导致性能损失. </p>
-<p>通过脉动阵列来约束tile的执行时间是一种办法. 对于涉及片外访问或者条件执行的系统, 这些时限过于保守.</p>
-<p>本文采用ready-valid握手协议, 也可以使用其他micro-protocols(例如TRY/ACK). 本文提供了一个EDDO storage idiom，它在staging buffer操作本身中封装了细粒度的同步。</p>
-<h2 id="The-Buffet-Storage-Idiom"><a href="#The-Buffet-Storage-Idiom" class="headerlink" title="The Buffet Storage Idiom"></a>The Buffet Storage Idiom</h2><p><img src="https://i.loli.net/2020/06/12/omPiChJxk5trX1S.png" style="zoom: 67%;" /></p>
-<p>上图给出了buffet的数据编排模型, 它属于表1中的EDDO象限. 相较于DMA, 采用decoupled AGEN扩大了解耦的范围.</p>
-<p>在buffet中，有限状态机控制四个基本存储操作：</p>
-<ol>
-<li>Fill(data)</li>
-<li>Read(index)</li>
-<li>Update(index, data): </li>
-<li>Shrink(num)</li>
-</ol>
-<p>上级存储如DRAM通过<strong>FILL</strong>操作填入数据. 下级模块（例如DataPath）则通过<strong>Read</strong>和<strong>Update</strong>操作来处理buffet中的数据. <strong>Shrink</strong>操作从窗口中删除数据.</p>
-<p><img src="https://i.loli.net/2020/06/12/kprVbnS1IgGwmxu.png" style="zoom:67%;" /></p>
-<h3 id="1-Buffet-Operational-Behavior"><a href="#1-Buffet-Operational-Behavior" class="headerlink" title="1. Buffet Operational Behavior"></a>1. Buffet Operational Behavior</h3><p><img src="https://i.loli.net/2020/06/12/PcMjgDhnptIOEfV.png" alt="image-20200611205302228" style="zoom: 50%;" /></p>
-<p>❶新传输的数据通过Fill逻辑装入RAM, 这一步类似于传统的FIFO, 数据不带有地址信息. Local地址的生成依赖于填充顺序.</p>
-<p>❷与FIFO不同的是Read请求包含一个额外的Index, 允许以与接收数据不同的顺序读取数据. 这一index是相对于staging buffer中的oldest installed datum. 这一缩影不能超出RAM的大小.  传统的FIFO只要为非空，就会声明Pop.Vld. 在buffet中，请求数据的存在是索引的函数.  只有被请求的数据已被填充, 才会设置ReadRsp.VLD.</p>
-<p>❸除了索引读取之外，与FIFO的一个显着区别是活动窗口内的数据元素可以就地修改，我们将其称为Update路径.</p>
-<p>❹ shrink路径描述了从buffet中删除暂存数据的逻辑。此操作采用size参数，并从活动窗口中删除那么多元素。此操作仅更新内部记分板-不会发生数据移动。credits被释放到Fill AGEN，表明有空间可以进行另一次批量传输. 主张谁使用数据(生成index)谁shrink.</p>
-<p><img src="https://i.loli.net/2020/06/12/uZ1agqPvn9zxKRo.png" alt="image-20200611211210544" style="zoom:80%;" /></p>
-<h3 id="2-Buffet-Synchronization-Details"><a href="#2-Buffet-Synchronization-Details" class="headerlink" title="2. Buffet Synchronization Details"></a>2. Buffet Synchronization Details</h3><ul>
-<li>需要显式硬件同步的情况由算法1中的“wait_until”调用表示。</li>
-<li>由于公式1中的操作顺序，许多其他同步情况都可以在不需要显式硬件支持的情况下处理，如图4所示。</li>
-<li>RAW冒险检查—计分板<ul>
-<li>will_update 用于表示datapath即将修改当前阶段的值</li>
-<li>如果后续的<strong>Read</strong>请求正在被修改的索引，则响应将stall—这与读取尚未填充的索引没有区别</li>
-<li><strong>FILL</strong>写入时不需要检查</li>
-<li>定制化—如果确定没有RAW冒险, 可以删除RAW检查, 如果<strong>FILL</strong>与<strong>UPDATE</strong>互斥, 可以共享一个写端口. </li>
-</ul>
-</li>
-<li><strong>SHRINK</strong>与<strong>FILL</strong>之间的同步<ul>
-<li>算法1中对<strong>SHRINK</strong>保守的使用显示同步—wait_until(num&lt;occupancy).</li>
-<li>图4将其描述为隐式同步, 详见第四节</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://i.loli.net/2020/06/12/On4vEXflL9IuGKk.png" alt="image-20200611212533286" style="zoom:67%;" /></p>
-<h3 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h3><h3 id="4-Composition-of-Buffets"><a href="#4-Composition-of-Buffets" class="headerlink" title="4. Composition of Buffets"></a>4. Composition of Buffets</h3><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><h3 id="1-文章的主要内容"><a href="#1-文章的主要内容" class="headerlink" title="1. 文章的主要内容"></a>1. 文章的主要内容</h3><h3 id="2-存在哪些缺陷"><a href="#2-存在哪些缺陷" class="headerlink" title="2. 存在哪些缺陷"></a>2. 存在哪些缺陷</h3><h3 id="3-有什么构思"><a href="#3-有什么构思" class="headerlink" title="3. 有什么构思"></a>3. 有什么构思</h3><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><blockquote>
-<p>[1] J. Cong, M. A. Ghodrat, M. Gill, B. Grigorian, K. Gururaj, and G. Reinman. Accelerator-rich architectures: Opportunities and progresses. In Proceedings of the Design Automation Conference (DAC), 2014.<br>[2] E. G. Cota, P. Mantovani, G. D. Guglielmo, and L. P. Carloni. An analysis of accelerator coupling in heterogeneous architectures. In 2015 52nd ACM/EDAC/IEEE Design Automation Conference (DAC), pages 1–6, June 2015.</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>论文阅读笔记</category>
-      </categories>
-      <tags>
-        <tag>计算机体系结构</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>算法及算法的复杂度</title>
     <url>/2020/06/24/3_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E7%AE%97%E6%B3%95%E5%8F%8A%E5%A4%8D%E6%9D%82%E5%BA%A6/</url>
     <content><![CDATA[<h1 id="算法及算法效率的度量方法"><a href="#算法及算法效率的度量方法" class="headerlink" title="算法及算法效率的度量方法"></a>算法及算法效率的度量方法</h1><h2 id="1-算法"><a href="#1-算法" class="headerlink" title="1. 算法"></a>1. 算法</h2><h3 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义:"></a>1.1 定义:</h3><p>算法是解决特定问题求解步骤的描述, 在计算机中为指令的有限序列, 并且每条指令表示一个或多个操作.</p>
@@ -820,8 +666,426 @@ O(1)\lt O(\log n) \lt O(n) \lt O(n\log n) \lt  O(n^2) \lt O(n^3) \lt O(2^n) \lt 
       </categories>
   </entry>
   <entry>
+    <title>线性表</title>
+    <url>/2020/07/01/%E7%BA%BF%E6%80%A7%E8%A1%A8/</url>
+    <content><![CDATA[<h1 id="线性表"><a href="#线性表" class="headerlink" title="线性表"></a>线性表</h1><blockquote>
+<p>定义: 零个或有多个元素的有限序列</p>
+</blockquote>
+<p><img src="https://i.loli.net/2020/07/03/49MFwX8VzsOfIW1.png" alt="image-20200703165948756"></p>
+<a id="more"></a>
+<h2 id="1-线性表的顺序存储结构"><a href="#1-线性表的顺序存储结构" class="headerlink" title="1. 线性表的顺序存储结构"></a>1. 线性表的顺序存储结构</h2><p>线性表的顺序存储结构指的是用一段地址连续的存储单元一次存储线性表的数据元素.</p>
+<h3 id="1-1-数据存储方式"><a href="#1-1-数据存储方式" class="headerlink" title="1.1 数据存储方式"></a>1.1 数据存储方式</h3><p>在C语言中使用一维数组存储</p>
+<ul>
+<li>数组的长度: 存放线性表的存储空间长度, 即capacity()</li>
+<li>线性表的长度: 线性表中数据元素的个数, 即size()</li>
+</ul>
+<p>任意时刻线性表的长度应该小于等于数组长度</p>
+<p>如果已知线性表的首元素a1地址, 可以通过下列公式算出第i个数据元素:</p>
+<script type="math/tex; mode=display">
+LOC(a_i) = LOC(a_1) + (i-1)C</script><p>则不论ai位于何处 , 计算地址的时间都是相同的, <strong>时间复杂度为$O(1)$,</strong> 具有这一特点的存储结构称为随机存储. 比如数组, </p>
+<h3 id="1-2-插入和删除"><a href="#1-2-插入和删除" class="headerlink" title="1.2 插入和删除"></a>1.2 插入和删除</h3><p>插入算法的思路:</p>
+<ol>
+<li>如果插入位置不合理, 抛出异常</li>
+<li>如果线性表长度大于或者等于数组长度, 抛出异常或者动态增加容量</li>
+<li>从最后一个元素向前遍历到第i个位置, 分别将他们都向后移动一个位置, 从后向前遍历是为了避免被覆盖</li>
+<li>将要插入的元素填入位置i处</li>
+<li>表长增加1</li>
+</ol>
+<p>删除算法的思路:</p>
+<ol>
+<li>如果删除的位置不合理, 抛出异常</li>
+<li>取出删除元素</li>
+<li>从删除元素位置开始遍历到最后一个元素位置, 将他们都向前移动一位</li>
+<li>表长减1</li>
+</ol>
+<p>时间复杂度:</p>
+<p>最好情况是插入最后一个或者删除第一个, 时间复杂度为$O(1)$, 最坏情况则相反, 时间复杂度为$O(n)$, 平均需要的移动次数为$\frac{n-1}{2}$.</p>
+<p>因此<strong>顺序存储结构的插入和删除,时间复杂度为$O(n)$.</strong></p>
+<h3 id="1-3-优缺点"><a href="#1-3-优缺点" class="headerlink" title="1.3 优缺点"></a>1.3 优缺点</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>不需要为表中元素逻辑关系增加额外存储空间</td>
+<td>插入和删除操作需要移动大量元素</td>
+</tr>
+<tr>
+<td>可以快速存取表中任一元素</td>
+<td>线性表长度大时, 难以确定存储空间容量</td>
+</tr>
+<tr>
+<td></td>
+<td>造成存储空间的”碎片”</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="2-链式存储结构"><a href="#2-链式存储结构" class="headerlink" title="2. 链式存储结构"></a>2. 链式存储结构</h2><h3 id="2-1-链表的定义和存储结构"><a href="#2-1-链表的定义和存储结构" class="headerlink" title="2.1 链表的定义和存储结构"></a>2.1 链表的定义和存储结构</h3><p>数据元素ai除了要<strong>存储本身的信息</strong>外, 还需要<strong>存储后续元素地址</strong>. 我们把存储数据元素信息的域称为数据域, 存储后继元素位置的域称为指针域, 指针域存储的是后继结点的指针. 这两部分组成ai的存储印象, 称为<strong>结点.</strong></p>
+<p>链表中的第一个元素的存储位置称为<strong>头指针</strong>, 不过通常会在单链表的第一个结点之间附设一个结点(懒结点)作为头结点, 头结点数据域可以不存储信息, 通常是为了处理特殊情况(如空链表或者只有一个元素的链表)而引入.</p>
+<p>单链表中最后一个结点的指针指向”空”.</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>头节点</th>
+<th>头指针</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>为了操作方便和统一引入,一般放在第一元素节点之前. 数据域一般无意义(也可存放链表长度)</td>
+<td>指向第一个节点的指针, 若链表有头节点, 则是指向头节点的指针</td>
+</tr>
+<tr>
+<td>有了头结点, 在第一元素节点前插入节点或者删除第一节点的操作就和其他节点统一了</td>
+<td>具有标识作用, 通常用头指针冠以链表的名字</td>
+</tr>
+<tr>
+<td>无论链表是否为空, 头指针均不为空</td>
+<td>头节点不是链表的必要元素(如空链表)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="2-2-单链表的读取"><a href="#2-2-单链表的读取" class="headerlink" title="2.2 单链表的读取"></a>2.2 单链表的读取</h3><p>获得链表第i个数据的思路:</p>
+<ol>
+<li>声明一个指针p指向链表的第一个结点</li>
+<li>遍历链表, 让p不断指向下一结点</li>
+<li>若遍历到链表末尾p为空, 则第i个节点不存在</li>
+<li>若查找到, 返回结点p的数据</li>
+</ol>
+<p>主要的核心思想是<strong>工作指针后移</strong>, 每次查找都要遍历链表, 因此时间复杂度为$O(n)$</p>
+<h3 id="2-3-单链表的插入和删除"><a href="#2-3-单链表的插入和删除" class="headerlink" title="2.3 单链表的插入和删除"></a>2.3 单链表的插入和删除</h3><p><strong>插入</strong></p>
+<p>在结点p和结点p-&gt;next之间插入节点s, 只需要<code>s-&gt;next=p-&gt;next; p-&gt;next-&gt;s;//顺序不能错</code></p>
+<p>单链表在第i个数据插入节点元素为e的节点s</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">LinkList</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> data;</span><br><span class="line">  	LinkList* next;</span><br><span class="line">    LinkList(<span class="keyword">int</span> data) : data(data) , next(<span class="literal">nullptr</span>)&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function">LinkList* <span class="title">ListInsert</span><span class="params">(LinkList* L, <span class="keyword">int</span> i, Elem e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> j=<span class="number">1</span>;</span><br><span class="line">    LinkList* p,s;</span><br><span class="line">    p = L;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>( p &amp;&amp; j&lt;i) <span class="comment">//寻找第i个节点</span></span><br><span class="line">    &#123;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">        ++j;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(!p||j&gt;i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    s=<span class="keyword">new</span> LinkList(e);</span><br><span class="line">    s-&gt;next = p-&gt;next;	<span class="comment">//</span></span><br><span class="line">    p-&gt;next = s;		<span class="comment">//两句的顺序不能颠倒</span></span><br><span class="line">    <span class="keyword">return</span> s;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>删除</strong></p>
+<p>若要利用节点q去删除节点p的后一个节点, 只需要<code>q = p-&gt;next; q-&gt;next = p-&gt;next;</code>,即使用保留将要删除的节点, 然后使用<code>q-&gt;next = p-&gt;next;</code>进行删除.</p>
+<p>单链表删除第i个数据结点的算法如下:</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">LinkList</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> data;</span><br><span class="line">  	LinkList* next;</span><br><span class="line">    LinkList(<span class="keyword">int</span> data) : data(data) , next(<span class="literal">nullptr</span>)&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function">ElemType <span class="title">ListInsert</span><span class="params">(LinkList* L, <span class="keyword">int</span> i, ElemType* e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> j=<span class="number">1</span>;</span><br><span class="line">    LinkList* p,q;</span><br><span class="line">    p = L;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>( p-&gt;next &amp;&amp; j&lt;i) <span class="comment">//寻找第i-1个节点</span></span><br><span class="line">    &#123;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">        ++j;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(!p-&gt;next||j&gt;i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nullptr</span>;	<span class="comment">//第i个结点不存在</span></span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    q=p-&gt;next;</span><br><span class="line">    p-&gt;next=q-&gt;next;</span><br><span class="line">    *e=q-&gt;data;</span><br><span class="line">    <span class="keyword">delete</span> q;</span><br><span class="line">    <span class="keyword">return</span> *e</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>单链表的插入和删除时间复杂度为O(1), 对于插入和删除数据越频繁的操作, 单链表的效率优势就越明显.</strong></p>
+<h3 id="2-4-单链表的整表创建"><a href="#2-4-单链表的整表创建" class="headerlink" title="2.4 单链表的整表创建"></a>2.4 单链表的整表创建</h3><p>算法思路:</p>
+<ol>
+<li>声明有一指针p和计数器变量i</li>
+<li>初始化一空链表L</li>
+<li>让L的头节点的指针指向NULL, 即建立一个带头结点的空链表</li>
+<li>循环:<ol>
+<li>生成一新节点p</li>
+<li>随机生成一数字赋值给p的数据域p-&gt;data</li>
+<li>将p插入到头结点<strong>与前一新节点之间</strong>(头插法), 也可将新结点插入到<strong>终端节点的后面</strong>(尾插法)</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">LinkList</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> data;</span><br><span class="line">  	LinkList* next;</span><br><span class="line">    LinkList(<span class="keyword">int</span> data) : data(data) , next(<span class="literal">nullptr</span>)&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">creatList</span><span class="params">(LinkList* L, <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    LinkList p;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    srand(time(<span class="number">0</span>));</span><br><span class="line">    L = <span class="keyword">new</span> LinkList(<span class="number">0</span>);</span><br><span class="line">    L-&gt;next = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        p = <span class="keyword">new</span> LinkList(rand()%<span class="number">100</span>+<span class="number">1</span>);</span><br><span class="line">        p-&gt;next = L-&gt;next;</span><br><span class="line">        L-&gt;next = p;			<span class="comment">//插入到表头</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">creatList</span><span class="params">(LinkList* L, <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    LinkList p,r;</span><br><span class="line">    srand(time(<span class="number">0</span>));</span><br><span class="line">    L = <span class="keyword">new</span> LinkList(<span class="number">0</span>);</span><br><span class="line">    L-&gt;next = <span class="literal">nullptr</span>;</span><br><span class="line">    r = L;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        p = <span class="keyword">new</span> LinkList(rand()%<span class="number">100</span>+<span class="number">1</span>);</span><br><span class="line">        r-&gt;next = p;</span><br><span class="line">        r = p;			<span class="comment">//插入到表头</span></span><br><span class="line">    &#125;</span><br><span class="line">    r-&gt;next = <span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-5-单链表的整表删除"><a href="#2-5-单链表的整表删除" class="headerlink" title="2.5 单链表的整表删除"></a>2.5 单链表的整表删除</h3><p>算法思路:</p>
+<ol>
+<li>声明一个节点p和q</li>
+<li>将第一个节点的值赋给p</li>
+<li>循环:<ol>
+<li>将下一结点的值赋给q;</li>
+<li>释放p</li>
+<li>将q赋值给p</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">delete</span><span class="params">(LinkList* L)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    LinkList p,q;</span><br><span class="line">	p = L;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(p)</span><br><span class="line">    &#123;</span><br><span class="line">        q = p-&gt;next;</span><br><span class="line">        <span class="keyword">delete</span> p;</span><br><span class="line">        p = q;			<span class="comment">//插入到表头</span></span><br><span class="line">    &#125;</span><br><span class="line">    L-&gt;next = <span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="3-单链表与顺序存储结构的优缺点"><a href="#3-单链表与顺序存储结构的优缺点" class="headerlink" title="3. 单链表与顺序存储结构的优缺点"></a>3. 单链表与顺序存储结构的优缺点</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>单链表</th>
+<th>顺序存储结构</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>存储分配方式</td>
+<td>链式存储, 任意存储位置</td>
+<td>顺序存储单元依次存储</td>
+</tr>
+<tr>
+<td>时间性能</td>
+<td>查找O(n), 增删O(1)</td>
+<td>查找O(1), 增删O(n)</td>
+</tr>
+<tr>
+<td>空间性能</td>
+<td>不需要预分配空间, 元素个数不受限</td>
+<td>需要预分配空间, 存储空间过小则溢出,过大则浪费</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>一般频繁读取不需要修改的数据采用顺序存储结构, 需要经常删改的结构可以采用链表</li>
+<li>当线性元素个数变化较大或者不知道大小时最好采用单链表结构, 如果预先知道存储空间大小可以采用顺序存储结构</li>
+</ul>
+<h2 id="4-循环链表"><a href="#4-循环链表" class="headerlink" title="4.循环链表"></a>4.循环链表</h2><p>将单链表终端结点的指针端由指向空指针改为指向头结点, 就使整个单链表形成一个环, 这种头尾相接的链表<strong>称为单循环链表</strong>, 简称循环链表.</p>
+<p>循环链表和单链表的主要差异在循环的判断条件上</p>
+<ul>
+<li>对于单链表是判断p-&gt;next是否为NULL</li>
+<li>对于循环链表是判断p-&gt;next是否为头结点</li>
+</ul>
+<p>在链表中, 找到头结点需要O(1)时间, 但是找到最后一个节点需要O(n)时间, 再循环链表中不用头指针, 而是用指向终端节点的尾指针来表示循环链表. 这样可以方便的查找到开始节点和终端节点.</p>
+<p>终端节点用尾指针<code>rear</code>表示</p>
+<p>那么开始节点为<code>rear-&gt;next-&gt;next</code>注: 第一个next是头结点,开始节点是头结点的后一个, 二者的区别可见2.1节 </p>
+<h2 id="5-双向链表"><a href="#5-双向链表" class="headerlink" title="5. 双向链表"></a>5. 双向链表</h2><p>双向链表在每个结点中, 在设置一个指向其前驱结点的指针</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DulNode</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    ElemType data;</span><br><span class="line">    DualNode* prior;</span><br><span class="line">    DualNode* next;</span><br><span class="line">&#125; *DualLinkList;</span><br></pre></td></tr></table></figure>
+<h3 id="5-1-插入节点"><a href="#5-1-插入节点" class="headerlink" title="5.1 插入节点"></a>5.1 插入节点</h3><p>在p和p-&gt;next之间插入结点s.</p>
+<ol>
+<li>将p设置为s的前驱</li>
+<li>将p-&gt;next设置为s的后驱</li>
+<li>将s设置为p-&gt;next的前驱</li>
+<li>将s设置为p的后驱</li>
+</ol>
+<p>要严格注意顺序, 以免p-&gt;next没有指针指向</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">s-&gt;prior = p;</span><br><span class="line">s-&gt;next = p-&gt;next;</span><br><span class="line">p-&gt;next-&gt;prior = s;</span><br><span class="line">p-&gt;next = s;</span><br></pre></td></tr></table></figure>
+<h3 id="5-2-删除结点"><a href="#5-2-删除结点" class="headerlink" title="5.2 删除结点"></a>5.2 删除结点</h3><p>删除节点p的步骤</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">p-&gt;prior-&gt;next = p-&gt;next;</span><br><span class="line">p-&gt;next-&gt;prior = p-&gt;prior;</span><br><span class="line"><span class="keyword">delete</span> p;</span><br></pre></td></tr></table></figure>
+<h2 id="6-静态链表"><a href="#6-静态链表" class="headerlink" title="6. 静态链表"></a>6. 静态链表</h2><p>静态链表使用数组描述, 主要是为了给没有指针的高级语言设计一种实现单链表能力的方法, 理解其思想即可.</p>
+]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
+      <tags>
+        <tag>数据结构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于CPU Cache--程序员需要知道的那些事</title>
+    <url>/2020/07/11/%E5%85%B3%E4%BA%8ECPU-Cache-%E7%A8%8B%E5%BA%8F%E5%91%98%E9%9C%80%E8%A6%81%E7%9F%A5%E9%81%93%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/</url>
+    <content><![CDATA[<h1 id="转-关于CPU-Cache-—-程序猿需要知道的那些事"><a href="#转-关于CPU-Cache-—-程序猿需要知道的那些事" class="headerlink" title="[转]关于CPU Cache — 程序猿需要知道的那些事"></a>[转]关于CPU Cache — 程序猿需要知道的那些事</h1><blockquote>
+<p>本文将介绍一些作为程序猿或者IT从业者应该知道的CPU Cache相关的知识</p>
+<p>文章欢迎转载，但转载时请保留本段文字，并置于文章的顶部 作者：卢钧轶(cenalulu) 本文原文地址：<a href="http://cenalulu.github.io/linux/all-about-cpu-cache/" target="_blank" rel="noopener">http://cenalulu.github.io/linux/all-about-cpu-cache/</a></p>
+</blockquote>
+<p>先来看一张本文所有概念的一个思维导图</p>
+<p><img src="http://cenalulu.github.io/images/linux/cache_line/mind_map.png" alt="mind_map"></p>
+<a id="more"></a>
+<h2 id="为什么要有CPU-Cache"><a href="#为什么要有CPU-Cache" class="headerlink" title="为什么要有CPU Cache"></a>为什么要有CPU Cache</h2><p>随着工艺的提升最近几十年CPU的频率不断提升，而受制于制造工艺和成本限制，目前计算机的内存主要是DRAM并且在访问速度上没有质的突破。因此，CPU的处理速度和内存的访问速度差距越来越大，甚至可以达到上万倍。这种情况下传统的CPU通过FSB直连内存的方式显然就会因为内存访问的等待，导致计算资源大量闲置，降低CPU整体吞吐量。同时又由于内存数据访问的热点集中性，在CPU和内存之间用较为快速而成本较高的SDRAM做一层缓存，就显得性价比极高了。</p>
+<h2 id="为什么要有多级CPU-Cache"><a href="#为什么要有多级CPU-Cache" class="headerlink" title="为什么要有多级CPU Cache"></a>为什么要有多级CPU Cache</h2><p>随着科技发展，热点数据的体积越来越大，单纯的增加一级缓存大小的性价比已经很低了。因此，就慢慢出现了在一级缓存(L1 Cache)和内存之间又增加一层访问速度和成本都介于两者之间的二级缓存(L2 Cache)。下面是一段从<a href="http://cenalulu.github.io/linux/all-about-cpu-cache/(www.akkadia.org/drepper/cpumemory.pdf" target="_blank" rel="noopener">What Every Programmer Should Know About Memory</a>)中摘录的解释：</p>
+<blockquote>
+<p>Soon after the introduction of the cache the system got more complicated. The speed difference between the cache and the main memory increased again, to a point that another level of cache was added, bigger and slower than the first-level cache. Only increasing the size of the first-level cache was not an option for economical rea- sons.</p>
+</blockquote>
+<p>此外，又由于程序指令和程序数据的行为和热点分布差异很大，因此L1 Cache也被划分成L1i (i for instruction)和L1d (d for data)两种专门用途的缓存。 下面<a href="https://datatake.files.wordpress.com/2015/01/cpu-cache-access-in-cpu-cycles.png" target="_blank" rel="noopener">一张图</a>可以看出各级缓存之间的响应时间差距，以及内存到底有多慢！</p>
+<p><img src="http://cenalulu.github.io/images/linux/cache_line/latency.png" alt="latency"></p>
+<h2 id="什么是Cache-Line"><a href="#什么是Cache-Line" class="headerlink" title="什么是Cache Line"></a>什么是Cache Line</h2><p>Cache Line可以简单的理解为CPU Cache中的最小缓存单位。目前主流的CPU Cache的Cache Line大小都是64Bytes。假设我们有一个512字节的一级缓存，那么按照64B的缓存单位大小来算，这个一级缓存所能存放的缓存个数就是<code>512/64 = 8</code>个。具体参见下图：</p>
+<p><img src="http://cenalulu.github.io/images/linux/cache_line/cache_line.png" alt="img"></p>
+<p>为了更好的了解Cache Line，我们还可以在自己的电脑上做下面这个有趣的实验。</p>
+<p>下面这段C代码，会从命令行接收一个参数作为数组的大小创建一个数量为N的int数组。并依次循环的从这个数组中进行数组内容访问，循环10亿次。最终输出数组总大小和对应总执行时间。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &quot;stdio.h&quot;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;sys&#x2F;time.h&gt;</span><br><span class="line"></span><br><span class="line">long timediff(clock_t t1, clock_t t2) &#123;</span><br><span class="line">    long elapsed;</span><br><span class="line">    elapsed &#x3D; ((double)t2 - t1) &#x2F; CLOCKS_PER_SEC * 1000;</span><br><span class="line">    return elapsed;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main(int argc, char *argv[])</span><br><span class="line">#*******</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    int array_size&#x3D;atoi(argv[1]);</span><br><span class="line">    int repeat_times &#x3D; 1000000000;</span><br><span class="line">    long array[array_size];</span><br><span class="line">    for(int i&#x3D;0; i&lt;array_size; i++)&#123;</span><br><span class="line">        array[i] &#x3D; 0;</span><br><span class="line">    &#125;</span><br><span class="line">    int j&#x3D;0;</span><br><span class="line">    int k&#x3D;0;</span><br><span class="line">    int c&#x3D;0;</span><br><span class="line">    clock_t start&#x3D;clock();</span><br><span class="line">    while(j++&lt;repeat_times)&#123;</span><br><span class="line">        if(k&#x3D;&#x3D;array_size)&#123;</span><br><span class="line">            k&#x3D;0;</span><br><span class="line">        &#125;</span><br><span class="line">        c &#x3D; array[k++];</span><br><span class="line">    &#125;</span><br><span class="line">    clock_t end &#x3D;clock();</span><br><span class="line">    printf(&quot;%lu\n&quot;, timediff(start,end));</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果我们把这些数据做成折线图后就会发现：总执行时间在数组大小超过64Bytes时有较为明显的拐点（当然，由于博主是在自己的Mac笔记本上测试的，会受到很多其他程序的干扰，因此会有波动）。原因是当数组小于64Bytes时数组极有可能落在一条Cache Line内，而一个元素的访问就会使得整条Cache Line被填充，因而值得后面的若干个元素受益于缓存带来的加速。而当数组大于64Bytes时，必然至少需要两条Cache Line，继而在循环访问时会出现两次Cache Line的填充，由于缓存填充的时间远高于数据访问的响应时间，因此多一次缓存填充对于总执行的影响会被放大，最终得到下图的结果： <img src="http://cenalulu.github.io/images/linux/cache_line/cache_line_size2.png" alt="cache_size"> 如果读者有兴趣的话也可以在自己的linux或者MAC上通过<code>gcc cache_line_size.c -o cache_line_size</code>编译，并通过<code>./cache_line_size</code>执行。</p>
+<p><strong>了解Cache Line的概念对我们程序猿有什么帮助？</strong> 我们来看下面这个C语言中<a href="http://qr.ae/ja9ov" target="_blank" rel="noopener">常用的循环优化例子</a> 下面两段代码中，第一段代码在C语言中总是比第二段代码的执行速度要快。具体的原因相信你仔细阅读了Cache Line的介绍后就很容易理解了。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">for(int i &#x3D; 0; i &lt; n; i++) &#123;</span><br><span class="line">    for(int j &#x3D; 0; j &lt; n; j++) &#123;</span><br><span class="line">        int num;    </span><br><span class="line">        &#x2F;&#x2F;code</span><br><span class="line">        arr[i][j] &#x3D; num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">for(int i &#x3D; 0; i &lt; n; i++) &#123;</span><br><span class="line">    for(int j &#x3D; 0; j &lt; n; j++) &#123;</span><br><span class="line">        int num;    </span><br><span class="line">        &#x2F;&#x2F;code</span><br><span class="line">        arr[j][i] &#x3D; num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="CPU-Cache-是如何存放数据的"><a href="#CPU-Cache-是如何存放数据的" class="headerlink" title="CPU Cache 是如何存放数据的"></a>CPU Cache 是如何存放数据的</h2><h4 id="你会怎么设计Cache的存放规则"><a href="#你会怎么设计Cache的存放规则" class="headerlink" title="你会怎么设计Cache的存放规则"></a>你会怎么设计Cache的存放规则</h4><p>我们先来尝试回答一下那么这个问题：</p>
+<blockquote>
+<p>假设我们有一块4MB的区域用于缓存，每个缓存对象的唯一标识是它所在的物理内存地址。每个缓存对象大小是64Bytes，所有可以被缓存对象的大小总和（即物理内存总大小）为4GB。那么我们该如何设计这个缓存？</p>
+</blockquote>
+<p>如果你和<a href="http://cenalulu.github.io/" target="_blank" rel="noopener">博主</a>一样是一个大学没有好好学习基础/数字电路的人的话，会觉得最靠谱的的一种方式就是：Hash表。把Cache设计成一个Hash数组。内存地址的Hash值作为数组的Index，缓存对象的值作为数组的Value。每次存取时，都把地址做一次Hash然后找到Cache中对应的位置操作即可。 这样的设计方式在高等语言中很常见，也显然很高效。因为Hash值得计算虽然耗时(<a href="http://programmers.stackexchange.com/questions/49550/which-hashing-algorithm-is-best-for-uniqueness-and-speed" target="_blank" rel="noopener">10000个CPU Cycle左右</a>)，但是相比程序中其他操作（上百万的CPU Cycle）来说可以忽略不计。而对于CPU Cache来说，本来其设计目标就是在几十CPU Cycle内获取到数据。如果访问效率是百万Cycle这个等级的话，还不如到Memory直接获取数据。当然，更重要的原因是在硬件上要实现Memory Address Hash的功能在成本上是非常高的。</p>
+<h4 id="为什么Cache不能做成Fully-Associative"><a href="#为什么Cache不能做成Fully-Associative" class="headerlink" title="为什么Cache不能做成Fully Associative"></a>为什么Cache不能做成Fully Associative</h4><p>Fully Associative 字面意思是全关联。在CPU Cache中的含义是：如果在一个Cache集内，任何一个内存地址的数据可以被缓存在任何一个Cache Line里，那么我们成这个cache是Fully Associative。从定义中我们可以得出这样的结论：给到一个内存地址，要知道他是否存在于Cache中，需要遍历所有Cache Line并比较缓存内容的内存地址。而Cache的本意就是为了在尽可能少得CPU Cycle内取到数据。那么想要设计一个快速的Fully Associative的Cache几乎是不可能的。</p>
+<h4 id="为什么Cache不能做成Direct-Mapped"><a href="#为什么Cache不能做成Direct-Mapped" class="headerlink" title="为什么Cache不能做成Direct Mapped"></a>为什么Cache不能做成Direct Mapped</h4><p>和Fully Associative完全相反，使用Direct Mapped模式的Cache给定一个内存地址，就唯一确定了一条Cache Line。设计复杂度低且速度快。那么为什么Cache不使用这种模式呢？让我们来想象这么一种情况：一个拥有1M L2 Cache的32位CPU，每条Cache Line的大小为64Bytes。那么整个L2Cache被划为了<code>1M/64=16384</code>条Cache Line。我们为每条Cache Line从0开始编上号。同时32位CPU所能管理的内存地址范围是<code>2^32=4G</code>，那么Direct Mapped模式下，内存也被划为<code>4G/16384=256K</code>的小份。也就是说每256K的内存地址共享一条Cache Line。但是，这种模式下每条Cache Line的使用率如果要做到接近100%，就需要操作系统对于内存的分配和访问在地址上也是近乎平均的。而与我们的意愿相反，为了减少内存碎片和实现便捷，操作系统更多的是连续集中的使用内存。这样会出现的情况就是0-1000号这样的低编号Cache Line由于内存经常被分配并使用，而16000号以上的Cache Line由于内存鲜有进程访问，几乎一直处于空闲状态。这种情况下，本来就宝贵的1M二级CPU缓存，使用率也许50%都无法达到。</p>
+<h4 id="什么是N-Way-Set-Associative"><a href="#什么是N-Way-Set-Associative" class="headerlink" title="什么是N-Way Set Associative"></a>什么是N-Way Set Associative</h4><p>为了避免以上两种设计模式的缺陷，N-Way Set Associative缓存就出现了。他的原理是把一个缓存按照N个Cache Line作为一组（set），缓存按组划为等分。这样一个64位系统的内存地址在4MB二级缓存中就划成了三个部分（见下图），低位6个bit表示在Cache Line中的偏移量，中间12bit表示Cache组号（set index），剩余的高位46bit就是内存地址的唯一id。这样的设计相较前两种设计有以下两点好处：</p>
+<ul>
+<li>给定一个内存地址可以唯一对应一个set，对于set中只需遍历16个元素就可以确定对象是否在缓存中（Full Associative中比较次数随内存大小线性增加）</li>
+<li>每<code>2^18(256K)*16(way)</code>=<code>4M</code>的连续热点数据才会导致一个set内的conflict（Direct Mapped中512K的连续热点数据就会出现conflict）</li>
+</ul>
+<p><img src="http://cenalulu.github.io/images/linux/cache_line/addr_bits.png" alt="addr"></p>
+<p><strong>为什么N-Way Set Associative的Set段是从低位而不是高位开始的</strong></p>
+<p>下面是一段从<a href="http://danluu.com/3c-conflict/#fn3" target="_blank" rel="noopener">How Misaligning Data Can Increase Performance 12x by Reducing Cache Misses</a>摘录的解释：</p>
+<blockquote>
+<p>The vast majority of accesses are close together, so moving the set index bits upwards would cause more conflict misses. You might be able to get away with a hash function that isn’t simply the least significant bits, but most proposed schemes hurt about as much as they help while adding extra complexity.</p>
+</blockquote>
+<p>由于内存的访问通常是大片连续的，或者是因为在同一程序中而导致地址接近的（即这些内存地址的高位都是一样的）。所以如果把内存地址的高位作为set index的话，那么短时间的大量内存访问都会因为set index相同而落在同一个set index中，从而导致cache conflicts使得L2, L3 Cache的命中率低下，影响程序的整体执行效率。</p>
+<p><strong>了解N-Way Set Associative的存储模式对我们有什么帮助</strong></p>
+<p>了解N-Way Set的概念后，我们不难得出以下结论：<code>2^(6Bits &lt;Cache Line Offset&gt; + 12Bits &lt;Set Index&gt;)</code> = <code>2^18</code> = <code>256K</code>。即在连续的内存地址中每256K都会出现一个处于同一个Cache Set中的缓存对象。也就是说这些对象都会争抢一个仅有16个空位的缓存池（16-Way Set）。而如果我们在程序中又使用了所谓优化神器的“内存对齐”的时候，这种争抢就会越发增多。效率上的损失也会变得非常明显。具体的实际测试我们可以参考： <a href="http://danluu.com/3c-conflict/#fn3" target="_blank" rel="noopener">How Misaligning Data Can Increase Performance 12x by Reducing Cache Misses</a> 一文。 这里我们引用一张<a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">Gallery of Processor Cache Effects</a> 中的测试结果图，来解释下内存对齐在极端情况下带来的性能损失。 <img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/assoc_big1.png" alt="memory_align"></p>
+<p>该图实际上是我们上文中第一个测试的一个变种。纵轴表示了测试对象数组的大小。横轴表示了每次数组元素访问之间的index间隔。而图中的颜色表示了响应时间的长短，蓝色越明显的部分表示响应时间越长。从这个图我们可以得到很多结论。当然这里我们只对内存带来的性能损失感兴趣。有兴趣的读者也可以阅读<a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">原文</a>分析理解其他从图中可以得到的结论。</p>
+<p>从图中我们不难看出图中每1024个步进，即每<code>1024*4</code>即4096Bytes，都有一条特别明显的蓝色竖线。也就是说，只要我们按照4K的步进去访问内存(内存根据4K对齐），无论热点数据多大它的实际效率都是非常低的！按照我们上文的分析，如果4KB的内存对齐，那么一个240MB的数组就含有61440个可以被访问到的数组元素；而对于一个每256K就会有set冲突的16Way二级缓存，总共有<code>256K/4K</code>=<code>64</code>个元素要去争抢16个空位，总共有<code>61440/64</code>=<code>960</code>个这样的元素。那么缓存命中率只有1%，自然效率也就低了。</p>
+<p>除了这个例子，有兴趣的读者还可以查阅另一篇国人对Page Align导致效率低的实验：<a href="http://evol128.is-programmer.com/posts/35453.html" target="_blank" rel="noopener">http://evol128.is-programmer.com/posts/35453.html</a></p>
+<p>想要知道更多关于内存地址对齐在目前的这种CPU-Cache的架构下会出现的问题可以详细阅读以下两篇文章：</p>
+<ul>
+<li><a href="http://danluu.com/3c-conflict/" target="_blank" rel="noopener">How Misaligning Data Can Increase Performance 12x by Reducing Cache Misses</a></li>
+<li><a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">Gallery of Processor Cache Effects</a></li>
+</ul>
+<hr>
+<h2 id="Cache淘汰策略"><a href="#Cache淘汰策略" class="headerlink" title="Cache淘汰策略"></a>Cache淘汰策略</h2><p>在文章的最后我们顺带提一下CPU Cache的淘汰策略。常见的淘汰策略主要有<code>LRU</code>和<code>Random</code>两种。通常意义下LRU对于Cache的命中率会比Random更好，所以CPU Cache的淘汰策略选择的是<code>LRU</code>。当然也有些实验显示<a href="http://danluu.com/2choices-eviction/" target="_blank" rel="noopener">在Cache Size较大的时候Random策略会有更高的命中率</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>CPU Cache对于程序猿是透明的，所有的操作和策略都在CPU内部完成。但是，了解和理解CPU Cache的设计、工作原理有利于我们更好的利用CPU Cache，写出更多对CPU Cache友好的程序</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
+<li><a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">Gallery of Processor Cache Effects</a></li>
+<li><a href="http://danluu.com/3c-conflict/" target="_blank" rel="noopener">How Misaligning Data Can Increase Performance 12x by Reducing Cache Misses</a></li>
+<li><a href="http://www.cs.umd.edu/class/sum2003/cmsc311/Notes/Memory/introCache.html" target="_blank" rel="noopener">Introduction to Caches</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>计算机体系结构</category>
+      </categories>
+      <tags>
+        <tag>计算机体系结构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>论文阅读笔记--Buffet</title>
+    <url>/2020/06/12/5_%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0-Buffet/</url>
+    <content><![CDATA[<h1 id="Buffets-An-Efficient-and-Composable-Storage-Idiom-for-Explicit-Decoupled-Data-Orchestration"><a href="#Buffets-An-Efficient-and-Composable-Storage-Idiom-for-Explicit-Decoupled-Data-Orchestration" class="headerlink" title="Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration"></a>Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration</h1><blockquote>
+<p>原文: Pellauer, M., et al. (2019). Buffets. Proceedings of the Twenty-Fourth International Conference on Architectural Support for Programming Languages and Operating Systems - ASPLOS ‘19: 137-151.</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><h3 id="1-要解决什么问题"><a href="#1-要解决什么问题" class="headerlink" title="1. 要解决什么问题"></a>1. 要解决什么问题</h3><p>提出针对加速器不同需求通用的, 可重用的storage idiom, 它独立于任何特定的设计.</p>
+<h3 id="2-通过什么理论或者模型来解决"><a href="#2-通过什么理论或者模型来解决" class="headerlink" title="2. 通过什么理论或者模型来解决"></a>2. 通过什么理论或者模型来解决</h3><ul>
+<li><p>Buffet</p>
+</li>
+<li><p>Decoupled fills and accesses with fine-grained synchronization.</p>
+</li>
+<li><p>Hierarchical composition, and efficient multi-casting. </p>
+</li>
+</ul>
+<h3 id="3-给出了什么答案"><a href="#3-给出了什么答案" class="headerlink" title="3. 给出了什么答案"></a>3. 给出了什么答案</h3><p>在8KB RAM上仅仅增加2%的控制开销,与DMA管理的double-buffer scratched pad和跨各种工作负载的cache相比，Buffet分别将能量延迟乘积提高了1.53倍和5.39倍。</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><h3 id="1-研究意义"><a href="#1-研究意义" class="headerlink" title="1. 研究意义"></a>1. 研究意义</h3><p>相较于通用芯片, 数据编排(data orchestration)—即将数据移入或者移出buffer heirarchy, 是专用加速芯片实现高性能的重要方法.</p>
+<p><img src="https://i.loli.net/2020/06/11/4sbALD7TirONE19.png" alt="image-20200611104101471" style="zoom:80%;" /></p>
+<p>加速器在定制的片上缓冲上花费了大量的精力。不幸的是，这些解决方案与特定设计紧密相关，从而妨碍了其他加速器领域的可重用性。</p>
+<h3 id="2-研究背景"><a href="#2-研究背景" class="headerlink" title="2. 研究背景"></a>2. 研究背景</h3><p>Existing reusable buffer idiom:</p>
+<p>cache</p>
+<ul>
+<li>过多面积和功耗用于隐式数据编排, 与加速器需求不一致.</li>
+</ul>
+<p>scratched pad</p>
+<ul>
+<li>不灵活, 不满足复杂数据重用和更新模式需求.</li>
+</ul>
+<p>FIFO</p>
+<ul>
+<li>缺乏同步性, 难以层次化..</li>
+</ul>
+<h3 id="3-基于哪些假设"><a href="#3-基于哪些假设" class="headerlink" title="3. 基于哪些假设"></a>3. 基于哪些假设</h3><ol>
+<li>显式解耦合(EDDO)方式.</li>
+<li>同步实现方式.</li>
+<li>Buffet与层次化存储结合, buffet间同步, 支持单buffet多数据广播.</li>
+</ol>
+<h2 id="Classifying-Data-Orchestration"><a href="#Classifying-Data-Orchestration" class="headerlink" title="Classifying Data Orchestration"></a>Classifying Data Orchestration</h2><p>加速器架构师利用他们在设计时对工作负载特征和访问模式的了解，可以获得以下收益：</p>
+<ul>
+<li>预取—提前准确的取来将被使用的数据,</li>
+<li>在最小，最快和最节能的缓冲区中最大程度地访问数据,</li>
+<li><del>将数据暂存到层次结构中共享者之间最小上限的缓冲区中,</del></li>
+<li>将下一个数据图块的填充与当前数据图块的消耗重叠，</li>
+<li>同时向访问的数据的所有使用者广播（或multi-casting）缓冲区访问的结果，</li>
+<li>精确且廉价地同步数据可用性,</li>
+<li>准确删除不再需要的数据</li>
+</ul>
+<p>传统应用场景下的resuable buffering idioms分类:</p>
+<p>​        implict/explict: workload在何种程度上决定暂存, 缓存策略.</p>
+<p>​        coupled/decoupled: 访存请求是round-trip还是flow-forward.</p>
+<p><img src="https://i.loli.net/2020/06/11/HG2x6trF9miWDl8.png" alt="image-20200611115419792" style="zoom: 67%;" /></p>
+<h3 id="1-Implicit-versus-Explicit-Orchestration"><a href="#1-Implicit-versus-Explicit-Orchestration" class="headerlink" title="1. Implicit versus Explicit Orchestration"></a>1. Implicit versus Explicit Orchestration</h3><ul>
+<li>cache<ul>
+<li>可重用的模块化的buffer抽象</li>
+<li>implict: 发起请求的程序并不指定数据何时重用和清空</li>
+<li>启发式(Heuristic)替换策略, 与workload无关</li>
+<li>但对于特定领域的加速器, tag匹配等带来的面积和功耗开销也难以忍受</li>
+</ul>
+</li>
+<li>Scratched Pad<ul>
+<li>指定存储的地址范围, 实现显示数据编排和精确控制</li>
+<li>常用于GPU的shared mem</li>
+<li>避免了cache的硬件开销</li>
+<li>Across fill和overlaping fill繁琐且易出错, 难组成层级化的存储</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-Coupled-versus-Decoupled-Orchestration"><a href="#2-Coupled-versus-Decoupled-Orchestration" class="headerlink" title="2.  Coupled versus Decoupled Orchestration"></a>2.  Coupled versus Decoupled Orchestration</h3><ul>
+<li><p>Coupled</p>
+<ul>
+<li>存取请求的发起者也接收响应.</li>
+<li>Pros: <ul>
+<li>数据需求和使用之前的同步性高效且直观</li>
+</ul>
+</li>
+<li>Cons: <ul>
+<li>难以实现数据填充(fill)和访问(access)之间的overlap—请求/响应者要来在请求者和消费者之间回变换角色</li>
+</ul>
+</li>
+<li>必须为整个往返负载延迟保留传入数据图块的“着陆区(landing zone)”，这会增加对RAM资源的压力</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>Decoupled</p>
+<ul>
+<li><p>单独的硬件模块（例如DMA或地址生成器（AGEN））负责将数据推送到一个或多个功能单元的staging buffer中.</p>
+</li>
+<li><p>为了掩盖延时, ==这些buffer通常是ping-pong buffers[1,2].</p>
+</li>
+<li><p>Pros:</p>
+<ul>
+<li>请求者可以以自己的速度运行, 返回的数据可以广播到多个使用者.</li>
+<li>访存是feed-forward的, 只需要与相邻层级的存储结构之间的lantancy相关的landing zong,  而不是在整个层次结构之间round-trip(比如cache如果miss还要去访问高一级存储, 如果decoupled那么buffer的大小只需要掩盖L1到L2的延时)</li>
+</ul>
+</li>
+<li><p>Cons:</p>
+<ul>
+<li>传统的DAE数据编排依然是隐式的, 使用cache的管理机制</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2020/06/12/HYUbECoueQTwhqa.png" alt=""></p>
+<h3 id="3-Synchronization-Concerns"><a href="#3-Synchronization-Concerns" class="headerlink" title="3. Synchronization Concerns"></a>3. Synchronization Concerns</h3><p>何时load一个new tile? 过早会导致数据被覆盖, 过晚会导致性能损失. </p>
+<p>通过脉动阵列来约束tile的执行时间是一种办法. 对于涉及片外访问或者条件执行的系统, 这些时限过于保守.</p>
+<p>本文采用ready-valid握手协议, 也可以使用其他micro-protocols(例如TRY/ACK). 本文提供了一个EDDO storage idiom，它在staging buffer操作本身中封装了细粒度的同步。</p>
+<h2 id="The-Buffet-Storage-Idiom"><a href="#The-Buffet-Storage-Idiom" class="headerlink" title="The Buffet Storage Idiom"></a>The Buffet Storage Idiom</h2><p><img src="https://i.loli.net/2020/06/12/omPiChJxk5trX1S.png" style="zoom: 67%;" /></p>
+<p>上图给出了buffet的数据编排模型, 它属于表1中的EDDO象限. 相较于DMA, 采用decoupled AGEN扩大了解耦的范围.</p>
+<p>在buffet中，有限状态机控制四个基本存储操作：</p>
+<ol>
+<li>Fill(data)</li>
+<li>Read(index)</li>
+<li>Update(index, data): </li>
+<li>Shrink(num)</li>
+</ol>
+<p>上级存储如DRAM通过<strong>FILL</strong>操作填入数据. 下级模块（例如DataPath）则通过<strong>Read</strong>和<strong>Update</strong>操作来处理buffet中的数据. <strong>Shrink</strong>操作从窗口中删除数据.</p>
+<p><img src="https://i.loli.net/2020/06/12/kprVbnS1IgGwmxu.png" style="zoom:67%;" /></p>
+<h3 id="1-Buffet-Operational-Behavior"><a href="#1-Buffet-Operational-Behavior" class="headerlink" title="1. Buffet Operational Behavior"></a>1. Buffet Operational Behavior</h3><p><img src="https://i.loli.net/2020/06/12/PcMjgDhnptIOEfV.png" alt="image-20200611205302228" style="zoom: 50%;" /></p>
+<p>❶新传输的数据通过Fill逻辑装入RAM, 这一步类似于传统的FIFO, 数据不带有地址信息. Local地址的生成依赖于填充顺序.</p>
+<p>❷与FIFO不同的是Read请求包含一个额外的Index, 允许以与接收数据不同的顺序读取数据. 这一index是相对于staging buffer中的oldest installed datum. 这一缩影不能超出RAM的大小.  传统的FIFO只要为非空，就会声明Pop.Vld. 在buffet中，请求数据的存在是索引的函数.  只有被请求的数据已被填充, 才会设置ReadRsp.VLD.</p>
+<p>❸除了索引读取之外，与FIFO的一个显着区别是活动窗口内的数据元素可以就地修改，我们将其称为Update路径.</p>
+<p>❹ shrink路径描述了从buffet中删除暂存数据的逻辑。此操作采用size参数，并从活动窗口中删除那么多元素。此操作仅更新内部记分板-不会发生数据移动。credits被释放到Fill AGEN，表明有空间可以进行另一次批量传输. 主张谁使用数据(生成index)谁shrink.</p>
+<p><img src="https://i.loli.net/2020/06/12/uZ1agqPvn9zxKRo.png" alt="image-20200611211210544" style="zoom:80%;" /></p>
+<h3 id="2-Buffet-Synchronization-Details"><a href="#2-Buffet-Synchronization-Details" class="headerlink" title="2. Buffet Synchronization Details"></a>2. Buffet Synchronization Details</h3><ul>
+<li>需要显式硬件同步的情况由算法1中的“wait_until”调用表示。</li>
+<li>由于公式1中的操作顺序，许多其他同步情况都可以在不需要显式硬件支持的情况下处理，如图4所示。</li>
+<li>RAW冒险检查—计分板<ul>
+<li>will_update 用于表示datapath即将修改当前阶段的值</li>
+<li>如果后续的<strong>Read</strong>请求正在被修改的索引，则响应将stall—这与读取尚未填充的索引没有区别</li>
+<li><strong>FILL</strong>写入时不需要检查</li>
+<li>定制化—如果确定没有RAW冒险, 可以删除RAW检查, 如果<strong>FILL</strong>与<strong>UPDATE</strong>互斥, 可以共享一个写端口. </li>
+</ul>
+</li>
+<li><strong>SHRINK</strong>与<strong>FILL</strong>之间的同步<ul>
+<li>算法1中对<strong>SHRINK</strong>保守的使用显示同步—wait_until(num&lt;occupancy).</li>
+<li>图4将其描述为隐式同步, 详见第四节</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2020/06/12/On4vEXflL9IuGKk.png" alt="image-20200611212533286" style="zoom:67%;" /></p>
+<h3 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h3><h3 id="4-Composition-of-Buffets"><a href="#4-Composition-of-Buffets" class="headerlink" title="4. Composition of Buffets"></a>4. Composition of Buffets</h3><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><h3 id="1-文章的主要内容"><a href="#1-文章的主要内容" class="headerlink" title="1. 文章的主要内容"></a>1. 文章的主要内容</h3><h3 id="2-存在哪些缺陷"><a href="#2-存在哪些缺陷" class="headerlink" title="2. 存在哪些缺陷"></a>2. 存在哪些缺陷</h3><h3 id="3-有什么构思"><a href="#3-有什么构思" class="headerlink" title="3. 有什么构思"></a>3. 有什么构思</h3><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><blockquote>
+<p>[1] J. Cong, M. A. Ghodrat, M. Gill, B. Grigorian, K. Gururaj, and G. Reinman. Accelerator-rich architectures: Opportunities and progresses. In Proceedings of the Design Automation Conference (DAC), 2014.<br>[2] E. G. Cota, P. Mantovani, G. D. Guglielmo, and L. P. Carloni. An analysis of accelerator coupling in heterogeneous architectures. In 2015 52nd ACM/EDAC/IEEE Design Automation Conference (DAC), pages 1–6, June 2015.</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>论文阅读笔记</category>
+      </categories>
+      <tags>
+        <tag>计算机体系结构</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>论文阅读笔记--卷积神经网络加速器最优设计空间</title>
-    <url>/2020/06/15/5_%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97-Optimizing-the-Convolution-Operation-to-Accelerate/</url>
+    <url>/2020/06/15/5_%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0-Optimizing-the-Convolution-Operation-to-Accelerate/</url>
     <content><![CDATA[<h1 id="Optimizing-the-Convolution-Operation-to-Accelerate-Deep-Neural-Networks-on-FPGA"><a href="#Optimizing-the-Convolution-Operation-to-Accelerate-Deep-Neural-Networks-on-FPGA" class="headerlink" title="Optimizing the Convolution Operation to Accelerate Deep Neural Networks on FPGA"></a>Optimizing the Convolution Operation to Accelerate Deep Neural Networks on FPGA</h1><blockquote>
 <p>原文: Ma, Y., et al. (2018). “Optimizing the Convolution Operation to Accelerate Deep Neural Networks on FPGA.” IEEE Transactions on Very Large Scale Integration (VLSI) Systems 26(7): 1354-1367.</p>
 </blockquote>
@@ -1029,199 +1293,6 @@ O(1)\lt O(\log n) \lt O(n) \lt O(n\log n) \lt  O(n^2) \lt O(n^3) \lt O(2^n) \lt 
       <tags>
         <tag>神经网络加速器</tag>
         <tag>计算机体系结构</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>线性表</title>
-    <url>/2020/07/01/%E7%BA%BF%E6%80%A7%E8%A1%A8/</url>
-    <content><![CDATA[<h1 id="线性表"><a href="#线性表" class="headerlink" title="线性表"></a>线性表</h1><blockquote>
-<p>定义: 零个或有多个元素的有限序列</p>
-</blockquote>
-<p><img src="https://i.loli.net/2020/07/03/49MFwX8VzsOfIW1.png" alt="image-20200703165948756"></p>
-<a id="more"></a>
-<h2 id="1-线性表的顺序存储结构"><a href="#1-线性表的顺序存储结构" class="headerlink" title="1. 线性表的顺序存储结构"></a>1. 线性表的顺序存储结构</h2><p>线性表的顺序存储结构指的是用一段地址连续的存储单元一次存储线性表的数据元素.</p>
-<h3 id="1-1-数据存储方式"><a href="#1-1-数据存储方式" class="headerlink" title="1.1 数据存储方式"></a>1.1 数据存储方式</h3><p>在C语言中使用一维数组存储</p>
-<ul>
-<li>数组的长度: 存放线性表的存储空间长度, 即capacity()</li>
-<li>线性表的长度: 线性表中数据元素的个数, 即size()</li>
-</ul>
-<p>任意时刻线性表的长度应该小于等于数组长度</p>
-<p>如果已知线性表的首元素a1地址, 可以通过下列公式算出第i个数据元素:</p>
-<script type="math/tex; mode=display">
-LOC(a_i) = LOC(a_1) + (i-1)C</script><p>则不论ai位于何处 , 计算地址的时间都是相同的, <strong>时间复杂度为$O(1)$,</strong> 具有这一特点的存储结构称为随机存储. 比如数组, </p>
-<h3 id="1-2-插入和删除"><a href="#1-2-插入和删除" class="headerlink" title="1.2 插入和删除"></a>1.2 插入和删除</h3><p>插入算法的思路:</p>
-<ol>
-<li>如果插入位置不合理, 抛出异常</li>
-<li>如果线性表长度大于或者等于数组长度, 抛出异常或者动态增加容量</li>
-<li>从最后一个元素向前遍历到第i个位置, 分别将他们都向后移动一个位置, 从后向前遍历是为了避免被覆盖</li>
-<li>将要插入的元素填入位置i处</li>
-<li>表长增加1</li>
-</ol>
-<p>删除算法的思路:</p>
-<ol>
-<li>如果删除的位置不合理, 抛出异常</li>
-<li>取出删除元素</li>
-<li>从删除元素位置开始遍历到最后一个元素位置, 将他们都向前移动一位</li>
-<li>表长减1</li>
-</ol>
-<p>时间复杂度:</p>
-<p>最好情况是插入最后一个或者删除第一个, 时间复杂度为$O(1)$, 最坏情况则相反, 时间复杂度为$O(n)$, 平均需要的移动次数为$\frac{n-1}{2}$.</p>
-<p>因此<strong>顺序存储结构的插入和删除,时间复杂度为$O(n)$.</strong></p>
-<h3 id="1-3-优缺点"><a href="#1-3-优缺点" class="headerlink" title="1.3 优缺点"></a>1.3 优缺点</h3><div class="table-container">
-<table>
-<thead>
-<tr>
-<th>优点</th>
-<th>缺点</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>不需要为表中元素逻辑关系增加额外存储空间</td>
-<td>插入和删除操作需要移动大量元素</td>
-</tr>
-<tr>
-<td>可以快速存取表中任一元素</td>
-<td>线性表长度大时, 难以确定存储空间容量</td>
-</tr>
-<tr>
-<td></td>
-<td>造成存储空间的”碎片”</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="2-链式存储结构"><a href="#2-链式存储结构" class="headerlink" title="2. 链式存储结构"></a>2. 链式存储结构</h2><h3 id="2-1-链表的定义和存储结构"><a href="#2-1-链表的定义和存储结构" class="headerlink" title="2.1 链表的定义和存储结构"></a>2.1 链表的定义和存储结构</h3><p>数据元素ai除了要<strong>存储本身的信息</strong>外, 还需要<strong>存储后续元素地址</strong>. 我们把存储数据元素信息的域称为数据域, 存储后继元素位置的域称为指针域, 指针域存储的是后继结点的指针. 这两部分组成ai的存储印象, 称为<strong>结点.</strong></p>
-<p>链表中的第一个元素的存储位置称为<strong>头指针</strong>, 不过通常会在单链表的第一个结点之间附设一个结点(懒结点)作为头结点, 头结点数据域可以不存储信息, 通常是为了处理特殊情况(如空链表或者只有一个元素的链表)而引入.</p>
-<p>单链表中最后一个结点的指针指向”空”.</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>头节点</th>
-<th>头指针</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>为了操作方便和统一引入,一般放在第一元素节点之前. 数据域一般无意义(也可存放链表长度)</td>
-<td>指向第一个节点的指针, 若链表有头节点, 则是指向头节点的指针</td>
-</tr>
-<tr>
-<td>有了头结点, 在第一元素节点前插入节点或者删除第一节点的操作就和其他节点统一了</td>
-<td>具有标识作用, 通常用头指针冠以链表的名字</td>
-</tr>
-<tr>
-<td>无论链表是否为空, 头指针均不为空</td>
-<td>头节点不是链表的必要元素(如空链表)</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h3 id="2-2-单链表的读取"><a href="#2-2-单链表的读取" class="headerlink" title="2.2 单链表的读取"></a>2.2 单链表的读取</h3><p>获得链表第i个数据的思路:</p>
-<ol>
-<li>声明一个指针p指向链表的第一个结点</li>
-<li>遍历链表, 让p不断指向下一结点</li>
-<li>若遍历到链表末尾p为空, 则第i个节点不存在</li>
-<li>若查找到, 返回结点p的数据</li>
-</ol>
-<p>主要的核心思想是<strong>工作指针后移</strong>, 每次查找都要遍历链表, 因此时间复杂度为$O(n)$</p>
-<h3 id="2-3-单链表的插入和删除"><a href="#2-3-单链表的插入和删除" class="headerlink" title="2.3 单链表的插入和删除"></a>2.3 单链表的插入和删除</h3><p><strong>插入</strong></p>
-<p>在结点p和结点p-&gt;next之间插入节点s, 只需要<code>s-&gt;next=p-&gt;next; p-&gt;next-&gt;s;//顺序不能错</code></p>
-<p>单链表在第i个数据插入节点元素为e的节点s</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">LinkList</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> data;</span><br><span class="line">  	LinkList* next;</span><br><span class="line">    LinkList(<span class="keyword">int</span> data) : data(data) , next(<span class="literal">nullptr</span>)&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function">LinkList* <span class="title">ListInsert</span><span class="params">(LinkList* L, <span class="keyword">int</span> i, Elem e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> j=<span class="number">1</span>;</span><br><span class="line">    LinkList* p,s;</span><br><span class="line">    p = L;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>( p &amp;&amp; j&lt;i) <span class="comment">//寻找第i个节点</span></span><br><span class="line">    &#123;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">        ++j;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(!p||j&gt;i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    s=<span class="keyword">new</span> LinkList(e);</span><br><span class="line">    s-&gt;next = p-&gt;next;	<span class="comment">//</span></span><br><span class="line">    p-&gt;next = s;		<span class="comment">//两句的顺序不能颠倒</span></span><br><span class="line">    <span class="keyword">return</span> s;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>删除</strong></p>
-<p>若要利用节点q去删除节点p的后一个节点, 只需要<code>q = p-&gt;next; q-&gt;next = p-&gt;next;</code>,即使用保留将要删除的节点, 然后使用<code>q-&gt;next = p-&gt;next;</code>进行删除.</p>
-<p>单链表删除第i个数据结点的算法如下:</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">LinkList</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> data;</span><br><span class="line">  	LinkList* next;</span><br><span class="line">    LinkList(<span class="keyword">int</span> data) : data(data) , next(<span class="literal">nullptr</span>)&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function">ElemType <span class="title">ListInsert</span><span class="params">(LinkList* L, <span class="keyword">int</span> i, ElemType* e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> j=<span class="number">1</span>;</span><br><span class="line">    LinkList* p,q;</span><br><span class="line">    p = L;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>( p-&gt;next &amp;&amp; j&lt;i) <span class="comment">//寻找第i-1个节点</span></span><br><span class="line">    &#123;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">        ++j;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(!p-&gt;next||j&gt;i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nullptr</span>;	<span class="comment">//第i个结点不存在</span></span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    q=p-&gt;next;</span><br><span class="line">    p-&gt;next=q-&gt;next;</span><br><span class="line">    *e=q-&gt;data;</span><br><span class="line">    <span class="keyword">delete</span> q;</span><br><span class="line">    <span class="keyword">return</span> *e</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>单链表的插入和删除时间复杂度为O(1), 对于插入和删除数据越频繁的操作, 单链表的效率优势就越明显.</strong></p>
-<h3 id="2-4-单链表的整表创建"><a href="#2-4-单链表的整表创建" class="headerlink" title="2.4 单链表的整表创建"></a>2.4 单链表的整表创建</h3><p>算法思路:</p>
-<ol>
-<li>声明有一指针p和计数器变量i</li>
-<li>初始化一空链表L</li>
-<li>让L的头节点的指针指向NULL, 即建立一个带头结点的空链表</li>
-<li>循环:<ol>
-<li>生成一新节点p</li>
-<li>随机生成一数字赋值给p的数据域p-&gt;data</li>
-<li>将p插入到头结点<strong>与前一新节点之间</strong>(头插法), 也可将新结点插入到<strong>终端节点的后面</strong>(尾插法)</li>
-</ol>
-</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">LinkList</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> data;</span><br><span class="line">  	LinkList* next;</span><br><span class="line">    LinkList(<span class="keyword">int</span> data) : data(data) , next(<span class="literal">nullptr</span>)&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">creatList</span><span class="params">(LinkList* L, <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    LinkList p;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    srand(time(<span class="number">0</span>));</span><br><span class="line">    L = <span class="keyword">new</span> LinkList(<span class="number">0</span>);</span><br><span class="line">    L-&gt;next = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        p = <span class="keyword">new</span> LinkList(rand()%<span class="number">100</span>+<span class="number">1</span>);</span><br><span class="line">        p-&gt;next = L-&gt;next;</span><br><span class="line">        L-&gt;next = p;			<span class="comment">//插入到表头</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">creatList</span><span class="params">(LinkList* L, <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    LinkList p,r;</span><br><span class="line">    srand(time(<span class="number">0</span>));</span><br><span class="line">    L = <span class="keyword">new</span> LinkList(<span class="number">0</span>);</span><br><span class="line">    L-&gt;next = <span class="literal">nullptr</span>;</span><br><span class="line">    r = L;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        p = <span class="keyword">new</span> LinkList(rand()%<span class="number">100</span>+<span class="number">1</span>);</span><br><span class="line">        r-&gt;next = p;</span><br><span class="line">        r = p;			<span class="comment">//插入到表头</span></span><br><span class="line">    &#125;</span><br><span class="line">    r-&gt;next = <span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="2-5-单链表的整表删除"><a href="#2-5-单链表的整表删除" class="headerlink" title="2.5 单链表的整表删除"></a>2.5 单链表的整表删除</h3><p>算法思路:</p>
-<ol>
-<li>声明一个节点p和q</li>
-<li>将第一个节点的值赋给p</li>
-<li>循环:<ol>
-<li>将下一结点的值赋给q;</li>
-<li>释放p</li>
-<li>将q赋值给p</li>
-</ol>
-</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">delete</span><span class="params">(LinkList* L)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    LinkList p,q;</span><br><span class="line">	p = L;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(p)</span><br><span class="line">    &#123;</span><br><span class="line">        q = p-&gt;next;</span><br><span class="line">        <span class="keyword">delete</span> p;</span><br><span class="line">        p = q;			<span class="comment">//插入到表头</span></span><br><span class="line">    &#125;</span><br><span class="line">    L-&gt;next = <span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="3-单链表与顺序存储结构的优缺点"><a href="#3-单链表与顺序存储结构的优缺点" class="headerlink" title="3. 单链表与顺序存储结构的优缺点"></a>3. 单链表与顺序存储结构的优缺点</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th></th>
-<th>单链表</th>
-<th>顺序存储结构</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>存储分配方式</td>
-<td>链式存储, 任意存储位置</td>
-<td>顺序存储单元依次存储</td>
-</tr>
-<tr>
-<td>时间性能</td>
-<td>查找O(n), 增删O(1)</td>
-<td>查找O(1), 增删O(n)</td>
-</tr>
-<tr>
-<td>空间性能</td>
-<td>不需要预分配空间, 元素个数不受限</td>
-<td>需要预分配空间, 存储空间过小则溢出,过大则浪费</td>
-</tr>
-</tbody>
-</table>
-</div>
-<ul>
-<li>一般频繁读取不需要修改的数据采用顺序存储结构, 需要经常删改的结构可以采用链表</li>
-<li>当线性元素个数变化较大或者不知道大小时最好采用单链表结构, 如果预先知道存储空间大小可以采用顺序存储结构</li>
-</ul>
-<h2 id="4-循环链表"><a href="#4-循环链表" class="headerlink" title="4.循环链表"></a>4.循环链表</h2><p>将单链表终端结点的指针端由指向空指针改为指向头结点, 就使整个单链表形成一个环, 这种头尾相接的链表<strong>称为单循环链表</strong>, 简称循环链表.</p>
-<p>循环链表和单链表的主要差异在循环的判断条件上</p>
-<ul>
-<li>对于单链表是判断p-&gt;next是否为NULL</li>
-<li>对于循环链表是判断p-&gt;next是否为头结点</li>
-</ul>
-<p>在链表中, 找到头结点需要O(1)时间, 但是找到最后一个节点需要O(n)时间, 再循环链表中不用头指针, 而是用指向终端节点的尾指针来表示循环链表. 这样可以方便的查找到开始节点和终端节点.</p>
-<p>终端节点用尾指针<code>rear</code>表示</p>
-<p>那么开始节点为<code>rear-&gt;next-&gt;next</code>注: 第一个next是头结点,开始节点是头结点的后一个, 二者的区别可见2.1节 </p>
-<h2 id="5-双向链表"><a href="#5-双向链表" class="headerlink" title="5. 双向链表"></a>5. 双向链表</h2><p>双向链表在每个结点中, 在设置一个指向其前驱结点的指针</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DulNode</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    ElemType data;</span><br><span class="line">    DualNode* prior;</span><br><span class="line">    DualNode* next;</span><br><span class="line">&#125; *DualLinkList;</span><br></pre></td></tr></table></figure>
-<h3 id="5-1-插入节点"><a href="#5-1-插入节点" class="headerlink" title="5.1 插入节点"></a>5.1 插入节点</h3><p>在p和p-&gt;next之间插入结点s.</p>
-<ol>
-<li>将p设置为s的前驱</li>
-<li>将p-&gt;next设置为s的后驱</li>
-<li>将s设置为p-&gt;next的前驱</li>
-<li>将s设置为p的后驱</li>
-</ol>
-<p>要严格注意顺序, 以免p-&gt;next没有指针指向</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">s-&gt;prior = p;</span><br><span class="line">s-&gt;next = p-&gt;next;</span><br><span class="line">p-&gt;next-&gt;prior = s;</span><br><span class="line">p-&gt;next = s;</span><br></pre></td></tr></table></figure>
-<h3 id="5-2-删除结点"><a href="#5-2-删除结点" class="headerlink" title="5.2 删除结点"></a>5.2 删除结点</h3><p>删除节点p的步骤</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">p-&gt;prior-&gt;next = p-&gt;next;</span><br><span class="line">p-&gt;next-&gt;prior = p-&gt;prior;</span><br><span class="line"><span class="keyword">delete</span> p;</span><br></pre></td></tr></table></figure>
-<h2 id="6-静态链表"><a href="#6-静态链表" class="headerlink" title="6. 静态链表"></a>6. 静态链表</h2><p>静态链表使用数组描述, 主要是为了给没有指针的高级语言设计一种实现单链表能力的方法, 理解其思想即可.</p>
-]]></content>
-      <categories>
-        <category>数据结构</category>
-      </categories>
-      <tags>
-        <tag>数据结构</tag>
       </tags>
   </entry>
 </search>
