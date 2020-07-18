@@ -225,7 +225,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-07-18 14:02:38 / 修改时间：14:05:27" itemprop="dateCreated datePublished" datetime="2020-07-18T14:02:38+08:00">2020-07-18</time>
+              <time title="创建时间：2020-07-18 14:02:38 / 修改时间：14:17:28" itemprop="dateCreated datePublished" datetime="2020-07-18T14:02:38+08:00">2020-07-18</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -260,160 +260,14 @@
 <p>Tu, F., et al. (2017). “Deep Convolutional Neural Network Architecture With Reconfigurable Computation Patterns.” IEEE Transactions on Very Large Scale Integration (VLSI) Systems 25(8): 2220-2233.</p>
 </blockquote>
 <h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>以往的深度神经网络加速器(DCNN)通常使用单一的计算模式加速多种神经网络结构, 这会导致性能和效率的损失. 本文提出了一种可重构的DCNN—DNA, 其计算模式, 包含数据重用和可配置的卷积映射方法. 相比传统的方式减少了5.9~8.4倍总能耗, 获得了93%的计算资源利用率.</p>
-<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>传统的DCNN往往使用固定的数据重用模式加和数据通路加速不同的CNN模型. 但不同网络结构和计算资源之间的不匹配将会导致更低的资源利用率和低性能.</p>
-<p>本文提出的可重构加速器架构(DNA)有以下三个特点:</p>
-<ol>
-<li>DNA可以重构数据通路以支持混合重用模式(hybrid reuse), 可用于不同大小的层;</li>
-<li>DNA可以重新配置其计算资源以支持高度可伸缩和高效的映射方法，从而提高不同卷积参数下的资源利用率 ;</li>
-<li>提供了一个layer-based的DNA资源配置框架，在能率和性能两方面进行优化 .</li>
-</ol>
-<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><h3 id="DCNN加速器系统结构"><a href="#DCNN加速器系统结构" class="headerlink" title="DCNN加速器系统结构"></a>DCNN加速器系统结构</h3><p><img src="https://i.loli.net/2020/07/13/qYvH6Ise5gdm2Na.png" alt="1594263695195"></p>
-<p>上图给出了传统的DCNN加速器结构.</p>
-<ul>
-<li>Input Buffer和Weight Buffer存储当前层的输入特征图和权重.</li>
-<li>卷积核将输入特征图load到Input REGs中, 在多个并行的convolution engines(CEs)中进行并行卷积运算.</li>
-<li>输出存储在CEs的output REGs中, 通过池化单元送往Output Buffer.</li>
-<li>计算完当前层那么将Output Buffer中的数据交换至Input Buffer作为下一层的输入或者直接送往DRAM.</li>
-</ul>
-<h3 id="DCNN设计的两个挑战"><a href="#DCNN设计的两个挑战" class="headerlink" title="DCNN设计的两个挑战"></a>DCNN设计的两个挑战</h3><p>能效(OPS/W)</p>
-<p><img src="https://i.loli.net/2020/07/13/SZp57qdiN2zDHrU.png" alt="1594264241221"></p>
-<p>EDRAM、Ebuffer和Eoperation分别是每次DRAM访问、缓冲区访问和每次操作的功耗。因为对于特定网络操作数是固定的, 能耗主要取决于DRAM访问和Buffer访问次数. </p>
-<p><img src="https://i.loli.net/2020/07/13/Nr1RZ2aoF8WXLIG.png" alt="1594264259161"></p>
-<p><strong>挑战一: 在片上缓存上高效的复用数据以降低访存次数从而降低功耗</strong></p>
-<p>DCNN加速器性能可以定义为</p>
-<p><img src="https://i.loli.net/2020/07/13/QbzA2oeEaFiYw4S.png" alt="1594264514892"></p>
-<p>其中MAC为加速器的总MAC单元数量(x2是因为一次MAC包含两个操作), PE利用率与步长、kernel大小、Input map大小相关.</p>
-<p><strong>挑战二: 充分利用PE资源以支持不同的卷积参数从而提升性能</strong></p>
-<h2 id="计算模式"><a href="#计算模式" class="headerlink" title="计算模式"></a>计算模式</h2><p>从两个方面进行考虑—数据重用和卷积映射策略, 优化数据重用可以减少访存, 优化卷积映射策略可以提高PE资源利用率.</p>
-<p><img src="https://i.loli.net/2020/07/13/nvJYpr4yoSdfjmF.png" alt="1594276287162"></p>
-<h3 id="数据重用模式"><a href="#数据重用模式" class="headerlink" title="数据重用模式"></a>数据重用模式</h3><p><img src="https://i.loli.net/2020/07/13/IDBbPvtQs1dxJCo.png" alt="1594274321942"></p>
-<p>将输入和输出特征图按$Th×Tl×Tn$和$Tr×Tc×Tm$分块。$Th$和$Tl$可由$Th = (Tr−1)S + K$和$Tl = (Tc−1)S + K$计算，其中K和S分别为kernel size和stride。对于缓冲区访问和DRAM访问，总访问时间可以用一个统一方程表示</p>
-<p><img src="https://i.loli.net/2020/07/13/YVpkixFyzKM1UDO.png" alt="1594274633130"></p>
-<p>其中TI、TO和TW代表输入、输出和核权重的总数，而$α_i,α_o,α_w$代表它们在计算过程中的重用次数,TOP是total pooled outputs的缩写, 描述池化过后数据写入memory的次数, 通常等于TO/4​.</p>
-<h4 id="输入复用-IR"><a href="#输入复用-IR" class="headerlink" title="输入复用(IR)"></a><strong>输入复用(IR)</strong></h4><p>如Fig 5(a)所示</p>
-<ol>
-<li>Convolution Core将input maps load到Input REGs;</li>
-<li>这些input maps被完全重用，以更新存储在Output Buffer中所有对应的(因为分块了所以是对应部分)部分和 ;</li>
-<li>这些部分和将绕过池化单元直接送往Output Buffer，随后被core取回以便于在下一个input map被load以后继续累加.</li>
-</ol>
-<p>在IR中，卷积的伪代码如Fig5 (b)所示, 外层的四个循环表示卷积的重用模式, 在IR中, Loop N在Loop M之外, 表示一个Input map channel将会被完全重用, 即与所有的卷积核进行运算. 随后再Load下一个Input map channel.总的buffer访问量为$MA^{(IR)}_{buffer}$</p>
-<p><img src="https://i.loli.net/2020/07/13/oVarpuEtMy6ZzH2.png" alt="1594277048049"></p>
-<p>因为Input map只会被加载一次, 所以$\alpha_i=1$, 注意TI会比原始的图大小大1~1.5倍, 因为分块的时候两个tiles之间存在overlap, 这部分数据其实会被重复load. 如fig 4所示,将一个24x24的图分成8x8的三块, kernel size为3, 那么图中overlap部分的大小为10x2(图中的灰色部分). 在这种方式下, overlap的部分会直接从memory读取而不发生重用, 在本例中, 每一个Input map从26x26扩大为30x30.</p>
-<p><img src="https://i.loli.net/2020/07/13/cKlg8YuyiD1UwVJ.png" alt="1594277316486"></p>
-<p>因为Input REGs存储了Tn块, 所以cores要读写$\lceil(N/Tn)\rceil-1$次部分和, 因此$\alpha_o=2(\lceil(N/Tn)\rceil-1)$, TW要在每个input tile上复制一份因此最后一项是$\mathrm{TW} \cdot\lceil(H / \mathrm{Th})\rceil\lceil(L / \mathrm{Tl})\rceil$其中的L和H会因为overlap而扩大. </p>
-<p>如果IR需要缓存的数据比buffer size大, 那么还会导致额外的DRAM访问$\mathrm{MA}_{\mathrm{DRAM}}^{(\mathrm{IR})}$</p>
-<p><img src="https://i.loli.net/2020/07/13/rcMsI9kQzELvYtm.png" alt="1594279756227"></p>
-<p>其中$Bo$和$Bw$是Output Buffer的容量和Weight Buffer的容量, 如果out buffer可以缓存$M \cdot \mathrm{Tr} \cdot \mathrm{T} \mathrm{c}$大小的数据,即$\left(M \cdot \operatorname{Tr} \cdot \mathrm{T} \mathrm{c} \leq B_{o}\right)$, 那么就不会有部分和需要写到DRAM中, 否则部分和需要被储存在DRAM中, 最终导致的DRAM访问次数为$\left(\alpha_{o}=2(\lceil(N / \mathrm{Tn})\rceil-1)\right)$, 同样如果weight的数量不超过Weight Buffer的大小Bw那么最终DRAM的访问次数也可以最小化. 因为Loop R和Loop C是最外层的两层循环, 必须要缓存所有的TW以降低DRAM访问.</p>
-<h4 id="输出复用-OR"><a href="#输出复用-OR" class="headerlink" title="输出复用(OR)"></a>输出复用(OR)</h4><p>如Fig 5(c)所示:</p>
-<ol>
-<li>将同一输入tile对应的不同channels加载到Core上;</li>
-<li>Outputs REGs中的部分和被复用直至计算出output tile的一个channel;</li>
-<li>最终的output maps会在经过池化后被储存, <strong>因此只会计算中只会访问一次Output Buffer.</strong></li>
-</ol>
-<p>伪代码如Fig 5(d), Loop M和Loop N位置发生了互换, 因此累加完成后maps才会被送往Output Buffer, 因此总的buffer 访问量OR为$\mathrm{MA}_{\text {buffer }}^{(\mathrm{OPR})}$</p>
-<p><img src="https://i.loli.net/2020/07/13/xikue29FIsyXdvq.png" alt="1594282066760"></p>
-<p>因为output REGs存储了Tm块, 所以cores要读写$\lceil(M/Tm)\rceil$次部分和, 权重要在每个output tile上load一份, 所以$\alpha_{w}$ 等于$\lceil(R / \mathrm{Tr})\rceil(C / \mathrm{Tc}) \rceil$. DRAM访问次数$\mathrm{MA}_{\mathrm{DRAM}}^{(\mathrm{OR})}$同样与$\mathrm{MA}_{\text {buffer }}^{(\mathrm{OPR})}$和buffer sizes相关</p>
-<p><img src="https://i.loli.net/2020/07/13/51Uie9tzJcxaISn.png" alt="1594282765992"></p>
-<p>其中的$Bi$表示Input Buffer size如果Input Buffer可以存储N个input tiles即$\left(N \cdot \mathrm{Th} \cdot \mathrm{Tl} \leq B_{i}\right)$那么input只需要load一次$\left(\alpha_{i}=1\right)$</p>
-<h4 id="权重重用-WR"><a href="#权重重用-WR" class="headerlink" title="权重重用(WR)"></a>权重重用(WR)</h4><p>如Fig 5(e)所示</p>
-<ol>
-<li>Core load $Tn$个input tiles到Input REGs;</li>
-<li>这些输入将用于更新$Tm$相关的部分和;</li>
-<li>Weight Buffer中${Tn} \times{Tm}$个卷积窗的权重(即$Tn \times Tm \times k \times k$)将被重用, 以计算出$R \times C$大小的$Tm$个output channel.</li>
-</ol>
-<p>伪代码如Fig 5(f)所示, Loop M和Loop N位于循环最外层以重复利用weight. WR的buffer访问次数和DRAM访问次数如下</p>
-<p><img src="https://i.loli.net/2020/07/13/kO8rSdTpFq54Htx.png" alt="1594283823048"></p>
-<h4 id="混合数据重用-Hybrid-Data-Reuse"><a href="#混合数据重用-Hybrid-Data-Reuse" class="headerlink" title="混合数据重用(Hybrid Data Reuse)"></a>混合数据重用(Hybrid Data Reuse)</h4><p>如图6所示，我们分析IR，OR，和WR在AlexNet的CONV3上的Buffer访问时间，将Tr和Tc从2扫描到14, 约束$\mathrm{Tn} \cdot \mathrm{Th} \cdot \mathrm{Tl} \leq 40^{2}$ 和 $\mathrm{Tm} \cdot \mathrm{Tr} \cdot \mathrm{Tc} \leq 32^{2}$,</p>
-<p><img src="https://i.loli.net/2020/07/13/wRl5eJAdDZFVPNr.png" alt="1594284105360"></p>
-<p>对于不同的$Tr \times Tn$, IR, OR, WR也会表现不同的buffer访问次数, 至于DRAM, 随层的变化更大,  传统的做法是选择一个相对较大的固定$Tr \times Tn$, 这显然不是最好的做法.</p>
-<p>混合数据重用是指对每一层选择各自独立的重用模式, 通过探索$\mathrm{IR} / \mathrm{O} \mathrm{R} / \mathrm{WR}$下不同的$\mathrm{Tr}, \mathrm{Tc}, \mathrm{Tm}, \mathrm{Tn}$, 同时通过以下公式评估功耗</p>
-<p><img src="https://i.loli.net/2020/07/13/8VGAQmwjLubdlBK.png" alt="1594285174740"></p>
-<p>这里不评估MAC的计算功耗, 因为对于特定的网络总计算数是确定的, 本文使用的片外DRAM是DDR3, 它的平均访问功耗$E_{\mathrm{DRAM}}$大约是70 pJ/bit [10],Output Buffer的平均访问功耗大约是0.42pJ/bit (TSMC 65-nm LP technology), 通过上述公式在给定硬件存储限制和卷积层大小的情况下计算出最优情况.</p>
-<h3 id="卷积映射方案"><a href="#卷积映射方案" class="headerlink" title="卷积映射方案"></a>卷积映射方案</h3><h4 id="Output-Oriented-Mapping-OOM"><a href="#Output-Oriented-Mapping-OOM" class="headerlink" title="Output Oriented Mapping(OOM)"></a>Output Oriented Mapping(OOM)</h4><p><strong>OOM</strong></p>
-<p><img src="https://i.loli.net/2020/07/13/BzqeDs4y9JASIfT.png" alt="1594285840845"></p>
-<p>如上图所示的例子, input map为3x3, 卷积核大小为2x2, 卷积步长为1, 一个CE包含2x2个PE, 卷积核在图中的四个区域{I0, I1, I3, I4}, {I1, I2, I4, I5},{I3, I4, I6, I7}, 和{I4, I5, I7, I8}  滑动, 得到四个输出O1~O3四个输出点.</p>
-<p>OOM就是指将这四个输出点分配给CE中单独的PE, PE可以与<strong>相邻</strong>的PE共享数据. PE可以沿着黑色箭头所示的轨迹收集数据, 如Fig 7(a)所示. </p>
-<p>需要4个cycles完成:</p>
-<ol>
-<li>Cycle1: {I0, I1, I3, I4}分别分配给PE0~PE3作为它们的第一个输入, 同时所有的PE都会Load第一个kernel的权重W0; 这一权重将在cycle2与输入数据相乘,  并与存储在PE输出寄存器中, 之前的计算结果进行累加; 在cycle3, load输入, 乘法运算, 累加将完全流水化运行;</li>
-<li>Cycle2: PE0和PE2将重用之前存储在PE1和PE3中的{I1,I4}作为它的第二个输入, 如Fig 7(b)所示, PE1和PE3 Load他们所需的第二个输入{I2,I5}, 所有的PE共享权重W1;</li>
-<li>Cycle3: 此时已经到了卷积的第二行, 与第一行不同的是第二行应该反方向运动, PE0和PE1将重用之前存储在PE2和PE3中的{I4,I5}作为它的第三个输入, PE2和PE3 Load他们所需的第三个输入{I7,I8}, 所有的PE共享权重W2;</li>
-<li>Cycle4: PE1和PE3将重用之前存储在PE0和PE2中的{I4,I7}作为它的第四个输入, PE0和PE2将Load它们所需的输入{I3,I6}, 至此, 所有的PE都收集到了它们所需的数据.最终的O1~O3将在两个cycle内完成.</li>
-</ol>
-<p><strong>OOM的局限—降低PE的利用率</strong></p>
-<p><em>Pros:</em> 针对不同大小的卷积核大小, PEs也可以不改变其功能而轻易收集它们所需的数据, 只需要改变它们的轨迹长度(=<em>k x k</em>). </p>
-<p><em>Cons:</em> 如Fig 7(c)所示, 有两种情况会降低PE的利用率</p>
-<ul>
-<li>对于卷积步长S&gt;1的情况, 在这种情况下, 未被激活的PEs((1)图中灰色部分) Load得到的数据没有用, 故4 x 4的输出需要8 x 8的PE来做, 仅仅得到了25%的PE利用率.</li>
-<li>不规则feature map$(Tr \times Tc)$与固定的阵列大小$(A \times A)$之间的不匹配, 如(2)所示, 6 x 6的特征图放在8 x 8的PE阵列上, PE利用率仅有56.25%.</li>
-</ul>
-<h4 id="Parallel-Output-Oriented-Mapping-POOM"><a href="#Parallel-Output-Oriented-Mapping-POOM" class="headerlink" title="Parallel Output Oriented Mapping(POOM)"></a>Parallel Output Oriented Mapping(POOM)</h4><p>传统OOM中PE利用率可以给出如下定义:</p>
-<p><img src="https://i.loli.net/2020/07/13/MfIUbEiZP9raDLR.png" alt="1594346829578"></p>
-<p>如Fig 8所示, 通过同时并行P个计算, 可以克服OOM的局限性, 我们称之为POOM. P会减小计算在阵列上的feature map大小。因此，我们对分配给卷积核的最里面的四个循环进行进一步的分块(图9)。在POOM中，PE利用率被重新定义为 </p>
-<p><img src="https://i.loli.net/2020/07/13/OoEDyCAerVqkXRK.png" alt="1594346839413"></p>
-<p><img src="https://i.loli.net/2020/07/13/kZlmTDxuMbJ8KOP.png" alt="1594347059610"></p>
-<p>其中的Trr和Tcc是PE阵列的平铺参数(tiling parameters). </p>
-<ul>
-<li>对于Fig 7(a)中stride较大(S=2)的情况, 可以同时让4个($S^2$)output maps并行(原文是output maps, 个人认为是output map的一个channel, 因为后文提到了数据共享, 因此并行多个kernel计算output channel更合理), 每个inactive PE可以接受来自相邻红色PE的数据, 使用自己的kernel weight进行计算, 通过这种方法将利用率提高了P倍.</li>
-<li>POOM也可以将多个不规则(irregular, 这里指的是map不能完全铺满阵列)的特征图映射到一个阵列上, Fig8 (b)所示, 在OOM中, 计算16个6 x 6的input maps需要16次迭代, 而PE利用率仅仅只有56.25%. 在POOM中, 可以将output切分成小块, 在本例中8 x 8阵列被分为了16个2 x 2的blocks, 每个blocks都负责一个map的计算(相当于同时计算16个input maps), 这样只需要9次迭代(6 x 6 / 2 x 2), 每次迭代的PE利用率都是100%.</li>
-</ul>
-<p><strong>因为POOM其实是对最里面四层循环进行tiling, 因此可以重用input register中的数据, 不会造成额外的Input Buffer访问.</strong>当然更大的P对Weight Buffer的带宽和容量要求也更大, 因此需要选择合适的POOM参数<P, Trr, Tcc>在有限的参数下最大化PE利用率.</p>
-<h4 id="全连接层的实现"><a href="#全连接层的实现" class="headerlink" title="全连接层的实现"></a>全连接层的实现</h4><p>全连接层可以看做特殊的卷积层, 只不过有如下约束:  </p>
-<ul>
-<li>H = L = R = C = K = S = 1</li>
-</ul>
-<p>因为全连接层拥有量的权重(25.1倍于卷积层), 但是MAC操作仅为卷积层的8.8%, 因此全连接层一次运算需要大量的权重, 此时的DRAM带宽将成为性能瓶颈. 因此要批量处理权重, 采用WR,  每个batch可以看做卷积层的tile, 因此全连接层也可以使用POOM.$R \times C=\operatorname{Tr} \times \mathrm{T} \mathrm{c}=$ <em>batch size</em>. </p>
-<h2 id="架构设计"><a href="#架构设计" class="headerlink" title="架构设计"></a>架构设计</h2><p>基本架构设计如图3所示:</p>
-<ul>
-<li>Controller中的configuration context用于配置加速器的资源;</li>
-<li>每个convolution core拥有两个CE, 它们共享Input Regs, 但是拥有独立的Output Regs用于保存部分和;</li>
-<li>ReLU+池化单元作为输出.</li>
-</ul>
-<h3 id="可重构的数据通路"><a href="#可重构的数据通路" class="headerlink" title="可重构的数据通路"></a>可重构的数据通路</h3><p><img src="https://i.loli.net/2020/07/13/p9sfNUqFoJmjvzO.png" alt="1594370558737"></p>
-<p>数据buffer大小为256KB, Input Buffer和Output Buffer各128KB. Input Regs和Output Regs以及Weight Buffer都采用了<strong>ping-pong buffer</strong>(图中的绿色部分). 片上采用了大data buffer和小Weight Buffer, 因为缓存所有weights的要求很难达到, 但是数据却可以通过修改参数满足要求(tiling等). 比如如果采用IR, 那么Output Buffer的大小只需要$M \cdot \operatorname{Tr} \cdot \mathrm{T}_{\mathrm{C}}$但是Weight Buffer却需要缓存Tw大小(即所有)的权重.</p>
-<ul>
-<li>对于IR, Output Buffer可以通过图中红色的线将之前累加的部分和反馈回给Output REGs.</li>
-<li>对于OR, Input Buffer在处理当前特征图的时候就可以利用ping pong的方式load下一次计算需要的特征图.</li>
-<li>WR和IR很类似, 只不过weight需要被保持直至完全重用.</li>
-</ul>
-<p><img src="https://i.loli.net/2020/07/13/DPIFuqtWBrARJMm.png" alt="1594370572270"></p>
-<h3 id="可重构的CE设计"><a href="#可重构的CE设计" class="headerlink" title="可重构的CE设计"></a>可重构的CE设计</h3><p><strong>四级CE结构</strong></p>
-<ol>
-<li><p>Input REG level: CE的shared Input REGs, 包含两个40 x 40输入寄存器网络, 可以通过水平和垂直移动寄存器中的数据实现Fig7 (b)中提到的S行数据轨迹, 西北角的16 x 16个寄存器可被data sharing level和MAC level通过PE的”In”端口直接访问.</p>
-</li>
-<li><p>data sharing level: CE能够针对不同的POOM进行重构, 实现PE之间的快速数据共享, POOM中不同的block需要共享相同的input, 与此同时<P, Trr, Tcc>需要受到硬件资源的限制.  如Fig 11所示, 我们设计了三种数据共享网络(DSNs)以实现blocks之间灵活和快速的数据传输:</p>
-<ul>
-<li><p>DSN0是一种增强了对角线互联的mesh-like寄存器阵, 它与大步长的数据共享相适配;</p>
-</li>
-<li><p>DSN1和DSN2用来支持切分不规则(irregular)的output maps. </p>
-<ul>
-<li>DSN1是一个包含8x8个2x2 blocks的网络, 每个周期开始,  block0从Input REG level load 2x2个数据. 然后通过DSNs之间的互联传递给其他blocks, 每个blocks再通过ds1将数据传输给相应的2x2MACs. 通过这种方式, 最多可以以Trr  x Tcc = 2 x 2的大小同时计算64个output maps.</li>
-<li>DSN2与DSN1类似, 只不过是一个包含4x4个4x4 blocks的网络.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>MAC level: 分布在16 x 16个PE中的16 x 16个MAC, 每个MAC的输入寄存器R0可以从Input REG level(通过port”in”)和data sharing level(通过port”ds0”,”ds1”,”ds2”);</p>
-</li>
-<li><p>Output REG level</p>
-</li>
-</ol>
-<p><img src="https://i.loli.net/2020/07/13/TiKQmCgAUkG6xvo.png" alt="1594603848715"></p>
-<p><img src="https://i.loli.net/2020/07/13/QO4eSZrqXhwmxT7.png" alt="1594604298300"></p>
-<h3 id="DNA’s-Work-Flow-and-Scheduling-Framework"><a href="#DNA’s-Work-Flow-and-Scheduling-Framework" class="headerlink" title="DNA’s Work Flow and Scheduling Framework"></a>DNA’s Work Flow and Scheduling Framework</h3><p>DNA的工作流程如Fig 13所示:</p>
-<p><img src="https://i.loli.net/2020/07/13/9ZCgPI4JmQlhRbK.png" alt="1594606380823"></p>
-<p><strong>Phase1: 将DCNN编译成DNA的配置</strong></p>
-<p>我们为Phase1提出了一个分层调度的框架, 对于给定的DCNN, 可以为每一层计算分配最佳的计算模式. 对于每一层调度, 都被描述为一个双向优化问题. 通常一个双向优化问题可以转换成一个单向优化问题. 比如如果我们更关注性能, 可以首先优化性能, 再优化功耗.</p>
-<p><strong>Phase2: 在DNA系统上执行DCNN</strong></p>
-<ol>
-<li>从hosts processor加载编译好的配置</li>
-<li>从片外DRAM加载数据和权重至DNA</li>
-<li>DNA执行当前层</li>
-<li>DNA将输出写回DRAM</li>
-</ol>
-<p>这四个步骤是完全流水化的直到一整个batch被处理完, DNA依次计算每个卷积层, 然后batch处理FC.</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文从数据重用的角度实, 降低访问DRAM和片上SRAM(Buffer, Reg)带来的功耗损失. 从卷积映射的角度提高了PE资源的利用率. 针对卷积神经网络的不同层, 针对性的搜寻最合适的tiling parameters, 缓解了传统神经网络加速器使用单一计算模式导致性能损失的问题.</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/18/5_%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0-Deep-Convolutional-Neural-Network-Architecture-With-Reconfigurable-Computation-Patterns/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 

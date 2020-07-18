@@ -1304,6 +1304,7 @@ O(1)\lt O(\log n) \lt O(n) \lt O(n\log n) \lt  O(n^2) \lt O(n^3) \lt O(2^n) \lt 
 <p>Tu, F., et al. (2017). “Deep Convolutional Neural Network Architecture With Reconfigurable Computation Patterns.” IEEE Transactions on Very Large Scale Integration (VLSI) Systems 25(8): 2220-2233.</p>
 </blockquote>
 <h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>以往的深度神经网络加速器(DCNN)通常使用单一的计算模式加速多种神经网络结构, 这会导致性能和效率的损失. 本文提出了一种可重构的DCNN—DNA, 其计算模式, 包含数据重用和可配置的卷积映射方法. 相比传统的方式减少了5.9~8.4倍总能耗, 获得了93%的计算资源利用率.</p>
+<a id="more"></a>
 <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>传统的DCNN往往使用固定的数据重用模式加和数据通路加速不同的CNN模型. 但不同网络结构和计算资源之间的不匹配将会导致更低的资源利用率和低性能.</p>
 <p>本文提出的可重构加速器架构(DNA)有以下三个特点:</p>
 <ol>
