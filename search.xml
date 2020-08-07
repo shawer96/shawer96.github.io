@@ -1,28 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>计算力参数FLOPS,GOPS,GMACS辨析</title>
-    <url>/2020/06/16/%E8%AE%A1%E7%AE%97%E5%8A%9B%E5%8F%82%E6%95%B0FLOPS-GOPS-GMACS%E8%A7%A3%E6%9E%90/</url>
-    <content><![CDATA[<h2 id="FLOPS"><a href="#FLOPS" class="headerlink" title="FLOPS"></a>FLOPS</h2><p>FLOPS是“每秒所执行的浮点运算次数”（floating-point operations per second）的缩写。它常被用来估算电脑的执行效能，尤其是在使用到大量浮点运算的科学计算领域中。正因为FLOPS字尾的那个S，代表秒，而不是复数，所以不能省略掉。</p>
-<p>在这里所谓的“浮点运算”，实际上包括了所有涉及小数的运算。这类运算在某类应用软件中常常出现，而它们也比整数运算更花时间。现今大部分的处理器中，都有一个专门用来处理浮点运算的“浮点运算器”（FPU）。也因此FLOPS所量测的，实际上就是FPU的执行速度。而最常用来测量FLOPS的基准程式（benchmark）之一，就是Linpack。</p>
-<p>使用时常加数量级前缀如M, G, T等。</p>
+    <title>转载:关于CPU Cache——程序员需要知道的事</title>
+    <url>/2020/07/11/%E5%85%B3%E4%BA%8ECPU-Cache-%E7%A8%8B%E5%BA%8F%E5%91%98%E9%9C%80%E8%A6%81%E7%9F%A5%E9%81%93%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/</url>
+    <content><![CDATA[<blockquote>
+<p>本文将介绍一些作为程序猿或者IT从业者应该知道的CPU Cache相关的知识</p>
+<p>文章欢迎转载，但转载时请保留本段文字，并置于文章的顶部 作者：卢钧轶(cenalulu) 本文原文地址：<a href="http://cenalulu.github.io/linux/all-about-cpu-cache/" target="_blank" rel="noopener">http://cenalulu.github.io/linux/all-about-cpu-cache/</a></p>
+</blockquote>
+<p>先来看一张本文所有概念的一个思维导图</p>
+<p><img src="http://cenalulu.github.io/images/linux/cache_line/mind_map.png" alt="mind_map"></p>
 <a id="more"></a>
-<h2 id="OPS"><a href="#OPS" class="headerlink" title="OPS"></a>OPS</h2><p>OPS与FLOPS类似，只不过OPS一个是操作次数，FLOPS一个是浮点操作次数。</p>
-<p>使用时常加数量级前缀如M, G, T等。</p>
-<h2 id="MACS"><a href="#MACS" class="headerlink" title="MACS"></a>MACS</h2><p>MACS 指每秒执行的定点<strong>乘累加</strong>操作次数的缩写，它是衡量计算机定点处理能力的量，这个量经常用在那些需要大量定点乘法累加运算的科学运算中，记为MACS。</p>
-<p>使用时常加数量级前缀如M, G, T等。</p>
-<h2 id="易混辨析—FLOPS-FLOPs-FLOP-s"><a href="#易混辨析—FLOPS-FLOPs-FLOP-s" class="headerlink" title="易混辨析—FLOPS,FLOPs,FLOP/s"></a>易混辨析—FLOPS,FLOPs,FLOP/s</h2><p>FLOPS：注意全大写，是floating point operations per second的缩写，意指每秒浮点运算次数，理解为计算速度。是一个衡量硬件性能的指标。</p>
-<p>FLOPs：注意s小写，是floating point operations的缩写（s表复数），意指浮点运算数，理解为计算量。可以用来衡量算法/模型的复杂度。</p>
-<p>FLOP/s：等同于FLOPS。</p>
-<p>简化到计算机只拥有一块CPU的情况时，可以使用以下公式：</p>
-<script type="math/tex; mode=display">
-{\displaystyle {\text{FLOPS}}={\text{cores}}\times {\frac {\text{cycles}}{\text{second}}}\times {\frac {\text{FLOPs}}{\text{cycle}}}}</script><p>同样的对于OPS和MACS也适用上述规则。</p>
+<h2 id="为什么要有CPU-Cache"><a href="#为什么要有CPU-Cache" class="headerlink" title="为什么要有CPU Cache"></a>为什么要有CPU Cache</h2><p>随着工艺的提升最近几十年CPU的频率不断提升，而受制于制造工艺和成本限制，目前计算机的内存主要是DRAM并且在访问速度上没有质的突破。因此，CPU的处理速度和内存的访问速度差距越来越大，甚至可以达到上万倍。这种情况下传统的CPU通过FSB直连内存的方式显然就会因为内存访问的等待，导致计算资源大量闲置，降低CPU整体吞吐量。同时又由于内存数据访问的热点集中性，在CPU和内存之间用较为快速而成本较高的SDRAM做一层缓存，就显得性价比极高了。</p>
+<h2 id="为什么要有多级CPU-Cache"><a href="#为什么要有多级CPU-Cache" class="headerlink" title="为什么要有多级CPU Cache"></a>为什么要有多级CPU Cache</h2><p>随着科技发展，热点数据的体积越来越大，单纯的增加一级缓存大小的性价比已经很低了。因此，就慢慢出现了在一级缓存(L1 Cache)和内存之间又增加一层访问速度和成本都介于两者之间的二级缓存(L2 Cache)。下面是一段从<a href="http://cenalulu.github.io/linux/all-about-cpu-cache/(www.akkadia.org/drepper/cpumemory.pdf" target="_blank" rel="noopener">What Every Programmer Should Know About Memory</a>)中摘录的解释：</p>
+<blockquote>
+<p>Soon after the introduction of the cache the system got more complicated. The speed difference between the cache and the main memory increased again, to a point that another level of cache was added, bigger and slower than the first-level cache. Only increasing the size of the first-level cache was not an option for economical rea- sons.</p>
+</blockquote>
+<p>此外，又由于程序指令和程序数据的行为和热点分布差异很大，因此L1 Cache也被划分成L1i (i for instruction)和L1d (d for data)两种专门用途的缓存。 下面<a href="https://datatake.files.wordpress.com/2015/01/cpu-cache-access-in-cpu-cycles.png" target="_blank" rel="noopener">一张图</a>可以看出各级缓存之间的响应时间差距，以及内存到底有多慢！</p>
+<p><img src="http://cenalulu.github.io/images/linux/cache_line/latency.png" alt="latency"></p>
+<h2 id="什么是Cache-Line"><a href="#什么是Cache-Line" class="headerlink" title="什么是Cache Line"></a>什么是Cache Line</h2><p>Cache Line可以简单的理解为CPU Cache中的最小缓存单位。目前主流的CPU Cache的Cache Line大小都是64Bytes。假设我们有一个512字节的一级缓存，那么按照64B的缓存单位大小来算，这个一级缓存所能存放的缓存个数就是<code>512/64 = 8</code>个。具体参见下图：</p>
+<p><img src="http://cenalulu.github.io/images/linux/cache_line/cache_line.png" alt="img"></p>
+<p>为了更好的了解Cache Line，我们还可以在自己的电脑上做下面这个有趣的实验。</p>
+<p>下面这段C代码，会从命令行接收一个参数作为数组的大小创建一个数量为N的int数组。并依次循环的从这个数组中进行数组内容访问，循环10亿次。最终输出数组总大小和对应总执行时间。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &quot;stdio.h&quot;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;sys&#x2F;time.h&gt;</span><br><span class="line"></span><br><span class="line">long timediff(clock_t t1, clock_t t2) &#123;</span><br><span class="line">    long elapsed;</span><br><span class="line">    elapsed &#x3D; ((double)t2 - t1) &#x2F; CLOCKS_PER_SEC * 1000;</span><br><span class="line">    return elapsed;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main(int argc, char *argv[])</span><br><span class="line">#*******</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    int array_size&#x3D;atoi(argv[1]);</span><br><span class="line">    int repeat_times &#x3D; 1000000000;</span><br><span class="line">    long array[array_size];</span><br><span class="line">    for(int i&#x3D;0; i&lt;array_size; i++)&#123;</span><br><span class="line">        array[i] &#x3D; 0;</span><br><span class="line">    &#125;</span><br><span class="line">    int j&#x3D;0;</span><br><span class="line">    int k&#x3D;0;</span><br><span class="line">    int c&#x3D;0;</span><br><span class="line">    clock_t start&#x3D;clock();</span><br><span class="line">    while(j++&lt;repeat_times)&#123;</span><br><span class="line">        if(k&#x3D;&#x3D;array_size)&#123;</span><br><span class="line">            k&#x3D;0;</span><br><span class="line">        &#125;</span><br><span class="line">        c &#x3D; array[k++];</span><br><span class="line">    &#125;</span><br><span class="line">    clock_t end &#x3D;clock();</span><br><span class="line">    printf(&quot;%lu\n&quot;, timediff(start,end));</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果我们把这些数据做成折线图后就会发现：总执行时间在数组大小超过64Bytes时有较为明显的拐点（当然，由于博主是在自己的Mac笔记本上测试的，会受到很多其他程序的干扰，因此会有波动）。原因是当数组小于64Bytes时数组极有可能落在一条Cache Line内，而一个元素的访问就会使得整条Cache Line被填充，因而值得后面的若干个元素受益于缓存带来的加速。而当数组大于64Bytes时，必然至少需要两条Cache Line，继而在循环访问时会出现两次Cache Line的填充，由于缓存填充的时间远高于数据访问的响应时间，因此多一次缓存填充对于总执行的影响会被放大，最终得到下图的结果： <img src="http://cenalulu.github.io/images/linux/cache_line/cache_line_size2.png" alt="cache_size"> 如果读者有兴趣的话也可以在自己的linux或者MAC上通过<code>gcc cache_line_size.c -o cache_line_size</code>编译，并通过<code>./cache_line_size</code>执行。</p>
+<p><strong>了解Cache Line的概念对我们程序猿有什么帮助？</strong> 我们来看下面这个C语言中<a href="http://qr.ae/ja9ov" target="_blank" rel="noopener">常用的循环优化例子</a> 下面两段代码中，第一段代码在C语言中总是比第二段代码的执行速度要快。具体的原因相信你仔细阅读了Cache Line的介绍后就很容易理解了。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">for(int i &#x3D; 0; i &lt; n; i++) &#123;</span><br><span class="line">    for(int j &#x3D; 0; j &lt; n; j++) &#123;</span><br><span class="line">        int num;    </span><br><span class="line">        &#x2F;&#x2F;code</span><br><span class="line">        arr[i][j] &#x3D; num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">for(int i &#x3D; 0; i &lt; n; i++) &#123;</span><br><span class="line">    for(int j &#x3D; 0; j &lt; n; j++) &#123;</span><br><span class="line">        int num;    </span><br><span class="line">        &#x2F;&#x2F;code</span><br><span class="line">        arr[j][i] &#x3D; num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="CPU-Cache-是如何存放数据的"><a href="#CPU-Cache-是如何存放数据的" class="headerlink" title="CPU Cache 是如何存放数据的"></a>CPU Cache 是如何存放数据的</h2><h4 id="你会怎么设计Cache的存放规则"><a href="#你会怎么设计Cache的存放规则" class="headerlink" title="你会怎么设计Cache的存放规则"></a>你会怎么设计Cache的存放规则</h4><p>我们先来尝试回答一下那么这个问题：</p>
+<blockquote>
+<p>假设我们有一块4MB的区域用于缓存，每个缓存对象的唯一标识是它所在的物理内存地址。每个缓存对象大小是64Bytes，所有可以被缓存对象的大小总和（即物理内存总大小）为4GB。那么我们该如何设计这个缓存？</p>
+</blockquote>
+<p>如果你和<a href="http://cenalulu.github.io/" target="_blank" rel="noopener">博主</a>一样是一个大学没有好好学习基础/数字电路的人的话，会觉得最靠谱的的一种方式就是：Hash表。把Cache设计成一个Hash数组。内存地址的Hash值作为数组的Index，缓存对象的值作为数组的Value。每次存取时，都把地址做一次Hash然后找到Cache中对应的位置操作即可。 这样的设计方式在高等语言中很常见，也显然很高效。因为Hash值得计算虽然耗时(<a href="http://programmers.stackexchange.com/questions/49550/which-hashing-algorithm-is-best-for-uniqueness-and-speed" target="_blank" rel="noopener">10000个CPU Cycle左右</a>)，但是相比程序中其他操作（上百万的CPU Cycle）来说可以忽略不计。而对于CPU Cache来说，本来其设计目标就是在几十CPU Cycle内获取到数据。如果访问效率是百万Cycle这个等级的话，还不如到Memory直接获取数据。当然，更重要的原因是在硬件上要实现Memory Address Hash的功能在成本上是非常高的。</p>
+<h4 id="为什么Cache不能做成Fully-Associative"><a href="#为什么Cache不能做成Fully-Associative" class="headerlink" title="为什么Cache不能做成Fully Associative"></a>为什么Cache不能做成Fully Associative</h4><p>Fully Associative 字面意思是全关联。在CPU Cache中的含义是：如果在一个Cache集内，任何一个内存地址的数据可以被缓存在任何一个Cache Line里，那么我们成这个cache是Fully Associative。从定义中我们可以得出这样的结论：给到一个内存地址，要知道他是否存在于Cache中，需要遍历所有Cache Line并比较缓存内容的内存地址。而Cache的本意就是为了在尽可能少得CPU Cycle内取到数据。那么想要设计一个快速的Fully Associative的Cache几乎是不可能的。</p>
+<h4 id="为什么Cache不能做成Direct-Mapped"><a href="#为什么Cache不能做成Direct-Mapped" class="headerlink" title="为什么Cache不能做成Direct Mapped"></a>为什么Cache不能做成Direct Mapped</h4><p>和Fully Associative完全相反，使用Direct Mapped模式的Cache给定一个内存地址，就唯一确定了一条Cache Line。设计复杂度低且速度快。那么为什么Cache不使用这种模式呢？让我们来想象这么一种情况：一个拥有1M L2 Cache的32位CPU，每条Cache Line的大小为64Bytes。那么整个L2Cache被划为了<code>1M/64=16384</code>条Cache Line。我们为每条Cache Line从0开始编上号。同时32位CPU所能管理的内存地址范围是<code>2^32=4G</code>，那么Direct Mapped模式下，内存也被划为<code>4G/16384=256K</code>的小份。也就是说每256K的内存地址共享一条Cache Line。但是，这种模式下每条Cache Line的使用率如果要做到接近100%，就需要操作系统对于内存的分配和访问在地址上也是近乎平均的。而与我们的意愿相反，为了减少内存碎片和实现便捷，操作系统更多的是连续集中的使用内存。这样会出现的情况就是0-1000号这样的低编号Cache Line由于内存经常被分配并使用，而16000号以上的Cache Line由于内存鲜有进程访问，几乎一直处于空闲状态。这种情况下，本来就宝贵的1M二级CPU缓存，使用率也许50%都无法达到。</p>
+<h4 id="什么是N-Way-Set-Associative"><a href="#什么是N-Way-Set-Associative" class="headerlink" title="什么是N-Way Set Associative"></a>什么是N-Way Set Associative</h4><p>为了避免以上两种设计模式的缺陷，N-Way Set Associative缓存就出现了。他的原理是把一个缓存按照N个Cache Line作为一组（set），缓存按组划为等分。这样一个64位系统的内存地址在4MB二级缓存中就划成了三个部分（见下图），低位6个bit表示在Cache Line中的偏移量，中间12bit表示Cache组号（set index），剩余的高位46bit就是内存地址的唯一id。这样的设计相较前两种设计有以下两点好处：</p>
+<ul>
+<li>给定一个内存地址可以唯一对应一个set，对于set中只需遍历16个元素就可以确定对象是否在缓存中（Full Associative中比较次数随内存大小线性增加）</li>
+<li>每<code>2^18(256K)*16(way)</code>=<code>4M</code>(这里的<code>2^18</code>可能是按照64位CPU通常采用40位地址总线计算得到的, 即<code>2^40/4MB=2^18</code>)的连续热点数据才会导致一个set内的conflict（Direct Mapped中512K的连续热点数据就会出现conflict）</li>
+</ul>
+<p><img src="http://cenalulu.github.io/images/linux/cache_line/addr_bits.png" alt="addr"></p>
+<p><strong>为什么N-Way Set Associative的Set段是从低位而不是高位开始的</strong></p>
+<p>下面是一段从<a href="http://danluu.com/3c-conflict/#fn3" target="_blank" rel="noopener">How Misaligning Data Can Increase Performance 12x by Reducing Cache Misses</a>摘录的解释：</p>
+<blockquote>
+<p>The vast majority of accesses are close together, so moving the set index bits upwards would cause more conflict misses. You might be able to get away with a hash function that isn’t simply the least significant bits, but most proposed schemes hurt about as much as they help while adding extra complexity.</p>
+</blockquote>
+<p>由于内存的访问通常是大片连续的，或者是因为在同一程序中而导致地址接近的（即这些内存地址的高位都是一样的）。所以如果把内存地址的高位作为set index的话，那么短时间的大量内存访问都会因为set index相同而落在同一个set index中，从而导致cache conflicts使得L2, L3 Cache的命中率低下，影响程序的整体执行效率。</p>
+<p><strong>了解N-Way Set Associative的存储模式对我们有什么帮助</strong></p>
+<p>了解N-Way Set的概念后，我们不难得出以下结论：<code>2^(6Bits &lt;Cache Line Offset&gt; + 12Bits &lt;Set Index&gt;)</code> = <code>2^18</code> = <code>256K</code>。即在连续的内存地址中每256K都会出现一个处于同一个Cache Set中的缓存对象。也就是说这些对象都会争抢一个仅有16个空位的缓存池（16-Way Set）。而如果我们在程序中又使用了所谓优化神器的“内存对齐”的时候，这种争抢就会越发增多。效率上的损失也会变得非常明显。具体的实际测试我们可以参考： <a href="http://danluu.com/3c-conflict/#fn3" target="_blank" rel="noopener">How Misaligning Data Can Increase Performance 12x by Reducing Cache Misses</a> 一文。 这里我们引用一张<a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">Gallery of Processor Cache Effects</a> 中的测试结果图，来解释下内存对齐在极端情况下带来的性能损失。 <img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/assoc_big1.png" alt="memory_align"></p>
+<p>该图实际上是我们上文中第一个测试的一个变种。纵轴表示了测试对象数组的大小。横轴表示了每次数组元素访问之间的index间隔。而图中的颜色表示了响应时间的长短，蓝色越明显的部分表示响应时间越长。从这个图我们可以得到很多结论。当然这里我们只对内存带来的性能损失感兴趣。有兴趣的读者也可以阅读<a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">原文</a>分析理解其他从图中可以得到的结论。</p>
+<p>从图中我们不难看出图中每1024个步进，即每<code>1024*4</code>即4096Bytes，都有一条特别明显的蓝色竖线。也就是说，只要我们按照4K的步进去访问内存(内存根据4K对齐），无论热点数据多大它的实际效率都是非常低的！按照我们上文的分析，如果4KB的内存对齐，那么一个240MB的数组就含有61440个可以被访问到的数组元素；而对于一个每256K就会有set冲突的16Way二级缓存，总共有<code>256K/4K</code>=<code>64</code>个元素要去争抢16个空位，总共有<code>61440/64</code>=<code>960</code>个这样的元素。那么缓存命中率只有1%，自然效率也就低了。</p>
+<p>除了这个例子，有兴趣的读者还可以查阅另一篇国人对Page Align导致效率低的实验：<a href="http://evol128.is-programmer.com/posts/35453.html" target="_blank" rel="noopener">http://evol128.is-programmer.com/posts/35453.html</a></p>
+<p>想要知道更多关于内存地址对齐在目前的这种CPU-Cache的架构下会出现的问题可以详细阅读以下两篇文章：</p>
+<ul>
+<li><a href="http://danluu.com/3c-conflict/" target="_blank" rel="noopener">How Misaligning Data Can Increase Performance 12x by Reducing Cache Misses</a></li>
+<li><a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">Gallery of Processor Cache Effects</a></li>
+</ul>
+<hr>
+<h2 id="Cache淘汰策略"><a href="#Cache淘汰策略" class="headerlink" title="Cache淘汰策略"></a>Cache淘汰策略</h2><p>在文章的最后我们顺带提一下CPU Cache的淘汰策略。常见的淘汰策略主要有<code>LRU</code>和<code>Random</code>两种。通常意义下LRU对于Cache的命中率会比Random更好，所以CPU Cache的淘汰策略选择的是<code>LRU</code>。当然也有些实验显示<a href="http://danluu.com/2choices-eviction/" target="_blank" rel="noopener">在Cache Size较大的时候Random策略会有更高的命中率</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>CPU Cache对于程序猿是透明的，所有的操作和策略都在CPU内部完成。但是，了解和理解CPU Cache的设计、工作原理有利于我们更好的利用CPU Cache，写出更多对CPU Cache友好的程序</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
+<li><a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">Gallery of Processor Cache Effects</a></li>
+<li><a href="http://danluu.com/3c-conflict/" target="_blank" rel="noopener">How Misaligning Data Can Increase Performance 12x by Reducing Cache Misses</a></li>
+<li><a href="http://www.cs.umd.edu/class/sum2003/cmsc311/Notes/Memory/introCache.html" target="_blank" rel="noopener">Introduction to Caches</a></li>
+</ol>
 ]]></content>
       <categories>
-        <category>神经网络加速器</category>
+        <category>计算机体系结构</category>
+        <category>cache</category>
       </categories>
       <tags>
-        <tag>神经网络加速器</tag>
         <tag>计算机体系结构</tag>
       </tags>
   </entry>
@@ -220,78 +266,6 @@ LOC(a_i) = LOC(a_1) + (i-1)C</script><p>则不论ai位于何处 , 计算地址�
       </tags>
   </entry>
   <entry>
-    <title>转载:关于CPU Cache——程序员需要知道的事</title>
-    <url>/2020/07/11/%E5%85%B3%E4%BA%8ECPU-Cache-%E7%A8%8B%E5%BA%8F%E5%91%98%E9%9C%80%E8%A6%81%E7%9F%A5%E9%81%93%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/</url>
-    <content><![CDATA[<blockquote>
-<p>本文将介绍一些作为程序猿或者IT从业者应该知道的CPU Cache相关的知识</p>
-<p>文章欢迎转载，但转载时请保留本段文字，并置于文章的顶部 作者：卢钧轶(cenalulu) 本文原文地址：<a href="http://cenalulu.github.io/linux/all-about-cpu-cache/" target="_blank" rel="noopener">http://cenalulu.github.io/linux/all-about-cpu-cache/</a></p>
-</blockquote>
-<p>先来看一张本文所有概念的一个思维导图</p>
-<p><img src="http://cenalulu.github.io/images/linux/cache_line/mind_map.png" alt="mind_map"></p>
-<a id="more"></a>
-<h2 id="为什么要有CPU-Cache"><a href="#为什么要有CPU-Cache" class="headerlink" title="为什么要有CPU Cache"></a>为什么要有CPU Cache</h2><p>随着工艺的提升最近几十年CPU的频率不断提升，而受制于制造工艺和成本限制，目前计算机的内存主要是DRAM并且在访问速度上没有质的突破。因此，CPU的处理速度和内存的访问速度差距越来越大，甚至可以达到上万倍。这种情况下传统的CPU通过FSB直连内存的方式显然就会因为内存访问的等待，导致计算资源大量闲置，降低CPU整体吞吐量。同时又由于内存数据访问的热点集中性，在CPU和内存之间用较为快速而成本较高的SDRAM做一层缓存，就显得性价比极高了。</p>
-<h2 id="为什么要有多级CPU-Cache"><a href="#为什么要有多级CPU-Cache" class="headerlink" title="为什么要有多级CPU Cache"></a>为什么要有多级CPU Cache</h2><p>随着科技发展，热点数据的体积越来越大，单纯的增加一级缓存大小的性价比已经很低了。因此，就慢慢出现了在一级缓存(L1 Cache)和内存之间又增加一层访问速度和成本都介于两者之间的二级缓存(L2 Cache)。下面是一段从<a href="http://cenalulu.github.io/linux/all-about-cpu-cache/(www.akkadia.org/drepper/cpumemory.pdf" target="_blank" rel="noopener">What Every Programmer Should Know About Memory</a>)中摘录的解释：</p>
-<blockquote>
-<p>Soon after the introduction of the cache the system got more complicated. The speed difference between the cache and the main memory increased again, to a point that another level of cache was added, bigger and slower than the first-level cache. Only increasing the size of the first-level cache was not an option for economical rea- sons.</p>
-</blockquote>
-<p>此外，又由于程序指令和程序数据的行为和热点分布差异很大，因此L1 Cache也被划分成L1i (i for instruction)和L1d (d for data)两种专门用途的缓存。 下面<a href="https://datatake.files.wordpress.com/2015/01/cpu-cache-access-in-cpu-cycles.png" target="_blank" rel="noopener">一张图</a>可以看出各级缓存之间的响应时间差距，以及内存到底有多慢！</p>
-<p><img src="http://cenalulu.github.io/images/linux/cache_line/latency.png" alt="latency"></p>
-<h2 id="什么是Cache-Line"><a href="#什么是Cache-Line" class="headerlink" title="什么是Cache Line"></a>什么是Cache Line</h2><p>Cache Line可以简单的理解为CPU Cache中的最小缓存单位。目前主流的CPU Cache的Cache Line大小都是64Bytes。假设我们有一个512字节的一级缓存，那么按照64B的缓存单位大小来算，这个一级缓存所能存放的缓存个数就是<code>512/64 = 8</code>个。具体参见下图：</p>
-<p><img src="http://cenalulu.github.io/images/linux/cache_line/cache_line.png" alt="img"></p>
-<p>为了更好的了解Cache Line，我们还可以在自己的电脑上做下面这个有趣的实验。</p>
-<p>下面这段C代码，会从命令行接收一个参数作为数组的大小创建一个数量为N的int数组。并依次循环的从这个数组中进行数组内容访问，循环10亿次。最终输出数组总大小和对应总执行时间。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &quot;stdio.h&quot;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;sys&#x2F;time.h&gt;</span><br><span class="line"></span><br><span class="line">long timediff(clock_t t1, clock_t t2) &#123;</span><br><span class="line">    long elapsed;</span><br><span class="line">    elapsed &#x3D; ((double)t2 - t1) &#x2F; CLOCKS_PER_SEC * 1000;</span><br><span class="line">    return elapsed;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main(int argc, char *argv[])</span><br><span class="line">#*******</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    int array_size&#x3D;atoi(argv[1]);</span><br><span class="line">    int repeat_times &#x3D; 1000000000;</span><br><span class="line">    long array[array_size];</span><br><span class="line">    for(int i&#x3D;0; i&lt;array_size; i++)&#123;</span><br><span class="line">        array[i] &#x3D; 0;</span><br><span class="line">    &#125;</span><br><span class="line">    int j&#x3D;0;</span><br><span class="line">    int k&#x3D;0;</span><br><span class="line">    int c&#x3D;0;</span><br><span class="line">    clock_t start&#x3D;clock();</span><br><span class="line">    while(j++&lt;repeat_times)&#123;</span><br><span class="line">        if(k&#x3D;&#x3D;array_size)&#123;</span><br><span class="line">            k&#x3D;0;</span><br><span class="line">        &#125;</span><br><span class="line">        c &#x3D; array[k++];</span><br><span class="line">    &#125;</span><br><span class="line">    clock_t end &#x3D;clock();</span><br><span class="line">    printf(&quot;%lu\n&quot;, timediff(start,end));</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果我们把这些数据做成折线图后就会发现：总执行时间在数组大小超过64Bytes时有较为明显的拐点（当然，由于博主是在自己的Mac笔记本上测试的，会受到很多其他程序的干扰，因此会有波动）。原因是当数组小于64Bytes时数组极有可能落在一条Cache Line内，而一个元素的访问就会使得整条Cache Line被填充，因而值得后面的若干个元素受益于缓存带来的加速。而当数组大于64Bytes时，必然至少需要两条Cache Line，继而在循环访问时会出现两次Cache Line的填充，由于缓存填充的时间远高于数据访问的响应时间，因此多一次缓存填充对于总执行的影响会被放大，最终得到下图的结果： <img src="http://cenalulu.github.io/images/linux/cache_line/cache_line_size2.png" alt="cache_size"> 如果读者有兴趣的话也可以在自己的linux或者MAC上通过<code>gcc cache_line_size.c -o cache_line_size</code>编译，并通过<code>./cache_line_size</code>执行。</p>
-<p><strong>了解Cache Line的概念对我们程序猿有什么帮助？</strong> 我们来看下面这个C语言中<a href="http://qr.ae/ja9ov" target="_blank" rel="noopener">常用的循环优化例子</a> 下面两段代码中，第一段代码在C语言中总是比第二段代码的执行速度要快。具体的原因相信你仔细阅读了Cache Line的介绍后就很容易理解了。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">for(int i &#x3D; 0; i &lt; n; i++) &#123;</span><br><span class="line">    for(int j &#x3D; 0; j &lt; n; j++) &#123;</span><br><span class="line">        int num;    </span><br><span class="line">        &#x2F;&#x2F;code</span><br><span class="line">        arr[i][j] &#x3D; num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">for(int i &#x3D; 0; i &lt; n; i++) &#123;</span><br><span class="line">    for(int j &#x3D; 0; j &lt; n; j++) &#123;</span><br><span class="line">        int num;    </span><br><span class="line">        &#x2F;&#x2F;code</span><br><span class="line">        arr[j][i] &#x3D; num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr>
-<h2 id="CPU-Cache-是如何存放数据的"><a href="#CPU-Cache-是如何存放数据的" class="headerlink" title="CPU Cache 是如何存放数据的"></a>CPU Cache 是如何存放数据的</h2><h4 id="你会怎么设计Cache的存放规则"><a href="#你会怎么设计Cache的存放规则" class="headerlink" title="你会怎么设计Cache的存放规则"></a>你会怎么设计Cache的存放规则</h4><p>我们先来尝试回答一下那么这个问题：</p>
-<blockquote>
-<p>假设我们有一块4MB的区域用于缓存，每个缓存对象的唯一标识是它所在的物理内存地址。每个缓存对象大小是64Bytes，所有可以被缓存对象的大小总和（即物理内存总大小）为4GB。那么我们该如何设计这个缓存？</p>
-</blockquote>
-<p>如果你和<a href="http://cenalulu.github.io/" target="_blank" rel="noopener">博主</a>一样是一个大学没有好好学习基础/数字电路的人的话，会觉得最靠谱的的一种方式就是：Hash表。把Cache设计成一个Hash数组。内存地址的Hash值作为数组的Index，缓存对象的值作为数组的Value。每次存取时，都把地址做一次Hash然后找到Cache中对应的位置操作即可。 这样的设计方式在高等语言中很常见，也显然很高效。因为Hash值得计算虽然耗时(<a href="http://programmers.stackexchange.com/questions/49550/which-hashing-algorithm-is-best-for-uniqueness-and-speed" target="_blank" rel="noopener">10000个CPU Cycle左右</a>)，但是相比程序中其他操作（上百万的CPU Cycle）来说可以忽略不计。而对于CPU Cache来说，本来其设计目标就是在几十CPU Cycle内获取到数据。如果访问效率是百万Cycle这个等级的话，还不如到Memory直接获取数据。当然，更重要的原因是在硬件上要实现Memory Address Hash的功能在成本上是非常高的。</p>
-<h4 id="为什么Cache不能做成Fully-Associative"><a href="#为什么Cache不能做成Fully-Associative" class="headerlink" title="为什么Cache不能做成Fully Associative"></a>为什么Cache不能做成Fully Associative</h4><p>Fully Associative 字面意思是全关联。在CPU Cache中的含义是：如果在一个Cache集内，任何一个内存地址的数据可以被缓存在任何一个Cache Line里，那么我们成这个cache是Fully Associative。从定义中我们可以得出这样的结论：给到一个内存地址，要知道他是否存在于Cache中，需要遍历所有Cache Line并比较缓存内容的内存地址。而Cache的本意就是为了在尽可能少得CPU Cycle内取到数据。那么想要设计一个快速的Fully Associative的Cache几乎是不可能的。</p>
-<h4 id="为什么Cache不能做成Direct-Mapped"><a href="#为什么Cache不能做成Direct-Mapped" class="headerlink" title="为什么Cache不能做成Direct Mapped"></a>为什么Cache不能做成Direct Mapped</h4><p>和Fully Associative完全相反，使用Direct Mapped模式的Cache给定一个内存地址，就唯一确定了一条Cache Line。设计复杂度低且速度快。那么为什么Cache不使用这种模式呢？让我们来想象这么一种情况：一个拥有1M L2 Cache的32位CPU，每条Cache Line的大小为64Bytes。那么整个L2Cache被划为了<code>1M/64=16384</code>条Cache Line。我们为每条Cache Line从0开始编上号。同时32位CPU所能管理的内存地址范围是<code>2^32=4G</code>，那么Direct Mapped模式下，内存也被划为<code>4G/16384=256K</code>的小份。也就是说每256K的内存地址共享一条Cache Line。但是，这种模式下每条Cache Line的使用率如果要做到接近100%，就需要操作系统对于内存的分配和访问在地址上也是近乎平均的。而与我们的意愿相反，为了减少内存碎片和实现便捷，操作系统更多的是连续集中的使用内存。这样会出现的情况就是0-1000号这样的低编号Cache Line由于内存经常被分配并使用，而16000号以上的Cache Line由于内存鲜有进程访问，几乎一直处于空闲状态。这种情况下，本来就宝贵的1M二级CPU缓存，使用率也许50%都无法达到。</p>
-<h4 id="什么是N-Way-Set-Associative"><a href="#什么是N-Way-Set-Associative" class="headerlink" title="什么是N-Way Set Associative"></a>什么是N-Way Set Associative</h4><p>为了避免以上两种设计模式的缺陷，N-Way Set Associative缓存就出现了。他的原理是把一个缓存按照N个Cache Line作为一组（set），缓存按组划为等分。这样一个64位系统的内存地址在4MB二级缓存中就划成了三个部分（见下图），低位6个bit表示在Cache Line中的偏移量，中间12bit表示Cache组号（set index），剩余的高位46bit就是内存地址的唯一id。这样的设计相较前两种设计有以下两点好处：</p>
-<ul>
-<li>给定一个内存地址可以唯一对应一个set，对于set中只需遍历16个元素就可以确定对象是否在缓存中（Full Associative中比较次数随内存大小线性增加）</li>
-<li>每<code>2^18(256K)*16(way)</code>=<code>4M</code>(这里的<code>2^18</code>可能是按照64位CPU通常采用40位地址总线计算得到的, 即<code>2^40/4MB=2^18</code>)的连续热点数据才会导致一个set内的conflict（Direct Mapped中512K的连续热点数据就会出现conflict）</li>
-</ul>
-<p><img src="http://cenalulu.github.io/images/linux/cache_line/addr_bits.png" alt="addr"></p>
-<p><strong>为什么N-Way Set Associative的Set段是从低位而不是高位开始的</strong></p>
-<p>下面是一段从<a href="http://danluu.com/3c-conflict/#fn3" target="_blank" rel="noopener">How Misaligning Data Can Increase Performance 12x by Reducing Cache Misses</a>摘录的解释：</p>
-<blockquote>
-<p>The vast majority of accesses are close together, so moving the set index bits upwards would cause more conflict misses. You might be able to get away with a hash function that isn’t simply the least significant bits, but most proposed schemes hurt about as much as they help while adding extra complexity.</p>
-</blockquote>
-<p>由于内存的访问通常是大片连续的，或者是因为在同一程序中而导致地址接近的（即这些内存地址的高位都是一样的）。所以如果把内存地址的高位作为set index的话，那么短时间的大量内存访问都会因为set index相同而落在同一个set index中，从而导致cache conflicts使得L2, L3 Cache的命中率低下，影响程序的整体执行效率。</p>
-<p><strong>了解N-Way Set Associative的存储模式对我们有什么帮助</strong></p>
-<p>了解N-Way Set的概念后，我们不难得出以下结论：<code>2^(6Bits &lt;Cache Line Offset&gt; + 12Bits &lt;Set Index&gt;)</code> = <code>2^18</code> = <code>256K</code>。即在连续的内存地址中每256K都会出现一个处于同一个Cache Set中的缓存对象。也就是说这些对象都会争抢一个仅有16个空位的缓存池（16-Way Set）。而如果我们在程序中又使用了所谓优化神器的“内存对齐”的时候，这种争抢就会越发增多。效率上的损失也会变得非常明显。具体的实际测试我们可以参考： <a href="http://danluu.com/3c-conflict/#fn3" target="_blank" rel="noopener">How Misaligning Data Can Increase Performance 12x by Reducing Cache Misses</a> 一文。 这里我们引用一张<a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">Gallery of Processor Cache Effects</a> 中的测试结果图，来解释下内存对齐在极端情况下带来的性能损失。 <img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/assoc_big1.png" alt="memory_align"></p>
-<p>该图实际上是我们上文中第一个测试的一个变种。纵轴表示了测试对象数组的大小。横轴表示了每次数组元素访问之间的index间隔。而图中的颜色表示了响应时间的长短，蓝色越明显的部分表示响应时间越长。从这个图我们可以得到很多结论。当然这里我们只对内存带来的性能损失感兴趣。有兴趣的读者也可以阅读<a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">原文</a>分析理解其他从图中可以得到的结论。</p>
-<p>从图中我们不难看出图中每1024个步进，即每<code>1024*4</code>即4096Bytes，都有一条特别明显的蓝色竖线。也就是说，只要我们按照4K的步进去访问内存(内存根据4K对齐），无论热点数据多大它的实际效率都是非常低的！按照我们上文的分析，如果4KB的内存对齐，那么一个240MB的数组就含有61440个可以被访问到的数组元素；而对于一个每256K就会有set冲突的16Way二级缓存，总共有<code>256K/4K</code>=<code>64</code>个元素要去争抢16个空位，总共有<code>61440/64</code>=<code>960</code>个这样的元素。那么缓存命中率只有1%，自然效率也就低了。</p>
-<p>除了这个例子，有兴趣的读者还可以查阅另一篇国人对Page Align导致效率低的实验：<a href="http://evol128.is-programmer.com/posts/35453.html" target="_blank" rel="noopener">http://evol128.is-programmer.com/posts/35453.html</a></p>
-<p>想要知道更多关于内存地址对齐在目前的这种CPU-Cache的架构下会出现的问题可以详细阅读以下两篇文章：</p>
-<ul>
-<li><a href="http://danluu.com/3c-conflict/" target="_blank" rel="noopener">How Misaligning Data Can Increase Performance 12x by Reducing Cache Misses</a></li>
-<li><a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">Gallery of Processor Cache Effects</a></li>
-</ul>
-<hr>
-<h2 id="Cache淘汰策略"><a href="#Cache淘汰策略" class="headerlink" title="Cache淘汰策略"></a>Cache淘汰策略</h2><p>在文章的最后我们顺带提一下CPU Cache的淘汰策略。常见的淘汰策略主要有<code>LRU</code>和<code>Random</code>两种。通常意义下LRU对于Cache的命中率会比Random更好，所以CPU Cache的淘汰策略选择的是<code>LRU</code>。当然也有些实验显示<a href="http://danluu.com/2choices-eviction/" target="_blank" rel="noopener">在Cache Size较大的时候Random策略会有更高的命中率</a></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>CPU Cache对于程序猿是透明的，所有的操作和策略都在CPU内部完成。但是，了解和理解CPU Cache的设计、工作原理有利于我们更好的利用CPU Cache，写出更多对CPU Cache友好的程序</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
-<li><a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">Gallery of Processor Cache Effects</a></li>
-<li><a href="http://danluu.com/3c-conflict/" target="_blank" rel="noopener">How Misaligning Data Can Increase Performance 12x by Reducing Cache Misses</a></li>
-<li><a href="http://www.cs.umd.edu/class/sum2003/cmsc311/Notes/Memory/introCache.html" target="_blank" rel="noopener">Introduction to Caches</a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>计算机体系结构</category>
-        <category>cache</category>
-      </categories>
-      <tags>
-        <tag>计算机体系结构</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>转载：详解二分查找算法</title>
     <url>/2020/07/25/%E8%AF%A6%E8%A7%A3%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/</url>
     <content><![CDATA[<h1 id="转载：详解二分查找算法"><a href="#转载：详解二分查找算法" class="headerlink" title="转载：详解二分查找算法"></a>转载：详解二分查找算法</h1><blockquote>
@@ -407,6 +381,90 @@ LOC(a_i) = LOC(a_1) + (i-1)C</script><p>则不论ai位于何处 , 计算地址�
       </categories>
       <tags>
         <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算力参数FLOPS,GOPS,GMACS辨析</title>
+    <url>/2020/06/16/%E8%AE%A1%E7%AE%97%E5%8A%9B%E5%8F%82%E6%95%B0FLOPS-GOPS-GMACS%E8%A7%A3%E6%9E%90/</url>
+    <content><![CDATA[<h2 id="FLOPS"><a href="#FLOPS" class="headerlink" title="FLOPS"></a>FLOPS</h2><p>FLOPS是“每秒所执行的浮点运算次数”（floating-point operations per second）的缩写。它常被用来估算电脑的执行效能，尤其是在使用到大量浮点运算的科学计算领域中。正因为FLOPS字尾的那个S，代表秒，而不是复数，所以不能省略掉。</p>
+<p>在这里所谓的“浮点运算”，实际上包括了所有涉及小数的运算。这类运算在某类应用软件中常常出现，而它们也比整数运算更花时间。现今大部分的处理器中，都有一个专门用来处理浮点运算的“浮点运算器”（FPU）。也因此FLOPS所量测的，实际上就是FPU的执行速度。而最常用来测量FLOPS的基准程式（benchmark）之一，就是Linpack。</p>
+<p>使用时常加数量级前缀如M, G, T等。</p>
+<a id="more"></a>
+<h2 id="OPS"><a href="#OPS" class="headerlink" title="OPS"></a>OPS</h2><p>OPS与FLOPS类似，只不过OPS一个是操作次数，FLOPS一个是浮点操作次数。</p>
+<p>使用时常加数量级前缀如M, G, T等。</p>
+<h2 id="MACS"><a href="#MACS" class="headerlink" title="MACS"></a>MACS</h2><p>MACS 指每秒执行的定点<strong>乘累加</strong>操作次数的缩写，它是衡量计算机定点处理能力的量，这个量经常用在那些需要大量定点乘法累加运算的科学运算中，记为MACS。</p>
+<p>使用时常加数量级前缀如M, G, T等。</p>
+<h2 id="易混辨析—FLOPS-FLOPs-FLOP-s"><a href="#易混辨析—FLOPS-FLOPs-FLOP-s" class="headerlink" title="易混辨析—FLOPS,FLOPs,FLOP/s"></a>易混辨析—FLOPS,FLOPs,FLOP/s</h2><p>FLOPS：注意全大写，是floating point operations per second的缩写，意指每秒浮点运算次数，理解为计算速度。是一个衡量硬件性能的指标。</p>
+<p>FLOPs：注意s小写，是floating point operations的缩写（s表复数），意指浮点运算数，理解为计算量。可以用来衡量算法/模型的复杂度。</p>
+<p>FLOP/s：等同于FLOPS。</p>
+<p>简化到计算机只拥有一块CPU的情况时，可以使用以下公式：</p>
+<script type="math/tex; mode=display">
+{\displaystyle {\text{FLOPS}}={\text{cores}}\times {\frac {\text{cycles}}{\text{second}}}\times {\frac {\text{FLOPs}}{\text{cycle}}}}</script><p>同样的对于OPS和MACS也适用上述规则。</p>
+]]></content>
+      <categories>
+        <category>神经网络加速器</category>
+      </categories>
+      <tags>
+        <tag>计算机体系结构</tag>
+        <tag>神经网络加速器</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo主题美化</title>
+    <url>/2020/06/14/1_Hexo/Hexo%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/</url>
+    <content><![CDATA[<h1 id="Hexo美化"><a href="#Hexo美化" class="headerlink" title="Hexo美化"></a>Hexo美化</h1><h2 id="修改网站图标"><a href="#修改网站图标" class="headerlink" title="修改网站图标"></a>修改网站图标</h2><h3 id="1-实现效果"><a href="#1-实现效果" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3><p>   <img src="https://i.loli.net/2020/06/14/Z4eQtNWaku6gzdh.png" alt="image-20200614211627199" style="zoom:67%;" div align=center/></p>
+<h3 id="2-实现方法"><a href="#2-实现方法" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><p>制作或者下载自己的网站图标，这里推荐几个免费的图标下载网站. </p>
+<p><a href="https://fontawesome.com/" target="_blank" rel="noopener">Font Awesome</a></p>
+<p><a href="https://icons8.com/" target="_blank" rel="noopener">Download free icons, music, stock photos, vectors</a></p>
+<p><a href="https://illustrio.com/" target="_blank" rel="noopener">illustrio: 100% free, 100% customizable icon library</a></p>
+<p><a href="https://www.iconfont.cn/?spm=a313x.7781069.1998910419.d4d0a486a" target="_blank" rel="noopener">https://www.iconfont.cn/?spm=a313x.7781069.1998910419.d4d0a486a</a></p>
+<p>下载的图标最好是32x32和16x16的,  将它们放进<code>/themes/next/source/images/</code>中, 在主题config文件搜索favicon, 进行如下修改</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">favicon:</span></span><br><span class="line">  <span class="comment"># small: /images/favicon-16x16-next.png</span></span><br><span class="line">  <span class="comment"># medium: /images/favicon-32x32-next.png</span></span><br><span class="line">  <span class="attr">small:</span> <span class="string">/images/你的图标名(16x16)</span></span><br><span class="line">  <span class="attr">medium:</span> <span class="string">/images/你的图标名(32x32)</span></span><br></pre></td></tr></table></figure>
+<h2 id="修改Next主题底部标签的-号"><a href="#修改Next主题底部标签的-号" class="headerlink" title="修改Next主题底部标签的#号"></a>修改Next主题底部标签的#号</h2><h3 id="1-实现效果-1"><a href="#1-实现效果-1" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3><p><img src="https://i.loli.net/2020/06/14/gu2OWawqbG1ZhzM.png" alt="image-20200614105134514" style="zoom: 67%;" /></p>
+<h3 id="2-实现方法-1"><a href="#2-实现方法-1" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><p>打开 <code>/themes/next/layout/_macro/post.swig</code>，搜索 <code>rel=&quot;tag&quot;&gt; </code>，将 <code></code> 换成<code>&lt;i class=&quot;fa fa-tag&quot;&gt;&lt;/i&gt;</code></p>
+<h2 id="添加社交图标"><a href="#添加社交图标" class="headerlink" title="添加社交图标"></a>添加社交图标</h2><h3 id="1-实现效果-2"><a href="#1-实现效果-2" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3><h3 id="2-实现方法-2"><a href="#2-实现方法-2" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><p>在主题config文件中搜索social, 取消相应注释即可.</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">social:</span></span><br><span class="line">  <span class="comment"># GitHub: https://github.com/shawer96 || github</span></span><br><span class="line">  <span class="comment"># E-Mail: mailto:yourname@gmail.com || envelope</span></span><br><span class="line">  <span class="comment"># Weibo: https://weibo.com/yourname || weibo</span></span><br><span class="line">  <span class="comment">#Google: https://plus.google.com/yourname || google</span></span><br><span class="line">  <span class="comment">#Twitter: https://twitter.com/yourname || twitter</span></span><br><span class="line">  <span class="comment">#FB Page: https://www.facebook.com/yourname || facebook</span></span><br><span class="line">  <span class="comment">#StackOverflow: https://stackoverflow.com/yourname || stack-overflow</span></span><br><span class="line">  <span class="comment">#YouTube: https://youtube.com/yourname || youtube</span></span><br><span class="line">  <span class="comment">#Instagram: https://instagram.com/yourname || instagram</span></span><br><span class="line">  <span class="comment">#Skype: skype:yourname?call|chat || skype</span></span><br><span class="line">  <span class="comment">#RSS: /atom.xml || rss</span></span><br></pre></td></tr></table></figure>
+<p>也可按照<code>名称: 链接地址 || 社交图标</code>的格式自定义其他的社交账号, 其中<code>||</code>后面的图标是其在<a href="https://fontawesome.com/" target="_blank" rel="noopener">Font Awesome</a>中对应的图标名, 不需要下载.</p>
+<h2 id="文章加锁"><a href="#文章加锁" class="headerlink" title="文章加锁"></a>文章加锁</h2><h3 id="1-实现效果-3"><a href="#1-实现效果-3" class="headerlink" title="1.实现效果"></a>1.实现效果</h3><p><img src="https://i.loli.net/2020/06/14/BH3mvAxdMb9l4Yc.png" alt="image-20200614215553079"></p>
+<h3 id="2-实现方法-3"><a href="#2-实现方法-3" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><ol>
+<li>下载加密插件</li>
+</ol>
+<p>   进入hexo根目录，使用<code>npm install hexo-blog-encrypt</code>命令安装插件。</p>
+<ol>
+<li>修改配置文件</li>
+</ol>
+<p>​        在hexo根目录下的config文件中, 添加</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">encrypt:</span></span><br><span class="line">	<span class="attr">enable:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>在文章属性栏中添加相应字段</li>
+</ol>
+<p><img src="https://i.loli.net/2020/06/14/Y6PVFjne9cHlzhy.png" alt="image-20200614215627622" style="zoom: 67%;" /></p>
+<p>​    password:  文章的密码</p>
+<p>​    message: 输入密码界面提示说明.</p>
+<p>​    abstract: 文章界面介绍.</p>
+<p>​    message和abstract可以省略.</p>
+<h2 id="折叠首页文章"><a href="#折叠首页文章" class="headerlink" title="折叠首页文章"></a>折叠首页文章</h2><h3 id="1-实现效果-4"><a href="#1-实现效果-4" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3><p><img src="https://i.loli.net/2020/06/14/CcZoB8XpVUJkHNr.png" alt="image-20200614220006815" style="zoom:67%;" /></p>
+<h3 id="2-实现方法-4"><a href="#2-实现方法-4" class="headerlink" title="2.实现方法"></a>2.实现方法</h3><ol>
+<li><del>已失效, 修改主题config文件中的</del></li>
+</ol>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">auto_excerpt:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">length:</span> <span class="number">150</span></span><br></pre></td></tr></table></figure>
+<p>​        随着Next主题的更新, 这一方法不再有用.</p>
+<ol>
+<li>在文章中的属性栏中添加description，并提供文章摘录</li>
+</ol>
+<p>   这种方式只会在首页列表中显示文章的摘要内容，进入文章详情后不会再显示</p>
+<p>   <img src="https://i.loli.net/2020/06/15/3YIW8ZFi7DJVTq6.png" alt="image-20200615000644376" style="zoom: 67%;" /></p>
+<ol>
+<li>在文章中使用<code>&lt; !--more--&gt;</code> 手动进行截断</li>
+</ol>
+<p>   这种方法可以根据文章的内容，自己在合适的位置添加 <code>&lt; !--more--&gt;</code> 标签，使用灵活，也是Hexo推荐的方法</p>
+<p>​        <img src="https://i.loli.net/2020/06/14/hqtfdeRPaTrx7Dj.png" alt="image-20200614220921108"></p>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -686,201 +744,6 @@ LOC(a_i) = LOC(a_1) + (i-1)C</script><p>则不论ai位于何处 , 计算地址�
       </tags>
   </entry>
   <entry>
-    <title>算法及算法的复杂度</title>
-    <url>/2020/06/24/3_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E7%AE%97%E6%B3%95%E5%8F%8A%E5%A4%8D%E6%9D%82%E5%BA%A6/</url>
-    <content><![CDATA[<h1 id="算法及算法效率的度量方法"><a href="#算法及算法效率的度量方法" class="headerlink" title="算法及算法效率的度量方法"></a>算法及算法效率的度量方法</h1><h2 id="1-算法"><a href="#1-算法" class="headerlink" title="1. 算法"></a>1. 算法</h2><h3 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义:"></a>1.1 定义:</h3><p>算法是解决特定问题求解步骤的描述, 在计算机中为指令的有限序列, 并且每条指令表示一个或多个操作.</p>
-<h3 id="1-2-算法的特性"><a href="#1-2-算法的特性" class="headerlink" title="1.2 算法的特性"></a>1.2 算法的特性</h3><ul>
-<li>输入和输出</li>
-<li>有穷性: 有合理边界</li>
-<li>可行性: 每一步都可以通过有限步骤实现</li>
-<li>确定性: 每一步都有确定含义, 不存在二义性</li>
-</ul>
-<h3 id="1-3-算法设计的要求"><a href="#1-3-算法设计的要求" class="headerlink" title="1.3 算法设计的要求"></a>1.3 算法设计的要求</h3><ul>
-<li>正确性: 输入,输出和加工处理无歧义性, 能正确反映问题的需求, 能得到问题的正确答案</li>
-<li>可读性: 便于阅读理解和交流</li>
-<li>健壮性: 当输入数据不合法时也能得到相关处理</li>
-<li>时间效率低空间效率高</li>
-</ul>
-<p>经过分析发现, 一个用高级语言编写的程序在计算机上运行所消耗的时间取决于下列因素:</p>
-<ol>
-<li>算法的策略方法</li>
-<li>编译产生的代码质量</li>
-<li>问题的输入规模</li>
-<li>机器执行指令的速度</li>
-</ol>
-<p>第一条是算法好坏的根本, 一个程序的运行时间, 依赖于<strong>算法的好坏</strong>和<strong>问题的输入规模</strong>.</p>
-<h2 id="2-算法的时间复杂度"><a href="#2-算法的时间复杂度" class="headerlink" title="2. 算法的时间复杂度"></a>2. 算法的时间复杂度</h2><h3 id="2-1-定义"><a href="#2-1-定义" class="headerlink" title="2.1 定义"></a>2.1 定义</h3><p>在进行算法分析时，语句总的执行次数T(n)是关于问题规模n的函数，进而分析T(n)随n的变化情况并确定T(n)的数量级。算法的时间复杂度，也就是算法的时间量度，记作：T(n) = O(f(n))。它表示随问题规模n的增大，算法执行时间的增长率和f(n)的增长率相同，称作算法的渐近时间复杂度，简称为时间复杂度。其中f(n)是问题规模n的某个函数。</p>
-<p>通过大写O[ ]的方法体现时间复杂度的计法, 称为大O记法.</p>
-<h3 id="2-2-推导大O阶方法"><a href="#2-2-推导大O阶方法" class="headerlink" title="2.2 推导大O阶方法"></a>2.2 推导大O阶方法</h3><p>O(1)叫做常数阶；O(n)叫做线性阶；O(n^2)叫做平方阶。 </p>
-<ol>
-<li><p>用常数1取代运行时间中的所有加法常数, 没有加法的常数不予考虑。</p>
-</li>
-<li><p>在修改后的运行次数函数中，只保留最高阶项。</p>
-</li>
-<li><p>如果最高阶项存在且不是1，则去除与这个项相乘的常数。</p>
-</li>
-</ol>
-<p>得到的结果就是大O阶。 </p>
-<p>如果你没看懂，那继续往下看，笔者以例子与你详细介绍：</p>
-<p><strong>例子1：</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum=<span class="number">0</span>,i = <span class="number">0</span>;i &lt; N;i++)  <span class="comment">//1、</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>;j &lt;N;j++)     <span class="comment">//2、</span></span><br><span class="line">        sum=sum+i*j;            <span class="comment">//3、</span></span><br></pre></td></tr></table></figure>
-<p>我们以一个语句记为1次来分析：</p>
-<p>1、1+ (N+1)+N （这里定义两个变量共一次，而中间循环 理论是判断是N次,但是实际上应该是N+1 最后等于N时还有判断1次 0~N 故为N+1，循环变量的递增一共是N次）</p>
-<p>2、N+N(N+1)+NN（这里由第一个循环进入第二个循环，一共是N次，那么将会定义N次，单独分析判断语句它将会像第一层循环一样，一个判断N次 再算上 第一次循环进入第二次循环共有N次 故 为N(N+1) 后面类似 NN ）</p>
-<p>3、NN（第二层循环进入最里面语句 N次 第一层循环进入第二层循环 共N次 故实际为NN次）</p>
-<p>那么累加一下:<br>1+(N+1)+N+N(N+1)+NN+NN 保留最高项 N * N, 故算法的时间复杂度为O(N^2)</p>
-<p><strong>例子2:</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum = <span class="number">0</span>,i = <span class="number">1</span>;i &lt; N;i = i*<span class="number">2</span>)   <span class="comment">//1、</span></span><br><span class="line">        sum = sum+i*j;                 <span class="comment">//2、</span></span><br></pre></td></tr></table></figure>
-<p>看到这程序片段，你是不是一眼就得出答案了？如果你不注意的话，你的答案肯定是O(N)，对了吗？<br>先告诉你答案为O(log(N))，你可以试试代个确切的N值进去 看一下次数,自己体会一下，那么下面我和大家一起分析下：</p>
-<p>1、1+log(N)+1+log(N)</p>
-<p>2、log(N)</p>
-<p>其实这里做判断的时候，应该看一下循环变量的递增方式，这里它是i = i * 2 也就是 $2^x=N$ 那么$X=\log_2(N)$, X是次数，在计算复杂度里面，一般省略底数，也就是直接写log(N), 其他的计算方法与上面的解释一致。</p>
-<p><strong>例子3:</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum=<span class="number">0</span>,i = <span class="number">0</span>;i&lt;N;i++)          <span class="comment">//1、</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>;j &lt; N;j = j*<span class="number">2</span>)      <span class="comment">//2、</span></span><br><span class="line">        sum=sum+i*j;                  <span class="comment">//3、</span></span><br></pre></td></tr></table></figure>
-<p>分析:<br>1、1+N+1+N</p>
-<p>2、N+N(log(N)+1)+Nlog(N)</p>
-<p>3、Nlog(N)</p>
-<p>将它们累加并保留高阶项并去除常数, 得到时间复杂度O(Nlog(N))</p>
-<p><strong>例子4</strong>:</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum = <span class="number">0</span>,i = <span class="number">0</span>; i &lt; n; i++)    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = i; j &lt; n; j++)        </span><br><span class="line">       sum += i*j</span><br></pre></td></tr></table></figure>
-<p>分析:</p>
-<p>总的执行次数为n+(n-1)+(n-2)+…+1=(N^2)/2+n/2</p>
-<p>只保留高阶项并去除与这个项相乘的常数, 最终这段代码的复杂度为O(n^2)</p>
-<h3 id="2-3-常见的时间复杂度"><a href="#2-3-常见的时间复杂度" class="headerlink" title="2.3 常见的时间复杂度"></a>2.3 常见的时间复杂度</h3><div class="table-container">
-<table>
-<thead>
-<tr>
-<th>执行次数函数</th>
-<th>阶</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>$42$(常数)</td>
-<td>O(1)</td>
-<td>常数阶</td>
-</tr>
-<tr>
-<td>$2n+3$</td>
-<td>O(n)</td>
-<td>线性阶</td>
-</tr>
-<tr>
-<td>$3n^2+2n+1$</td>
-<td>O(n^2)</td>
-<td>平方阶</td>
-</tr>
-<tr>
-<td>$5\log_2n+19$</td>
-<td>O(log(n))</td>
-<td>对数阶</td>
-</tr>
-<tr>
-<td>$2n+3n\log_2n+19$</td>
-<td>O(nlog(n))</td>
-<td>nlog(n)阶</td>
-</tr>
-<tr>
-<td>$6n^3 + 2n^2 + 3n +4$</td>
-<td>O(n^3)</td>
-<td>立方阶</td>
-</tr>
-<tr>
-<td>$2^n$</td>
-<td>O(2^n)</td>
-<td>指数阶</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>常用时间复杂度耗费时间排序:</p>
-<script type="math/tex; mode=display">
-O(1)\lt O(\log n) \lt O(n) \lt O(n\log n) \lt  O(n^2) \lt O(n^3) \lt O(2^n) \lt O(n!)\lt O(n^n)</script><p>一般而言, 指数阶$O(2^n)$和阶乘阶$O(n!)$会使运行时间大到不可估计, 一般不考虑这种不切实际的算法时间复杂度.</p>
-<h3 id="2-4-最坏情况与平均情况"><a href="#2-4-最坏情况与平均情况" class="headerlink" title="2.4  最坏情况与平均情况"></a>2.4  最坏情况与平均情况</h3><p>比如查找数组中的某个数字, 最好情况是第一次找到, 复杂度为O(1), 最差是最后一次找到, 那么复杂度为O(n)</p>
-<ul>
-<li><p><strong>最坏情况</strong>是一种保障, 保证运行时间不会再坏了, <strong>除非特殊指定, 我们提到的运行时间都是最坏情况的运行时间</strong></p>
-</li>
-<li><p><strong>平均时间</strong>是所有情况中最有意义的, 因为它是期望运行的时间, 一般很难估算得到, 往往是通过一定量的数据实验得到</p>
-</li>
-</ul>
-<h2 id="3-算法的空间复杂度"><a href="#3-算法的空间复杂度" class="headerlink" title="3. 算法的空间复杂度"></a>3. 算法的空间复杂度</h2><h3 id="3-1-定义"><a href="#3-1-定义" class="headerlink" title="3.1 定义"></a>3.1 定义</h3><p>算法的空间复杂度通过计算算法所需的存储空间实现, 算法空间复杂度计算公式记作: S(n) = O(f(n)), 其中n为问题的规模, f(n)为语句所占空间的函数.</p>
-<p>一般情况下, 一个程序在机器上执行时,除了需要存储程序本身的指令、常数、变量和输入数据外,还需要存储对数据操作的存储单元,若输入数据所占空间只取决于问题本身,和算法无关,这样只需要分析该算法在实现时所需的辅助单元即可。若算法执行时所需的辅助空间相对于输入数据量而言是个常数, 则称此算法为原地工作, 空间复杂度为 O(1) 。</p>
-<p>在写代码时完全可以通过空间换时间.  通常我们不用限定词使用”复杂度”时通常都指时间复杂度. </p>
-<h3 id="3-2-计算方法"><a href="#3-2-计算方法" class="headerlink" title="3.2 计算方法"></a>3.2 计算方法</h3><p><strong>1. 空间复杂度 O(1)</strong><br>如果算法执行所需要的临时空间不随着某个变量n的大小而变化，即此算法空间复杂度为一个常量，可表示为 O(1)</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> j = <span class="number">2</span>;</span><br><span class="line">++i;</span><br><span class="line">j++;</span><br><span class="line"><span class="keyword">int</span> m = i + j;</span><br></pre></td></tr></table></figure>
-<p>变量 i、j、m 所分配的空间都不随着处理数据量变化，因此它的空间复杂度 S(n) = O(1)</p>
-<p><strong>2. 空间复杂度 O(n)</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[] m = <span class="keyword">new</span> <span class="keyword">int</span>[n]</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">1</span>; i&lt;=n; ++i)</span><br><span class="line">&#123;</span><br><span class="line">   j = i;</span><br><span class="line">   j++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这段代码中，第一行new了一个数组出来，这个数据占用的大小为n，这段代码的2-6行，虽然有循环，但没有再分配新的空间，因此，这段代码的空间复杂度主要看第一行即可，即 S(n) = O(n)</p>
-]]></content>
-      <categories>
-        <category>数据结构</category>
-      </categories>
-      <tags>
-        <tag>数据结构</tag>
-        <tag>算法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hexo主题美化</title>
-    <url>/2020/06/14/1_Hexo/Hexo%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/</url>
-    <content><![CDATA[<h1 id="Hexo美化"><a href="#Hexo美化" class="headerlink" title="Hexo美化"></a>Hexo美化</h1><h2 id="修改网站图标"><a href="#修改网站图标" class="headerlink" title="修改网站图标"></a>修改网站图标</h2><h3 id="1-实现效果"><a href="#1-实现效果" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3><p>   <img src="https://i.loli.net/2020/06/14/Z4eQtNWaku6gzdh.png" alt="image-20200614211627199" style="zoom:67%;" div align=center/></p>
-<h3 id="2-实现方法"><a href="#2-实现方法" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><p>制作或者下载自己的网站图标，这里推荐几个免费的图标下载网站. </p>
-<p><a href="https://fontawesome.com/" target="_blank" rel="noopener">Font Awesome</a></p>
-<p><a href="https://icons8.com/" target="_blank" rel="noopener">Download free icons, music, stock photos, vectors</a></p>
-<p><a href="https://illustrio.com/" target="_blank" rel="noopener">illustrio: 100% free, 100% customizable icon library</a></p>
-<p><a href="https://www.iconfont.cn/?spm=a313x.7781069.1998910419.d4d0a486a" target="_blank" rel="noopener">https://www.iconfont.cn/?spm=a313x.7781069.1998910419.d4d0a486a</a></p>
-<p>下载的图标最好是32x32和16x16的,  将它们放进<code>/themes/next/source/images/</code>中, 在主题config文件搜索favicon, 进行如下修改</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">favicon:</span></span><br><span class="line">  <span class="comment"># small: /images/favicon-16x16-next.png</span></span><br><span class="line">  <span class="comment"># medium: /images/favicon-32x32-next.png</span></span><br><span class="line">  <span class="attr">small:</span> <span class="string">/images/你的图标名(16x16)</span></span><br><span class="line">  <span class="attr">medium:</span> <span class="string">/images/你的图标名(32x32)</span></span><br></pre></td></tr></table></figure>
-<h2 id="修改Next主题底部标签的-号"><a href="#修改Next主题底部标签的-号" class="headerlink" title="修改Next主题底部标签的#号"></a>修改Next主题底部标签的#号</h2><h3 id="1-实现效果-1"><a href="#1-实现效果-1" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3><p><img src="https://i.loli.net/2020/06/14/gu2OWawqbG1ZhzM.png" alt="image-20200614105134514" style="zoom: 67%;" /></p>
-<h3 id="2-实现方法-1"><a href="#2-实现方法-1" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><p>打开 <code>/themes/next/layout/_macro/post.swig</code>，搜索 <code>rel=&quot;tag&quot;&gt; </code>，将 <code></code> 换成<code>&lt;i class=&quot;fa fa-tag&quot;&gt;&lt;/i&gt;</code></p>
-<h2 id="添加社交图标"><a href="#添加社交图标" class="headerlink" title="添加社交图标"></a>添加社交图标</h2><h3 id="1-实现效果-2"><a href="#1-实现效果-2" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3><h3 id="2-实现方法-2"><a href="#2-实现方法-2" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><p>在主题config文件中搜索social, 取消相应注释即可.</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">social:</span></span><br><span class="line">  <span class="comment"># GitHub: https://github.com/shawer96 || github</span></span><br><span class="line">  <span class="comment"># E-Mail: mailto:yourname@gmail.com || envelope</span></span><br><span class="line">  <span class="comment"># Weibo: https://weibo.com/yourname || weibo</span></span><br><span class="line">  <span class="comment">#Google: https://plus.google.com/yourname || google</span></span><br><span class="line">  <span class="comment">#Twitter: https://twitter.com/yourname || twitter</span></span><br><span class="line">  <span class="comment">#FB Page: https://www.facebook.com/yourname || facebook</span></span><br><span class="line">  <span class="comment">#StackOverflow: https://stackoverflow.com/yourname || stack-overflow</span></span><br><span class="line">  <span class="comment">#YouTube: https://youtube.com/yourname || youtube</span></span><br><span class="line">  <span class="comment">#Instagram: https://instagram.com/yourname || instagram</span></span><br><span class="line">  <span class="comment">#Skype: skype:yourname?call|chat || skype</span></span><br><span class="line">  <span class="comment">#RSS: /atom.xml || rss</span></span><br></pre></td></tr></table></figure>
-<p>也可按照<code>名称: 链接地址 || 社交图标</code>的格式自定义其他的社交账号, 其中<code>||</code>后面的图标是其在<a href="https://fontawesome.com/" target="_blank" rel="noopener">Font Awesome</a>中对应的图标名, 不需要下载.</p>
-<h2 id="文章加锁"><a href="#文章加锁" class="headerlink" title="文章加锁"></a>文章加锁</h2><h3 id="1-实现效果-3"><a href="#1-实现效果-3" class="headerlink" title="1.实现效果"></a>1.实现效果</h3><p><img src="https://i.loli.net/2020/06/14/BH3mvAxdMb9l4Yc.png" alt="image-20200614215553079"></p>
-<h3 id="2-实现方法-3"><a href="#2-实现方法-3" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><ol>
-<li>下载加密插件</li>
-</ol>
-<p>   进入hexo根目录，使用<code>npm install hexo-blog-encrypt</code>命令安装插件。</p>
-<ol>
-<li>修改配置文件</li>
-</ol>
-<p>​        在hexo根目录下的config文件中, 添加</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">encrypt:</span></span><br><span class="line">	<span class="attr">enable:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
-<ol>
-<li>在文章属性栏中添加相应字段</li>
-</ol>
-<p><img src="https://i.loli.net/2020/06/14/Y6PVFjne9cHlzhy.png" alt="image-20200614215627622" style="zoom: 67%;" /></p>
-<p>​    password:  文章的密码</p>
-<p>​    message: 输入密码界面提示说明.</p>
-<p>​    abstract: 文章界面介绍.</p>
-<p>​    message和abstract可以省略.</p>
-<h2 id="折叠首页文章"><a href="#折叠首页文章" class="headerlink" title="折叠首页文章"></a>折叠首页文章</h2><h3 id="1-实现效果-4"><a href="#1-实现效果-4" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3><p><img src="https://i.loli.net/2020/06/14/CcZoB8XpVUJkHNr.png" alt="image-20200614220006815" style="zoom:67%;" /></p>
-<h3 id="2-实现方法-4"><a href="#2-实现方法-4" class="headerlink" title="2.实现方法"></a>2.实现方法</h3><ol>
-<li><del>已失效, 修改主题config文件中的</del></li>
-</ol>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">auto_excerpt:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">length:</span> <span class="number">150</span></span><br></pre></td></tr></table></figure>
-<p>​        随着Next主题的更新, 这一方法不再有用.</p>
-<ol>
-<li>在文章中的属性栏中添加description，并提供文章摘录</li>
-</ol>
-<p>   这种方式只会在首页列表中显示文章的摘要内容，进入文章详情后不会再显示</p>
-<p>   <img src="https://i.loli.net/2020/06/15/3YIW8ZFi7DJVTq6.png" alt="image-20200615000644376" style="zoom: 67%;" /></p>
-<ol>
-<li>在文章中使用<code>&lt; !--more--&gt;</code> 手动进行截断</li>
-</ol>
-<p>   这种方法可以根据文章的内容，自己在合适的位置添加 <code>&lt; !--more--&gt;</code> 标签，使用灵活，也是Hexo推荐的方法</p>
-<p>​        <img src="https://i.loli.net/2020/06/14/hqtfdeRPaTrx7Dj.png" alt="image-20200614220921108"></p>
-]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>散列表查找(哈希表)概述</title>
     <url>/2020/06/24/3_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%A3%E5%88%97%E8%A1%A8%E6%9F%A5%E6%89%BE-%E5%93%88%E5%B8%8C%E8%A1%A8-%E6%A6%82%E8%BF%B0/</url>
     <content><![CDATA[<h1 id="散列表-Hash表"><a href="#散列表-Hash表" class="headerlink" title="散列表(Hash表)"></a>散列表(Hash表)</h1><h2 id="1-Hash表查找定义"><a href="#1-Hash表查找定义" class="headerlink" title="1. Hash表查找定义"></a>1. Hash表查找定义</h2><ul>
@@ -1030,6 +893,314 @@ f_i(key)=RH_i(key)\ (i=1,2,3,\dots,k)</script><p>事先准备多个散列函数,
       </categories>
       <tags>
         <tag>数据结构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>算法及算法的复杂度</title>
+    <url>/2020/06/24/3_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E7%AE%97%E6%B3%95%E5%8F%8A%E5%A4%8D%E6%9D%82%E5%BA%A6/</url>
+    <content><![CDATA[<h1 id="算法及算法效率的度量方法"><a href="#算法及算法效率的度量方法" class="headerlink" title="算法及算法效率的度量方法"></a>算法及算法效率的度量方法</h1><h2 id="1-算法"><a href="#1-算法" class="headerlink" title="1. 算法"></a>1. 算法</h2><h3 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义:"></a>1.1 定义:</h3><p>算法是解决特定问题求解步骤的描述, 在计算机中为指令的有限序列, 并且每条指令表示一个或多个操作.</p>
+<h3 id="1-2-算法的特性"><a href="#1-2-算法的特性" class="headerlink" title="1.2 算法的特性"></a>1.2 算法的特性</h3><ul>
+<li>输入和输出</li>
+<li>有穷性: 有合理边界</li>
+<li>可行性: 每一步都可以通过有限步骤实现</li>
+<li>确定性: 每一步都有确定含义, 不存在二义性</li>
+</ul>
+<h3 id="1-3-算法设计的要求"><a href="#1-3-算法设计的要求" class="headerlink" title="1.3 算法设计的要求"></a>1.3 算法设计的要求</h3><ul>
+<li>正确性: 输入,输出和加工处理无歧义性, 能正确反映问题的需求, 能得到问题的正确答案</li>
+<li>可读性: 便于阅读理解和交流</li>
+<li>健壮性: 当输入数据不合法时也能得到相关处理</li>
+<li>时间效率低空间效率高</li>
+</ul>
+<p>经过分析发现, 一个用高级语言编写的程序在计算机上运行所消耗的时间取决于下列因素:</p>
+<ol>
+<li>算法的策略方法</li>
+<li>编译产生的代码质量</li>
+<li>问题的输入规模</li>
+<li>机器执行指令的速度</li>
+</ol>
+<p>第一条是算法好坏的根本, 一个程序的运行时间, 依赖于<strong>算法的好坏</strong>和<strong>问题的输入规模</strong>.</p>
+<h2 id="2-算法的时间复杂度"><a href="#2-算法的时间复杂度" class="headerlink" title="2. 算法的时间复杂度"></a>2. 算法的时间复杂度</h2><h3 id="2-1-定义"><a href="#2-1-定义" class="headerlink" title="2.1 定义"></a>2.1 定义</h3><p>在进行算法分析时，语句总的执行次数T(n)是关于问题规模n的函数，进而分析T(n)随n的变化情况并确定T(n)的数量级。算法的时间复杂度，也就是算法的时间量度，记作：T(n) = O(f(n))。它表示随问题规模n的增大，算法执行时间的增长率和f(n)的增长率相同，称作算法的渐近时间复杂度，简称为时间复杂度。其中f(n)是问题规模n的某个函数。</p>
+<p>通过大写O[ ]的方法体现时间复杂度的计法, 称为大O记法.</p>
+<h3 id="2-2-推导大O阶方法"><a href="#2-2-推导大O阶方法" class="headerlink" title="2.2 推导大O阶方法"></a>2.2 推导大O阶方法</h3><p>O(1)叫做常数阶；O(n)叫做线性阶；O(n^2)叫做平方阶。 </p>
+<ol>
+<li><p>用常数1取代运行时间中的所有加法常数, 没有加法的常数不予考虑。</p>
+</li>
+<li><p>在修改后的运行次数函数中，只保留最高阶项。</p>
+</li>
+<li><p>如果最高阶项存在且不是1，则去除与这个项相乘的常数。</p>
+</li>
+</ol>
+<p>得到的结果就是大O阶。 </p>
+<p>如果你没看懂，那继续往下看，笔者以例子与你详细介绍：</p>
+<p><strong>例子1：</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum=<span class="number">0</span>,i = <span class="number">0</span>;i &lt; N;i++)  <span class="comment">//1、</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>;j &lt;N;j++)     <span class="comment">//2、</span></span><br><span class="line">        sum=sum+i*j;            <span class="comment">//3、</span></span><br></pre></td></tr></table></figure>
+<p>我们以一个语句记为1次来分析：</p>
+<p>1、1+ (N+1)+N （这里定义两个变量共一次，而中间循环 理论是判断是N次,但是实际上应该是N+1 最后等于N时还有判断1次 0~N 故为N+1，循环变量的递增一共是N次）</p>
+<p>2、N+N(N+1)+NN（这里由第一个循环进入第二个循环，一共是N次，那么将会定义N次，单独分析判断语句它将会像第一层循环一样，一个判断N次 再算上 第一次循环进入第二次循环共有N次 故 为N(N+1) 后面类似 NN ）</p>
+<p>3、NN（第二层循环进入最里面语句 N次 第一层循环进入第二层循环 共N次 故实际为NN次）</p>
+<p>那么累加一下:<br>1+(N+1)+N+N(N+1)+NN+NN 保留最高项 N * N, 故算法的时间复杂度为O(N^2)</p>
+<p><strong>例子2:</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum = <span class="number">0</span>,i = <span class="number">1</span>;i &lt; N;i = i*<span class="number">2</span>)   <span class="comment">//1、</span></span><br><span class="line">        sum = sum+i*j;                 <span class="comment">//2、</span></span><br></pre></td></tr></table></figure>
+<p>看到这程序片段，你是不是一眼就得出答案了？如果你不注意的话，你的答案肯定是O(N)，对了吗？<br>先告诉你答案为O(log(N))，你可以试试代个确切的N值进去 看一下次数,自己体会一下，那么下面我和大家一起分析下：</p>
+<p>1、1+log(N)+1+log(N)</p>
+<p>2、log(N)</p>
+<p>其实这里做判断的时候，应该看一下循环变量的递增方式，这里它是i = i * 2 也就是 $2^x=N$ 那么$X=\log_2(N)$, X是次数，在计算复杂度里面，一般省略底数，也就是直接写log(N), 其他的计算方法与上面的解释一致。</p>
+<p><strong>例子3:</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum=<span class="number">0</span>,i = <span class="number">0</span>;i&lt;N;i++)          <span class="comment">//1、</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>;j &lt; N;j = j*<span class="number">2</span>)      <span class="comment">//2、</span></span><br><span class="line">        sum=sum+i*j;                  <span class="comment">//3、</span></span><br></pre></td></tr></table></figure>
+<p>分析:<br>1、1+N+1+N</p>
+<p>2、N+N(log(N)+1)+Nlog(N)</p>
+<p>3、Nlog(N)</p>
+<p>将它们累加并保留高阶项并去除常数, 得到时间复杂度O(Nlog(N))</p>
+<p><strong>例子4</strong>:</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum = <span class="number">0</span>,i = <span class="number">0</span>; i &lt; n; i++)    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = i; j &lt; n; j++)        </span><br><span class="line">       sum += i*j</span><br></pre></td></tr></table></figure>
+<p>分析:</p>
+<p>总的执行次数为n+(n-1)+(n-2)+…+1=(N^2)/2+n/2</p>
+<p>只保留高阶项并去除与这个项相乘的常数, 最终这段代码的复杂度为O(n^2)</p>
+<h3 id="2-3-常见的时间复杂度"><a href="#2-3-常见的时间复杂度" class="headerlink" title="2.3 常见的时间复杂度"></a>2.3 常见的时间复杂度</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>执行次数函数</th>
+<th>阶</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$42$(常数)</td>
+<td>O(1)</td>
+<td>常数阶</td>
+</tr>
+<tr>
+<td>$2n+3$</td>
+<td>O(n)</td>
+<td>线性阶</td>
+</tr>
+<tr>
+<td>$3n^2+2n+1$</td>
+<td>O(n^2)</td>
+<td>平方阶</td>
+</tr>
+<tr>
+<td>$5\log_2n+19$</td>
+<td>O(log(n))</td>
+<td>对数阶</td>
+</tr>
+<tr>
+<td>$2n+3n\log_2n+19$</td>
+<td>O(nlog(n))</td>
+<td>nlog(n)阶</td>
+</tr>
+<tr>
+<td>$6n^3 + 2n^2 + 3n +4$</td>
+<td>O(n^3)</td>
+<td>立方阶</td>
+</tr>
+<tr>
+<td>$2^n$</td>
+<td>O(2^n)</td>
+<td>指数阶</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>常用时间复杂度耗费时间排序:</p>
+<script type="math/tex; mode=display">
+O(1)\lt O(\log n) \lt O(n) \lt O(n\log n) \lt  O(n^2) \lt O(n^3) \lt O(2^n) \lt O(n!)\lt O(n^n)</script><p>一般而言, 指数阶$O(2^n)$和阶乘阶$O(n!)$会使运行时间大到不可估计, 一般不考虑这种不切实际的算法时间复杂度.</p>
+<h3 id="2-4-最坏情况与平均情况"><a href="#2-4-最坏情况与平均情况" class="headerlink" title="2.4  最坏情况与平均情况"></a>2.4  最坏情况与平均情况</h3><p>比如查找数组中的某个数字, 最好情况是第一次找到, 复杂度为O(1), 最差是最后一次找到, 那么复杂度为O(n)</p>
+<ul>
+<li><p><strong>最坏情况</strong>是一种保障, 保证运行时间不会再坏了, <strong>除非特殊指定, 我们提到的运行时间都是最坏情况的运行时间</strong></p>
+</li>
+<li><p><strong>平均时间</strong>是所有情况中最有意义的, 因为它是期望运行的时间, 一般很难估算得到, 往往是通过一定量的数据实验得到</p>
+</li>
+</ul>
+<h2 id="3-算法的空间复杂度"><a href="#3-算法的空间复杂度" class="headerlink" title="3. 算法的空间复杂度"></a>3. 算法的空间复杂度</h2><h3 id="3-1-定义"><a href="#3-1-定义" class="headerlink" title="3.1 定义"></a>3.1 定义</h3><p>算法的空间复杂度通过计算算法所需的存储空间实现, 算法空间复杂度计算公式记作: S(n) = O(f(n)), 其中n为问题的规模, f(n)为语句所占空间的函数.</p>
+<p>一般情况下, 一个程序在机器上执行时,除了需要存储程序本身的指令、常数、变量和输入数据外,还需要存储对数据操作的存储单元,若输入数据所占空间只取决于问题本身,和算法无关,这样只需要分析该算法在实现时所需的辅助单元即可。若算法执行时所需的辅助空间相对于输入数据量而言是个常数, 则称此算法为原地工作, 空间复杂度为 O(1) 。</p>
+<p>在写代码时完全可以通过空间换时间.  通常我们不用限定词使用”复杂度”时通常都指时间复杂度. </p>
+<h3 id="3-2-计算方法"><a href="#3-2-计算方法" class="headerlink" title="3.2 计算方法"></a>3.2 计算方法</h3><p><strong>1. 空间复杂度 O(1)</strong><br>如果算法执行所需要的临时空间不随着某个变量n的大小而变化，即此算法空间复杂度为一个常量，可表示为 O(1)</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> j = <span class="number">2</span>;</span><br><span class="line">++i;</span><br><span class="line">j++;</span><br><span class="line"><span class="keyword">int</span> m = i + j;</span><br></pre></td></tr></table></figure>
+<p>变量 i、j、m 所分配的空间都不随着处理数据量变化，因此它的空间复杂度 S(n) = O(1)</p>
+<p><strong>2. 空间复杂度 O(n)</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[] m = <span class="keyword">new</span> <span class="keyword">int</span>[n]</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">1</span>; i&lt;=n; ++i)</span><br><span class="line">&#123;</span><br><span class="line">   j = i;</span><br><span class="line">   j++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这段代码中，第一行new了一个数组出来，这个数据占用的大小为n，这段代码的2-6行，虽然有循环，但没有再分配新的空间，因此，这段代码的空间复杂度主要看第一行即可，即 S(n) = O(n)</p>
+]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
+      <tags>
+        <tag>数据结构</tag>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>论文阅读笔记--清华大学深度神经网络加速器(DNA)</title>
+    <url>/2020/07/18/5_%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0-Deep-Convolutional-Neural-Network-Architecture-With-Reconfigurable-Computation-Patterns/</url>
+    <content><![CDATA[<h1 id="Deep-Convolutional-Neural-Network-Architecture-With-Reconfigurable-Computation-Patterns"><a href="#Deep-Convolutional-Neural-Network-Architecture-With-Reconfigurable-Computation-Patterns" class="headerlink" title="Deep Convolutional Neural Network Architecture With Reconfigurable Computation Patterns"></a>Deep Convolutional Neural Network Architecture With Reconfigurable Computation Patterns</h1><blockquote>
+<p>Tu, F., et al. (2017). “Deep Convolutional Neural Network Architecture With Reconfigurable Computation Patterns.” IEEE Transactions on Very Large Scale Integration (VLSI) Systems 25(8): 2220-2233.</p>
+</blockquote>
+<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>以往的深度神经网络加速器(DCNN)通常使用单一的计算模式加速多种神经网络结构, 这会导致性能和效率的损失. 本文提出了一种可重构的DCNN—DNA, 其计算模式, 包含数据重用和可配置的卷积映射方法. 相比传统的方式减少了5.9~8.4倍总能耗, 获得了93%的计算资源利用率.</p>
+<a id="more"></a>
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>传统的DCNN往往使用固定的数据重用模式加和数据通路加速不同的CNN模型. 但不同网络结构和计算资源之间的不匹配将会导致更低的资源利用率和低性能.</p>
+<p>本文提出的可重构加速器架构(DNA)有以下三个特点:</p>
+<ol>
+<li>DNA可以重构数据通路以支持混合重用模式(hybrid reuse), 可用于不同大小的层;</li>
+<li>DNA可以重新配置其计算资源以支持高度可伸缩和高效的映射方法，从而提高不同卷积参数下的资源利用率 ;</li>
+<li>提供了一个layer-based的DNA资源配置框架，在能率和性能两方面进行优化 .</li>
+</ol>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><h3 id="DCNN加速器系统结构"><a href="#DCNN加速器系统结构" class="headerlink" title="DCNN加速器系统结构"></a>DCNN加速器系统结构</h3><p><img src="https://i.loli.net/2020/07/13/qYvH6Ise5gdm2Na.png" alt="1594263695195"></p>
+<p>上图给出了传统的DCNN加速器结构.</p>
+<ul>
+<li>Input Buffer和Weight Buffer存储当前层的输入特征图和权重.</li>
+<li>卷积核将输入特征图load到Input REGs中, 在多个并行的convolution engines(CEs)中进行并行卷积运算.</li>
+<li>输出存储在CEs的output REGs中, 通过池化单元送往Output Buffer.</li>
+<li>计算完当前层那么将Output Buffer中的数据交换至Input Buffer作为下一层的输入或者直接送往DRAM.</li>
+</ul>
+<h3 id="DCNN设计的两个挑战"><a href="#DCNN设计的两个挑战" class="headerlink" title="DCNN设计的两个挑战"></a>DCNN设计的两个挑战</h3><p>能效(OPS/W)</p>
+<p><img src="https://i.loli.net/2020/07/13/SZp57qdiN2zDHrU.png" alt="1594264241221"></p>
+<p>EDRAM、Ebuffer和Eoperation分别是每次DRAM访问、缓冲区访问和每次操作的功耗。因为对于特定网络操作数是固定的, 能耗主要取决于DRAM访问和Buffer访问次数. </p>
+<p><img src="https://i.loli.net/2020/07/13/Nr1RZ2aoF8WXLIG.png" alt="1594264259161"></p>
+<p><strong>挑战一: 在片上缓存上高效的复用数据以降低访存次数从而降低功耗</strong></p>
+<p>DCNN加速器性能可以定义为</p>
+<p><img src="https://i.loli.net/2020/07/13/QbzA2oeEaFiYw4S.png" alt="1594264514892"></p>
+<p>其中MAC为加速器的总MAC单元数量(x2是因为一次MAC包含两个操作), PE利用率与步长、kernel大小、Input map大小相关.</p>
+<p><strong>挑战二: 充分利用PE资源以支持不同的卷积参数从而提升性能</strong></p>
+<h2 id="计算模式"><a href="#计算模式" class="headerlink" title="计算模式"></a>计算模式</h2><p>从两个方面进行考虑—数据重用和卷积映射策略, 优化数据重用可以减少访存, 优化卷积映射策略可以提高PE资源利用率.</p>
+<p><img src="https://i.loli.net/2020/07/13/nvJYpr4yoSdfjmF.png" alt="1594276287162"></p>
+<h3 id="数据重用模式"><a href="#数据重用模式" class="headerlink" title="数据重用模式"></a>数据重用模式</h3><p><img src="https://i.loli.net/2020/07/13/IDBbPvtQs1dxJCo.png" alt="1594274321942"></p>
+<p>将输入和输出特征图按$Th×Tl×Tn$和$Tr×Tc×Tm$分块。$Th$和$Tl$可由$Th = (Tr−1)S + K$和$Tl = (Tc−1)S + K$计算，其中K和S分别为kernel size和stride。对于缓冲区访问和DRAM访问，总访问时间可以用一个统一方程表示</p>
+<p><img src="https://i.loli.net/2020/07/13/YVpkixFyzKM1UDO.png" alt="1594274633130"></p>
+<p>其中TI、TO和TW代表输入、输出和核权重的总数，而$α_i,α_o,α_w$代表它们在计算过程中的重用次数,TOP是total pooled outputs的缩写, 描述池化过后数据写入memory的次数, 通常等于TO/4​.</p>
+<h4 id="输入复用-IR"><a href="#输入复用-IR" class="headerlink" title="输入复用(IR)"></a><strong>输入复用(IR)</strong></h4><p>如Fig 5(a)所示</p>
+<ol>
+<li>Convolution Core将input maps load到Input REGs;</li>
+<li>这些input maps被完全重用，以更新存储在Output Buffer中所有对应的(因为分块了所以是对应部分)部分和 ;</li>
+<li>这些部分和将绕过池化单元直接送往Output Buffer，随后被core取回以便于在下一个input map被load以后继续累加.</li>
+</ol>
+<p>在IR中，卷积的伪代码如Fig5 (b)所示, 外层的四个循环表示卷积的重用模式, 在IR中, Loop N在Loop M之外, 表示一个Input map channel将会被完全重用, 即与所有的卷积核进行运算. 随后再Load下一个Input map channel.总的buffer访问量为$MA^{(IR)}_{buffer}$</p>
+<p><img src="https://i.loli.net/2020/07/13/oVarpuEtMy6ZzH2.png" alt="1594277048049"></p>
+<p>因为Input map只会被加载一次, 所以$\alpha_i=1$, 注意TI会比原始的图大小大1~1.5倍, 因为分块的时候两个tiles之间存在overlap, 这部分数据其实会被重复load. 如fig 4所示,将一个24x24的图分成8x8的三块, kernel size为3, 那么图中overlap部分的大小为10x2(图中的灰色部分). 在这种方式下, overlap的部分会直接从memory读取而不发生重用, 在本例中, 每一个Input map从26x26扩大为30x30.</p>
+<p><img src="https://i.loli.net/2020/07/13/cKlg8YuyiD1UwVJ.png" alt="1594277316486"></p>
+<p>因为Input REGs存储了Tn块, 所以cores要读写$\lceil(N/Tn)\rceil-1$次部分和, 因此$\alpha_o=2(\lceil(N/Tn)\rceil-1)$, TW要在每个input tile上复制一份因此最后一项是$\mathrm{TW} \cdot\lceil(H / \mathrm{Th})\rceil\lceil(L / \mathrm{Tl})\rceil$其中的L和H会因为overlap而扩大. </p>
+<p>如果IR需要缓存的数据比buffer size大, 那么还会导致额外的DRAM访问$\mathrm{MA}_{\mathrm{DRAM}}^{(\mathrm{IR})}$</p>
+<p><img src="https://i.loli.net/2020/07/13/rcMsI9kQzELvYtm.png" alt="1594279756227"></p>
+<p>其中$Bo$和$Bw$是Output Buffer的容量和Weight Buffer的容量, 如果out buffer可以缓存$M \cdot \mathrm{Tr} \cdot \mathrm{T} \mathrm{c}$大小的数据,即$\left(M \cdot \operatorname{Tr} \cdot \mathrm{T} \mathrm{c} \leq B_{o}\right)$, 那么就不会有部分和需要写到DRAM中, 否则部分和需要被储存在DRAM中, 最终导致的DRAM访问次数为$\left(\alpha_{o}=2(\lceil(N / \mathrm{Tn})\rceil-1)\right)$, 同样如果weight的数量不超过Weight Buffer的大小Bw那么最终DRAM的访问次数也可以最小化. 因为Loop R和Loop C是最外层的两层循环, 必须要缓存所有的TW以降低DRAM访问.</p>
+<h4 id="输出复用-OR"><a href="#输出复用-OR" class="headerlink" title="输出复用(OR)"></a>输出复用(OR)</h4><p>如Fig 5(c)所示:</p>
+<ol>
+<li>将同一输入tile对应的不同channels加载到Core上;</li>
+<li>Outputs REGs中的部分和被复用直至计算出output tile的一个channel;</li>
+<li>最终的output maps会在经过池化后被储存, <strong>因此只会计算中只会访问一次Output Buffer.</strong></li>
+</ol>
+<p>伪代码如Fig 5(d), Loop M和Loop N位置发生了互换, 因此累加完成后maps才会被送往Output Buffer, 因此总的buffer 访问量OR为$\mathrm{MA}_{\text {buffer }}^{(\mathrm{OPR})}$</p>
+<p><img src="https://i.loli.net/2020/07/13/xikue29FIsyXdvq.png" alt="1594282066760"></p>
+<p>因为output REGs存储了Tm块, 所以cores要读写$\lceil(M/Tm)\rceil$次部分和, 权重要在每个output tile上load一份, 所以$\alpha_{w}$ 等于$\lceil(R / \mathrm{Tr})\rceil(C / \mathrm{Tc}) \rceil$. DRAM访问次数$\mathrm{MA}_{\mathrm{DRAM}}^{(\mathrm{OR})}$同样与$\mathrm{MA}_{\text {buffer }}^{(\mathrm{OPR})}$和buffer sizes相关</p>
+<p><img src="https://i.loli.net/2020/07/13/51Uie9tzJcxaISn.png" alt="1594282765992"></p>
+<p>其中的$Bi$表示Input Buffer size如果Input Buffer可以存储N个input tiles即$\left(N \cdot \mathrm{Th} \cdot \mathrm{Tl} \leq B_{i}\right)$那么input只需要load一次$\left(\alpha_{i}=1\right)$</p>
+<h4 id="权重重用-WR"><a href="#权重重用-WR" class="headerlink" title="权重重用(WR)"></a>权重重用(WR)</h4><p>如Fig 5(e)所示</p>
+<ol>
+<li>Core load $Tn$个input tiles到Input REGs;</li>
+<li>这些输入将用于更新$Tm$相关的部分和;</li>
+<li>Weight Buffer中${Tn} \times{Tm}$个卷积窗的权重(即$Tn \times Tm \times k \times k$)将被重用, 以计算出$R \times C$大小的$Tm$个output channel.</li>
+</ol>
+<p>伪代码如Fig 5(f)所示, Loop M和Loop N位于循环最外层以重复利用weight. WR的buffer访问次数和DRAM访问次数如下</p>
+<p><img src="https://i.loli.net/2020/07/13/kO8rSdTpFq54Htx.png" alt="1594283823048"></p>
+<h4 id="混合数据重用-Hybrid-Data-Reuse"><a href="#混合数据重用-Hybrid-Data-Reuse" class="headerlink" title="混合数据重用(Hybrid Data Reuse)"></a>混合数据重用(Hybrid Data Reuse)</h4><p>如图6所示，我们分析IR，OR，和WR在AlexNet的CONV3上的Buffer访问时间，将Tr和Tc从2扫描到14, 约束$\mathrm{Tn} \cdot \mathrm{Th} \cdot \mathrm{Tl} \leq 40^{2}$ 和 $\mathrm{Tm} \cdot \mathrm{Tr} \cdot \mathrm{Tc} \leq 32^{2}$,</p>
+<p><img src="https://i.loli.net/2020/07/13/wRl5eJAdDZFVPNr.png" alt="1594284105360"></p>
+<p>对于不同的$Tr \times Tn$, IR, OR, WR也会表现不同的buffer访问次数, 至于DRAM, 随层的变化更大,  传统的做法是选择一个相对较大的固定$Tr \times Tn$, 这显然不是最好的做法.</p>
+<p>混合数据重用是指对每一层选择各自独立的重用模式, 通过探索$\mathrm{IR} / \mathrm{O} \mathrm{R} / \mathrm{WR}$下不同的$\mathrm{Tr}, \mathrm{Tc}, \mathrm{Tm}, \mathrm{Tn}$, 同时通过以下公式评估功耗</p>
+<p><img src="https://i.loli.net/2020/07/13/8VGAQmwjLubdlBK.png" alt="1594285174740"></p>
+<p>这里不评估MAC的计算功耗, 因为对于特定的网络总计算数是确定的, 本文使用的片外DRAM是DDR3, 它的平均访问功耗$E_{\mathrm{DRAM}}$大约是70 pJ/bit [10],Output Buffer的平均访问功耗大约是0.42pJ/bit (TSMC 65-nm LP technology), 通过上述公式在给定硬件存储限制和卷积层大小的情况下计算出最优情况.</p>
+<h3 id="卷积映射方案"><a href="#卷积映射方案" class="headerlink" title="卷积映射方案"></a>卷积映射方案</h3><h4 id="Output-Oriented-Mapping-OOM"><a href="#Output-Oriented-Mapping-OOM" class="headerlink" title="Output Oriented Mapping(OOM)"></a>Output Oriented Mapping(OOM)</h4><p><strong>OOM</strong></p>
+<p><img src="https://i.loli.net/2020/07/13/BzqeDs4y9JASIfT.png" alt="1594285840845"></p>
+<p>如上图所示的例子, input map为3x3, 卷积核大小为2x2, 卷积步长为1, 一个CE包含2x2个PE, 卷积核在图中的四个区域{I0, I1, I3, I4}, {I1, I2, I4, I5},{I3, I4, I6, I7}, 和{I4, I5, I7, I8}  滑动, 得到四个输出O1~O3四个输出点.</p>
+<p>OOM就是指将这四个输出点分配给CE中单独的PE, PE可以与<strong>相邻</strong>的PE共享数据. PE可以沿着黑色箭头所示的轨迹收集数据, 如Fig 7(a)所示. </p>
+<p>需要4个cycles完成:</p>
+<ol>
+<li>Cycle1: {I0, I1, I3, I4}分别分配给PE0~PE3作为它们的第一个输入, 同时所有的PE都会Load第一个kernel的权重W0; 这一权重将在cycle2与输入数据相乘,  并与存储在PE输出寄存器中, 之前的计算结果进行累加; 在cycle3, load输入, 乘法运算, 累加将完全流水化运行;</li>
+<li>Cycle2: PE0和PE2将重用之前存储在PE1和PE3中的{I1,I4}作为它的第二个输入, 如Fig 7(b)所示, PE1和PE3 Load他们所需的第二个输入{I2,I5}, 所有的PE共享权重W1;</li>
+<li>Cycle3: 此时已经到了卷积的第二行, 与第一行不同的是第二行应该反方向运动, PE0和PE1将重用之前存储在PE2和PE3中的{I4,I5}作为它的第三个输入, PE2和PE3 Load他们所需的第三个输入{I7,I8}, 所有的PE共享权重W2;</li>
+<li>Cycle4: PE1和PE3将重用之前存储在PE0和PE2中的{I4,I7}作为它的第四个输入, PE0和PE2将Load它们所需的输入{I3,I6}, 至此, 所有的PE都收集到了它们所需的数据.最终的O1~O3将在两个cycle内完成.</li>
+</ol>
+<p><strong>OOM的局限—降低PE的利用率</strong></p>
+<p><em>Pros:</em> 针对不同大小的卷积核大小, PEs也可以不改变其功能而轻易收集它们所需的数据, 只需要改变它们的轨迹长度(=<em>k x k</em>). </p>
+<p><em>Cons:</em> 如Fig 7(c)所示, 有两种情况会降低PE的利用率</p>
+<ul>
+<li>对于卷积步长S&gt;1的情况, 在这种情况下, 未被激活的PEs((1)图中灰色部分) Load得到的数据没有用, 故4 x 4的输出需要8 x 8的PE来做, 仅仅得到了25%的PE利用率.</li>
+<li>不规则feature map$(Tr \times Tc)$与固定的阵列大小$(A \times A)$之间的不匹配, 如(2)所示, 6 x 6的特征图放在8 x 8的PE阵列上, PE利用率仅有56.25%.</li>
+</ul>
+<h4 id="Parallel-Output-Oriented-Mapping-POOM"><a href="#Parallel-Output-Oriented-Mapping-POOM" class="headerlink" title="Parallel Output Oriented Mapping(POOM)"></a>Parallel Output Oriented Mapping(POOM)</h4><p>传统OOM中PE利用率可以给出如下定义:</p>
+<p><img src="https://i.loli.net/2020/07/13/MfIUbEiZP9raDLR.png" alt="1594346829578"></p>
+<p>如Fig 8所示, 通过同时并行P个计算, 可以克服OOM的局限性, 我们称之为POOM. P会减小计算在阵列上的feature map大小。因此，我们对分配给卷积核的最里面的四个循环进行进一步的分块(图9)。在POOM中，PE利用率被重新定义为 </p>
+<p><img src="https://i.loli.net/2020/07/13/OoEDyCAerVqkXRK.png" alt="1594346839413"></p>
+<p><img src="https://i.loli.net/2020/07/13/kZlmTDxuMbJ8KOP.png" alt="1594347059610"></p>
+<p>其中的Trr和Tcc是PE阵列的平铺参数(tiling parameters). </p>
+<ul>
+<li>对于Fig 7(a)中stride较大(S=2)的情况, 可以同时让4个($S^2$)output maps并行(原文是output maps, 个人认为是output map的一个channel, 因为后文提到了数据共享, 因此并行多个kernel计算output channel更合理), 每个inactive PE可以接受来自相邻红色PE的数据, 使用自己的kernel weight进行计算, 通过这种方法将利用率提高了P倍.</li>
+<li>POOM也可以将多个不规则(irregular, 这里指的是map不能完全铺满阵列)的特征图映射到一个阵列上, Fig8 (b)所示, 在OOM中, 计算16个6 x 6的input maps需要16次迭代, 而PE利用率仅仅只有56.25%. 在POOM中, 可以将output切分成小块, 在本例中8 x 8阵列被分为了16个2 x 2的blocks, 每个blocks都负责一个map的计算(相当于同时计算16个input maps), 这样只需要9次迭代(6 x 6 / 2 x 2), 每次迭代的PE利用率都是100%.</li>
+</ul>
+<p><strong>因为POOM其实是对最里面四层循环进行tiling, 因此可以重用input register中的数据, 不会造成额外的Input Buffer访问.</strong>当然更大的P对Weight Buffer的带宽和容量要求也更大, 因此需要选择合适的POOM参数<P, Trr, Tcc>在有限的参数下最大化PE利用率.</p>
+<h4 id="全连接层的实现"><a href="#全连接层的实现" class="headerlink" title="全连接层的实现"></a>全连接层的实现</h4><p>全连接层可以看做特殊的卷积层, 只不过有如下约束:  </p>
+<ul>
+<li>H = L = R = C = K = S = 1</li>
+</ul>
+<p>因为全连接层拥有量的权重(25.1倍于卷积层), 但是MAC操作仅为卷积层的8.8%, 因此全连接层一次运算需要大量的权重, 此时的DRAM带宽将成为性能瓶颈. 因此要批量处理权重, 采用WR,  每个batch可以看做卷积层的tile, 因此全连接层也可以使用POOM.$R \times C=\operatorname{Tr} \times \mathrm{T} \mathrm{c}=$ <em>batch size</em>. </p>
+<h2 id="架构设计"><a href="#架构设计" class="headerlink" title="架构设计"></a>架构设计</h2><p>基本架构设计如图3所示:</p>
+<ul>
+<li>Controller中的configuration context用于配置加速器的资源;</li>
+<li>每个convolution core拥有两个CE, 它们共享Input Regs, 但是拥有独立的Output Regs用于保存部分和;</li>
+<li>ReLU+池化单元作为输出.</li>
+</ul>
+<h3 id="可重构的数据通路"><a href="#可重构的数据通路" class="headerlink" title="可重构的数据通路"></a>可重构的数据通路</h3><p><img src="https://i.loli.net/2020/07/13/p9sfNUqFoJmjvzO.png" alt="1594370558737"></p>
+<p>数据buffer大小为256KB, Input Buffer和Output Buffer各128KB. Input Regs和Output Regs以及Weight Buffer都采用了<strong>ping-pong buffer</strong>(图中的绿色部分). 片上采用了大data buffer和小Weight Buffer, 因为缓存所有weights的要求很难达到, 但是数据却可以通过修改参数满足要求(tiling等). 比如如果采用IR, 那么Output Buffer的大小只需要$M \cdot \operatorname{Tr} \cdot \mathrm{T}_{\mathrm{C}}$但是Weight Buffer却需要缓存Tw大小(即所有)的权重.</p>
+<ul>
+<li>对于IR, Output Buffer可以通过图中红色的线将之前累加的部分和反馈回给Output REGs.</li>
+<li>对于OR, Input Buffer在处理当前特征图的时候就可以利用ping pong的方式load下一次计算需要的特征图.</li>
+<li>WR和IR很类似, 只不过weight需要被保持直至完全重用.</li>
+</ul>
+<p><img src="https://i.loli.net/2020/07/13/DPIFuqtWBrARJMm.png" alt="1594370572270"></p>
+<h3 id="可重构的CE设计"><a href="#可重构的CE设计" class="headerlink" title="可重构的CE设计"></a>可重构的CE设计</h3><p><strong>四级CE结构</strong></p>
+<ol>
+<li><p>Input REG level: CE的shared Input REGs, 包含两个40 x 40输入寄存器网络, 可以通过水平和垂直移动寄存器中的数据实现Fig7 (b)中提到的S行数据轨迹, 西北角的16 x 16个寄存器可被data sharing level和MAC level通过PE的”In”端口直接访问.</p>
+</li>
+<li><p>data sharing level: CE能够针对不同的POOM进行重构, 实现PE之间的快速数据共享, POOM中不同的block需要共享相同的input, 与此同时<P, Trr, Tcc>需要受到硬件资源的限制.  如Fig 11所示, 我们设计了三种数据共享网络(DSNs)以实现blocks之间灵活和快速的数据传输:</p>
+<ul>
+<li><p>DSN0是一种增强了对角线互联的mesh-like寄存器阵, 它与大步长的数据共享相适配;</p>
+</li>
+<li><p>DSN1和DSN2用来支持切分不规则(irregular)的output maps. </p>
+<ul>
+<li>DSN1是一个包含8x8个2x2 blocks的网络, 每个周期开始,  block0从Input REG level load 2x2个数据. 然后通过DSNs之间的互联传递给其他blocks, 每个blocks再通过ds1将数据传输给相应的2x2MACs. 通过这种方式, 最多可以以Trr  x Tcc = 2 x 2的大小同时计算64个output maps.</li>
+<li>DSN2与DSN1类似, 只不过是一个包含4x4个4x4 blocks的网络.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>MAC level: 分布在16 x 16个PE中的16 x 16个MAC, 每个MAC的输入寄存器R0可以从Input REG level(通过port”in”)和data sharing level(通过port”ds0”,”ds1”,”ds2”);</p>
+</li>
+<li><p>Output REG level</p>
+</li>
+</ol>
+<p><img src="https://i.loli.net/2020/07/13/TiKQmCgAUkG6xvo.png" alt="1594603848715"></p>
+<p><img src="https://i.loli.net/2020/07/13/QO4eSZrqXhwmxT7.png" alt="1594604298300"></p>
+<h3 id="DNA’s-Work-Flow-and-Scheduling-Framework"><a href="#DNA’s-Work-Flow-and-Scheduling-Framework" class="headerlink" title="DNA’s Work Flow and Scheduling Framework"></a>DNA’s Work Flow and Scheduling Framework</h3><p>DNA的工作流程如Fig 13所示:</p>
+<p><img src="https://i.loli.net/2020/07/13/9ZCgPI4JmQlhRbK.png" alt="1594606380823"></p>
+<p><strong>Phase1: 将DCNN编译成DNA的配置</strong></p>
+<p>我们为Phase1提出了一个分层调度的框架, 对于给定的DCNN, 可以为每一层计算分配最佳的计算模式. 对于每一层调度, 都被描述为一个双向优化问题. 通常一个双向优化问题可以转换成一个单向优化问题. 比如如果我们更关注性能, 可以首先优化性能, 再优化功耗.</p>
+<p><strong>Phase2: 在DNA系统上执行DCNN</strong></p>
+<ol>
+<li>从hosts processor加载编译好的配置</li>
+<li>从片外DRAM加载数据和权重至DNA</li>
+<li>DNA执行当前层</li>
+<li>DNA将输出写回DRAM</li>
+</ol>
+<p>这四个步骤是完全流水化的直到一整个batch被处理完, DNA依次计算每个卷积层, 然后batch处理FC.</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文从数据重用的角度实, 降低访问DRAM和片上SRAM(Buffer, Reg)带来的功耗损失. 从卷积映射的角度提高了PE资源的利用率. 针对卷积神经网络的不同层, 针对性的搜寻最合适的tiling parameters, 缓解了传统神经网络加速器使用单一计算模式导致性能损失的问题.</p>
+]]></content>
+      <categories>
+        <category>论文阅读笔记</category>
+        <category>神经网络加速器</category>
+      </categories>
+      <tags>
+        <tag>计算机体系结构</tag>
+        <tag>神经网络</tag>
       </tags>
   </entry>
   <entry>
@@ -1185,22 +1356,6 @@ f_i(key)=RH_i(key)\ (i=1,2,3,\dots,k)</script><p>事先准备多个散列函数,
       <tags>
         <tag>计算机体系结构</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>我的第一篇博客</title>
-    <url>/2019/12/29/6_%E9%9A%8F%E7%AC%94/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<div id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
-  <div class="hbe-input-container">
-  <input type="password" id="hbePass" placeholder="" />
-    <label for="hbePass">Hey, password is required here.</label>
-    <div class="bottom-line"></div>
-  </div>
-  <script id="hbeData" type="hbeData" data-hmacdigest="c60b1ad9f22f09a9905fa786aac12ca23e35ac28ef82a4d384ba02338c7309b0">2daa0e43d16059575e0358eeb13204c9334f10fe9f5b4c4ca9e491347ae1aac787a653f3bfdff483154faa9c306499459a543d8e0e9fdb7cb6a5691a3868df52cad9689da85c8199db4aac1924b04b538bf91d99cddcb7f67e38171e7d09e6b5597213a8b0d8533be2784f8c387f9f0e68d0da8bb048934a16c72aa145f07ad7ad2b10054f7f6b1d80b0d972ac6485d319be33fd5c92fbe1131f89956e7073ea85085780b1c6a34ebadafa0d52784ba9f0261bdd30c89b38edda4c7efe264159e6e8a362df38552661363061bfa6a36abe0affed58798e5a6d70904733b2ad67d59ed42e7b388d29ddb4d8010b266ca05db60cbedc9060a428ca1bad408deceeab54380c354fdfb78225304e7d4c88b8e72446d8af33f4178fb27faf0449b805d486d93cb7785dd7dbb3392434262aab7a601b8088edb79def0f6fdb4926f9d04f2c1e1aead921142879cb84a484b8e4dfcd34931c5fcea43e424ded1d1812eba22ca16c330fd68f276497435047212117eeb1a62d4c93242d72e10d6724aaad4dcfb180bc95b3f5b99e65330158bd894ce97a9c4fb53d4f5c1ea52ef8ff5dbe2648adca06564933bdac07b21b3cad5c719d3e3240f6c8552d75e8f2915a921e6d0843ea372193f682b95dcd3bf10c782b69c7ce44d3b0090bc7d681e2fc7b223cf6d6d0250200d0783bc24ad9075ab73f86040d8f679046798f5cd3a1ca8209329d43d6f89d643546670e222bb26ffd8b10a56ce2af5dbc3e12ae65c3f3216d657241a0657c72df14798ba83b10ccddbb47eef59f497761a407577164474a0c2e03e28634c6f9912748f2d6dd6a69b188d8cc2e21686e42bab33415c5f368932f753d1fd62ace6bbf3c7b75a9e2a799ed4d386784a9ce1405719dc52e00dc1f0c85e5c6ac756e1e14c66a268140ebf1b1ecfa515901fd273c9351202425498ae9b937346baa409fcfe66635c516435b9a929ec339333d2d8e0091b8bc155b1f24d6fe55d4d17d8a760648d92ccd7983b79df3cd5e2aa01f015c75216019495aabe0fedd9b61d1b5672d5643de5e7b7adff4dd66c76df3f67193d7e3812aca14eb90b0badc2dc2461c8a98524cb119b47ca1302e93962a861f229c0fdcc505cfb12451ec1bad993b4e8e23dee748821febba58e44b376a927b5b7a3d19439c3b9878319c543f34f7dec63c58fcf910fe08bb7335c34f277eedb08d61ac013b1c887783e609bfe2f17fe64abd6d402da318e9668de1a6d5b6ce48ceb45da8337e001be83a04e4351b653c4bbd9ee42d16b3c8639da1f7e5636130c198a212e168bc4dc35121d604ba0de0cb781467df42</script>
-</div>
-<script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
   </entry>
   <entry>
     <title>论文阅读笔记--卷积神经网络加速器最优设计空间</title>
@@ -1416,174 +1571,19 @@ f_i(key)=RH_i(key)\ (i=1,2,3,\dots,k)</script><p>事先准备多个散列函数,
       </tags>
   </entry>
   <entry>
-    <title>论文阅读笔记--清华大学深度神经网络加速器(DNA)</title>
-    <url>/2020/07/18/5_%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0-Deep-Convolutional-Neural-Network-Architecture-With-Reconfigurable-Computation-Patterns/</url>
-    <content><![CDATA[<h1 id="Deep-Convolutional-Neural-Network-Architecture-With-Reconfigurable-Computation-Patterns"><a href="#Deep-Convolutional-Neural-Network-Architecture-With-Reconfigurable-Computation-Patterns" class="headerlink" title="Deep Convolutional Neural Network Architecture With Reconfigurable Computation Patterns"></a>Deep Convolutional Neural Network Architecture With Reconfigurable Computation Patterns</h1><blockquote>
-<p>Tu, F., et al. (2017). “Deep Convolutional Neural Network Architecture With Reconfigurable Computation Patterns.” IEEE Transactions on Very Large Scale Integration (VLSI) Systems 25(8): 2220-2233.</p>
-</blockquote>
-<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>以往的深度神经网络加速器(DCNN)通常使用单一的计算模式加速多种神经网络结构, 这会导致性能和效率的损失. 本文提出了一种可重构的DCNN—DNA, 其计算模式, 包含数据重用和可配置的卷积映射方法. 相比传统的方式减少了5.9~8.4倍总能耗, 获得了93%的计算资源利用率.</p>
-<a id="more"></a>
-<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>传统的DCNN往往使用固定的数据重用模式加和数据通路加速不同的CNN模型. 但不同网络结构和计算资源之间的不匹配将会导致更低的资源利用率和低性能.</p>
-<p>本文提出的可重构加速器架构(DNA)有以下三个特点:</p>
-<ol>
-<li>DNA可以重构数据通路以支持混合重用模式(hybrid reuse), 可用于不同大小的层;</li>
-<li>DNA可以重新配置其计算资源以支持高度可伸缩和高效的映射方法，从而提高不同卷积参数下的资源利用率 ;</li>
-<li>提供了一个layer-based的DNA资源配置框架，在能率和性能两方面进行优化 .</li>
-</ol>
-<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><h3 id="DCNN加速器系统结构"><a href="#DCNN加速器系统结构" class="headerlink" title="DCNN加速器系统结构"></a>DCNN加速器系统结构</h3><p><img src="https://i.loli.net/2020/07/13/qYvH6Ise5gdm2Na.png" alt="1594263695195"></p>
-<p>上图给出了传统的DCNN加速器结构.</p>
-<ul>
-<li>Input Buffer和Weight Buffer存储当前层的输入特征图和权重.</li>
-<li>卷积核将输入特征图load到Input REGs中, 在多个并行的convolution engines(CEs)中进行并行卷积运算.</li>
-<li>输出存储在CEs的output REGs中, 通过池化单元送往Output Buffer.</li>
-<li>计算完当前层那么将Output Buffer中的数据交换至Input Buffer作为下一层的输入或者直接送往DRAM.</li>
-</ul>
-<h3 id="DCNN设计的两个挑战"><a href="#DCNN设计的两个挑战" class="headerlink" title="DCNN设计的两个挑战"></a>DCNN设计的两个挑战</h3><p>能效(OPS/W)</p>
-<p><img src="https://i.loli.net/2020/07/13/SZp57qdiN2zDHrU.png" alt="1594264241221"></p>
-<p>EDRAM、Ebuffer和Eoperation分别是每次DRAM访问、缓冲区访问和每次操作的功耗。因为对于特定网络操作数是固定的, 能耗主要取决于DRAM访问和Buffer访问次数. </p>
-<p><img src="https://i.loli.net/2020/07/13/Nr1RZ2aoF8WXLIG.png" alt="1594264259161"></p>
-<p><strong>挑战一: 在片上缓存上高效的复用数据以降低访存次数从而降低功耗</strong></p>
-<p>DCNN加速器性能可以定义为</p>
-<p><img src="https://i.loli.net/2020/07/13/QbzA2oeEaFiYw4S.png" alt="1594264514892"></p>
-<p>其中MAC为加速器的总MAC单元数量(x2是因为一次MAC包含两个操作), PE利用率与步长、kernel大小、Input map大小相关.</p>
-<p><strong>挑战二: 充分利用PE资源以支持不同的卷积参数从而提升性能</strong></p>
-<h2 id="计算模式"><a href="#计算模式" class="headerlink" title="计算模式"></a>计算模式</h2><p>从两个方面进行考虑—数据重用和卷积映射策略, 优化数据重用可以减少访存, 优化卷积映射策略可以提高PE资源利用率.</p>
-<p><img src="https://i.loli.net/2020/07/13/nvJYpr4yoSdfjmF.png" alt="1594276287162"></p>
-<h3 id="数据重用模式"><a href="#数据重用模式" class="headerlink" title="数据重用模式"></a>数据重用模式</h3><p><img src="https://i.loli.net/2020/07/13/IDBbPvtQs1dxJCo.png" alt="1594274321942"></p>
-<p>将输入和输出特征图按$Th×Tl×Tn$和$Tr×Tc×Tm$分块。$Th$和$Tl$可由$Th = (Tr−1)S + K$和$Tl = (Tc−1)S + K$计算，其中K和S分别为kernel size和stride。对于缓冲区访问和DRAM访问，总访问时间可以用一个统一方程表示</p>
-<p><img src="https://i.loli.net/2020/07/13/YVpkixFyzKM1UDO.png" alt="1594274633130"></p>
-<p>其中TI、TO和TW代表输入、输出和核权重的总数，而$α_i,α_o,α_w$代表它们在计算过程中的重用次数,TOP是total pooled outputs的缩写, 描述池化过后数据写入memory的次数, 通常等于TO/4​.</p>
-<h4 id="输入复用-IR"><a href="#输入复用-IR" class="headerlink" title="输入复用(IR)"></a><strong>输入复用(IR)</strong></h4><p>如Fig 5(a)所示</p>
-<ol>
-<li>Convolution Core将input maps load到Input REGs;</li>
-<li>这些input maps被完全重用，以更新存储在Output Buffer中所有对应的(因为分块了所以是对应部分)部分和 ;</li>
-<li>这些部分和将绕过池化单元直接送往Output Buffer，随后被core取回以便于在下一个input map被load以后继续累加.</li>
-</ol>
-<p>在IR中，卷积的伪代码如Fig5 (b)所示, 外层的四个循环表示卷积的重用模式, 在IR中, Loop N在Loop M之外, 表示一个Input map channel将会被完全重用, 即与所有的卷积核进行运算. 随后再Load下一个Input map channel.总的buffer访问量为$MA^{(IR)}_{buffer}$</p>
-<p><img src="https://i.loli.net/2020/07/13/oVarpuEtMy6ZzH2.png" alt="1594277048049"></p>
-<p>因为Input map只会被加载一次, 所以$\alpha_i=1$, 注意TI会比原始的图大小大1~1.5倍, 因为分块的时候两个tiles之间存在overlap, 这部分数据其实会被重复load. 如fig 4所示,将一个24x24的图分成8x8的三块, kernel size为3, 那么图中overlap部分的大小为10x2(图中的灰色部分). 在这种方式下, overlap的部分会直接从memory读取而不发生重用, 在本例中, 每一个Input map从26x26扩大为30x30.</p>
-<p><img src="https://i.loli.net/2020/07/13/cKlg8YuyiD1UwVJ.png" alt="1594277316486"></p>
-<p>因为Input REGs存储了Tn块, 所以cores要读写$\lceil(N/Tn)\rceil-1$次部分和, 因此$\alpha_o=2(\lceil(N/Tn)\rceil-1)$, TW要在每个input tile上复制一份因此最后一项是$\mathrm{TW} \cdot\lceil(H / \mathrm{Th})\rceil\lceil(L / \mathrm{Tl})\rceil$其中的L和H会因为overlap而扩大. </p>
-<p>如果IR需要缓存的数据比buffer size大, 那么还会导致额外的DRAM访问$\mathrm{MA}_{\mathrm{DRAM}}^{(\mathrm{IR})}$</p>
-<p><img src="https://i.loli.net/2020/07/13/rcMsI9kQzELvYtm.png" alt="1594279756227"></p>
-<p>其中$Bo$和$Bw$是Output Buffer的容量和Weight Buffer的容量, 如果out buffer可以缓存$M \cdot \mathrm{Tr} \cdot \mathrm{T} \mathrm{c}$大小的数据,即$\left(M \cdot \operatorname{Tr} \cdot \mathrm{T} \mathrm{c} \leq B_{o}\right)$, 那么就不会有部分和需要写到DRAM中, 否则部分和需要被储存在DRAM中, 最终导致的DRAM访问次数为$\left(\alpha_{o}=2(\lceil(N / \mathrm{Tn})\rceil-1)\right)$, 同样如果weight的数量不超过Weight Buffer的大小Bw那么最终DRAM的访问次数也可以最小化. 因为Loop R和Loop C是最外层的两层循环, 必须要缓存所有的TW以降低DRAM访问.</p>
-<h4 id="输出复用-OR"><a href="#输出复用-OR" class="headerlink" title="输出复用(OR)"></a>输出复用(OR)</h4><p>如Fig 5(c)所示:</p>
-<ol>
-<li>将同一输入tile对应的不同channels加载到Core上;</li>
-<li>Outputs REGs中的部分和被复用直至计算出output tile的一个channel;</li>
-<li>最终的output maps会在经过池化后被储存, <strong>因此只会计算中只会访问一次Output Buffer.</strong></li>
-</ol>
-<p>伪代码如Fig 5(d), Loop M和Loop N位置发生了互换, 因此累加完成后maps才会被送往Output Buffer, 因此总的buffer 访问量OR为$\mathrm{MA}_{\text {buffer }}^{(\mathrm{OPR})}$</p>
-<p><img src="https://i.loli.net/2020/07/13/xikue29FIsyXdvq.png" alt="1594282066760"></p>
-<p>因为output REGs存储了Tm块, 所以cores要读写$\lceil(M/Tm)\rceil$次部分和, 权重要在每个output tile上load一份, 所以$\alpha_{w}$ 等于$\lceil(R / \mathrm{Tr})\rceil(C / \mathrm{Tc}) \rceil$. DRAM访问次数$\mathrm{MA}_{\mathrm{DRAM}}^{(\mathrm{OR})}$同样与$\mathrm{MA}_{\text {buffer }}^{(\mathrm{OPR})}$和buffer sizes相关</p>
-<p><img src="https://i.loli.net/2020/07/13/51Uie9tzJcxaISn.png" alt="1594282765992"></p>
-<p>其中的$Bi$表示Input Buffer size如果Input Buffer可以存储N个input tiles即$\left(N \cdot \mathrm{Th} \cdot \mathrm{Tl} \leq B_{i}\right)$那么input只需要load一次$\left(\alpha_{i}=1\right)$</p>
-<h4 id="权重重用-WR"><a href="#权重重用-WR" class="headerlink" title="权重重用(WR)"></a>权重重用(WR)</h4><p>如Fig 5(e)所示</p>
-<ol>
-<li>Core load $Tn$个input tiles到Input REGs;</li>
-<li>这些输入将用于更新$Tm$相关的部分和;</li>
-<li>Weight Buffer中${Tn} \times{Tm}$个卷积窗的权重(即$Tn \times Tm \times k \times k$)将被重用, 以计算出$R \times C$大小的$Tm$个output channel.</li>
-</ol>
-<p>伪代码如Fig 5(f)所示, Loop M和Loop N位于循环最外层以重复利用weight. WR的buffer访问次数和DRAM访问次数如下</p>
-<p><img src="https://i.loli.net/2020/07/13/kO8rSdTpFq54Htx.png" alt="1594283823048"></p>
-<h4 id="混合数据重用-Hybrid-Data-Reuse"><a href="#混合数据重用-Hybrid-Data-Reuse" class="headerlink" title="混合数据重用(Hybrid Data Reuse)"></a>混合数据重用(Hybrid Data Reuse)</h4><p>如图6所示，我们分析IR，OR，和WR在AlexNet的CONV3上的Buffer访问时间，将Tr和Tc从2扫描到14, 约束$\mathrm{Tn} \cdot \mathrm{Th} \cdot \mathrm{Tl} \leq 40^{2}$ 和 $\mathrm{Tm} \cdot \mathrm{Tr} \cdot \mathrm{Tc} \leq 32^{2}$,</p>
-<p><img src="https://i.loli.net/2020/07/13/wRl5eJAdDZFVPNr.png" alt="1594284105360"></p>
-<p>对于不同的$Tr \times Tn$, IR, OR, WR也会表现不同的buffer访问次数, 至于DRAM, 随层的变化更大,  传统的做法是选择一个相对较大的固定$Tr \times Tn$, 这显然不是最好的做法.</p>
-<p>混合数据重用是指对每一层选择各自独立的重用模式, 通过探索$\mathrm{IR} / \mathrm{O} \mathrm{R} / \mathrm{WR}$下不同的$\mathrm{Tr}, \mathrm{Tc}, \mathrm{Tm}, \mathrm{Tn}$, 同时通过以下公式评估功耗</p>
-<p><img src="https://i.loli.net/2020/07/13/8VGAQmwjLubdlBK.png" alt="1594285174740"></p>
-<p>这里不评估MAC的计算功耗, 因为对于特定的网络总计算数是确定的, 本文使用的片外DRAM是DDR3, 它的平均访问功耗$E_{\mathrm{DRAM}}$大约是70 pJ/bit [10],Output Buffer的平均访问功耗大约是0.42pJ/bit (TSMC 65-nm LP technology), 通过上述公式在给定硬件存储限制和卷积层大小的情况下计算出最优情况.</p>
-<h3 id="卷积映射方案"><a href="#卷积映射方案" class="headerlink" title="卷积映射方案"></a>卷积映射方案</h3><h4 id="Output-Oriented-Mapping-OOM"><a href="#Output-Oriented-Mapping-OOM" class="headerlink" title="Output Oriented Mapping(OOM)"></a>Output Oriented Mapping(OOM)</h4><p><strong>OOM</strong></p>
-<p><img src="https://i.loli.net/2020/07/13/BzqeDs4y9JASIfT.png" alt="1594285840845"></p>
-<p>如上图所示的例子, input map为3x3, 卷积核大小为2x2, 卷积步长为1, 一个CE包含2x2个PE, 卷积核在图中的四个区域{I0, I1, I3, I4}, {I1, I2, I4, I5},{I3, I4, I6, I7}, 和{I4, I5, I7, I8}  滑动, 得到四个输出O1~O3四个输出点.</p>
-<p>OOM就是指将这四个输出点分配给CE中单独的PE, PE可以与<strong>相邻</strong>的PE共享数据. PE可以沿着黑色箭头所示的轨迹收集数据, 如Fig 7(a)所示. </p>
-<p>需要4个cycles完成:</p>
-<ol>
-<li>Cycle1: {I0, I1, I3, I4}分别分配给PE0~PE3作为它们的第一个输入, 同时所有的PE都会Load第一个kernel的权重W0; 这一权重将在cycle2与输入数据相乘,  并与存储在PE输出寄存器中, 之前的计算结果进行累加; 在cycle3, load输入, 乘法运算, 累加将完全流水化运行;</li>
-<li>Cycle2: PE0和PE2将重用之前存储在PE1和PE3中的{I1,I4}作为它的第二个输入, 如Fig 7(b)所示, PE1和PE3 Load他们所需的第二个输入{I2,I5}, 所有的PE共享权重W1;</li>
-<li>Cycle3: 此时已经到了卷积的第二行, 与第一行不同的是第二行应该反方向运动, PE0和PE1将重用之前存储在PE2和PE3中的{I4,I5}作为它的第三个输入, PE2和PE3 Load他们所需的第三个输入{I7,I8}, 所有的PE共享权重W2;</li>
-<li>Cycle4: PE1和PE3将重用之前存储在PE0和PE2中的{I4,I7}作为它的第四个输入, PE0和PE2将Load它们所需的输入{I3,I6}, 至此, 所有的PE都收集到了它们所需的数据.最终的O1~O3将在两个cycle内完成.</li>
-</ol>
-<p><strong>OOM的局限—降低PE的利用率</strong></p>
-<p><em>Pros:</em> 针对不同大小的卷积核大小, PEs也可以不改变其功能而轻易收集它们所需的数据, 只需要改变它们的轨迹长度(=<em>k x k</em>). </p>
-<p><em>Cons:</em> 如Fig 7(c)所示, 有两种情况会降低PE的利用率</p>
-<ul>
-<li>对于卷积步长S&gt;1的情况, 在这种情况下, 未被激活的PEs((1)图中灰色部分) Load得到的数据没有用, 故4 x 4的输出需要8 x 8的PE来做, 仅仅得到了25%的PE利用率.</li>
-<li>不规则feature map$(Tr \times Tc)$与固定的阵列大小$(A \times A)$之间的不匹配, 如(2)所示, 6 x 6的特征图放在8 x 8的PE阵列上, PE利用率仅有56.25%.</li>
-</ul>
-<h4 id="Parallel-Output-Oriented-Mapping-POOM"><a href="#Parallel-Output-Oriented-Mapping-POOM" class="headerlink" title="Parallel Output Oriented Mapping(POOM)"></a>Parallel Output Oriented Mapping(POOM)</h4><p>传统OOM中PE利用率可以给出如下定义:</p>
-<p><img src="https://i.loli.net/2020/07/13/MfIUbEiZP9raDLR.png" alt="1594346829578"></p>
-<p>如Fig 8所示, 通过同时并行P个计算, 可以克服OOM的局限性, 我们称之为POOM. P会减小计算在阵列上的feature map大小。因此，我们对分配给卷积核的最里面的四个循环进行进一步的分块(图9)。在POOM中，PE利用率被重新定义为 </p>
-<p><img src="https://i.loli.net/2020/07/13/OoEDyCAerVqkXRK.png" alt="1594346839413"></p>
-<p><img src="https://i.loli.net/2020/07/13/kZlmTDxuMbJ8KOP.png" alt="1594347059610"></p>
-<p>其中的Trr和Tcc是PE阵列的平铺参数(tiling parameters). </p>
-<ul>
-<li>对于Fig 7(a)中stride较大(S=2)的情况, 可以同时让4个($S^2$)output maps并行(原文是output maps, 个人认为是output map的一个channel, 因为后文提到了数据共享, 因此并行多个kernel计算output channel更合理), 每个inactive PE可以接受来自相邻红色PE的数据, 使用自己的kernel weight进行计算, 通过这种方法将利用率提高了P倍.</li>
-<li>POOM也可以将多个不规则(irregular, 这里指的是map不能完全铺满阵列)的特征图映射到一个阵列上, Fig8 (b)所示, 在OOM中, 计算16个6 x 6的input maps需要16次迭代, 而PE利用率仅仅只有56.25%. 在POOM中, 可以将output切分成小块, 在本例中8 x 8阵列被分为了16个2 x 2的blocks, 每个blocks都负责一个map的计算(相当于同时计算16个input maps), 这样只需要9次迭代(6 x 6 / 2 x 2), 每次迭代的PE利用率都是100%.</li>
-</ul>
-<p><strong>因为POOM其实是对最里面四层循环进行tiling, 因此可以重用input register中的数据, 不会造成额外的Input Buffer访问.</strong>当然更大的P对Weight Buffer的带宽和容量要求也更大, 因此需要选择合适的POOM参数<P, Trr, Tcc>在有限的参数下最大化PE利用率.</p>
-<h4 id="全连接层的实现"><a href="#全连接层的实现" class="headerlink" title="全连接层的实现"></a>全连接层的实现</h4><p>全连接层可以看做特殊的卷积层, 只不过有如下约束:  </p>
-<ul>
-<li>H = L = R = C = K = S = 1</li>
-</ul>
-<p>因为全连接层拥有量的权重(25.1倍于卷积层), 但是MAC操作仅为卷积层的8.8%, 因此全连接层一次运算需要大量的权重, 此时的DRAM带宽将成为性能瓶颈. 因此要批量处理权重, 采用WR,  每个batch可以看做卷积层的tile, 因此全连接层也可以使用POOM.$R \times C=\operatorname{Tr} \times \mathrm{T} \mathrm{c}=$ <em>batch size</em>. </p>
-<h2 id="架构设计"><a href="#架构设计" class="headerlink" title="架构设计"></a>架构设计</h2><p>基本架构设计如图3所示:</p>
-<ul>
-<li>Controller中的configuration context用于配置加速器的资源;</li>
-<li>每个convolution core拥有两个CE, 它们共享Input Regs, 但是拥有独立的Output Regs用于保存部分和;</li>
-<li>ReLU+池化单元作为输出.</li>
-</ul>
-<h3 id="可重构的数据通路"><a href="#可重构的数据通路" class="headerlink" title="可重构的数据通路"></a>可重构的数据通路</h3><p><img src="https://i.loli.net/2020/07/13/p9sfNUqFoJmjvzO.png" alt="1594370558737"></p>
-<p>数据buffer大小为256KB, Input Buffer和Output Buffer各128KB. Input Regs和Output Regs以及Weight Buffer都采用了<strong>ping-pong buffer</strong>(图中的绿色部分). 片上采用了大data buffer和小Weight Buffer, 因为缓存所有weights的要求很难达到, 但是数据却可以通过修改参数满足要求(tiling等). 比如如果采用IR, 那么Output Buffer的大小只需要$M \cdot \operatorname{Tr} \cdot \mathrm{T}_{\mathrm{C}}$但是Weight Buffer却需要缓存Tw大小(即所有)的权重.</p>
-<ul>
-<li>对于IR, Output Buffer可以通过图中红色的线将之前累加的部分和反馈回给Output REGs.</li>
-<li>对于OR, Input Buffer在处理当前特征图的时候就可以利用ping pong的方式load下一次计算需要的特征图.</li>
-<li>WR和IR很类似, 只不过weight需要被保持直至完全重用.</li>
-</ul>
-<p><img src="https://i.loli.net/2020/07/13/DPIFuqtWBrARJMm.png" alt="1594370572270"></p>
-<h3 id="可重构的CE设计"><a href="#可重构的CE设计" class="headerlink" title="可重构的CE设计"></a>可重构的CE设计</h3><p><strong>四级CE结构</strong></p>
-<ol>
-<li><p>Input REG level: CE的shared Input REGs, 包含两个40 x 40输入寄存器网络, 可以通过水平和垂直移动寄存器中的数据实现Fig7 (b)中提到的S行数据轨迹, 西北角的16 x 16个寄存器可被data sharing level和MAC level通过PE的”In”端口直接访问.</p>
-</li>
-<li><p>data sharing level: CE能够针对不同的POOM进行重构, 实现PE之间的快速数据共享, POOM中不同的block需要共享相同的input, 与此同时<P, Trr, Tcc>需要受到硬件资源的限制.  如Fig 11所示, 我们设计了三种数据共享网络(DSNs)以实现blocks之间灵活和快速的数据传输:</p>
-<ul>
-<li><p>DSN0是一种增强了对角线互联的mesh-like寄存器阵, 它与大步长的数据共享相适配;</p>
-</li>
-<li><p>DSN1和DSN2用来支持切分不规则(irregular)的output maps. </p>
-<ul>
-<li>DSN1是一个包含8x8个2x2 blocks的网络, 每个周期开始,  block0从Input REG level load 2x2个数据. 然后通过DSNs之间的互联传递给其他blocks, 每个blocks再通过ds1将数据传输给相应的2x2MACs. 通过这种方式, 最多可以以Trr  x Tcc = 2 x 2的大小同时计算64个output maps.</li>
-<li>DSN2与DSN1类似, 只不过是一个包含4x4个4x4 blocks的网络.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>MAC level: 分布在16 x 16个PE中的16 x 16个MAC, 每个MAC的输入寄存器R0可以从Input REG level(通过port”in”)和data sharing level(通过port”ds0”,”ds1”,”ds2”);</p>
-</li>
-<li><p>Output REG level</p>
-</li>
-</ol>
-<p><img src="https://i.loli.net/2020/07/13/TiKQmCgAUkG6xvo.png" alt="1594603848715"></p>
-<p><img src="https://i.loli.net/2020/07/13/QO4eSZrqXhwmxT7.png" alt="1594604298300"></p>
-<h3 id="DNA’s-Work-Flow-and-Scheduling-Framework"><a href="#DNA’s-Work-Flow-and-Scheduling-Framework" class="headerlink" title="DNA’s Work Flow and Scheduling Framework"></a>DNA’s Work Flow and Scheduling Framework</h3><p>DNA的工作流程如Fig 13所示:</p>
-<p><img src="https://i.loli.net/2020/07/13/9ZCgPI4JmQlhRbK.png" alt="1594606380823"></p>
-<p><strong>Phase1: 将DCNN编译成DNA的配置</strong></p>
-<p>我们为Phase1提出了一个分层调度的框架, 对于给定的DCNN, 可以为每一层计算分配最佳的计算模式. 对于每一层调度, 都被描述为一个双向优化问题. 通常一个双向优化问题可以转换成一个单向优化问题. 比如如果我们更关注性能, 可以首先优化性能, 再优化功耗.</p>
-<p><strong>Phase2: 在DNA系统上执行DCNN</strong></p>
-<ol>
-<li>从hosts processor加载编译好的配置</li>
-<li>从片外DRAM加载数据和权重至DNA</li>
-<li>DNA执行当前层</li>
-<li>DNA将输出写回DRAM</li>
-</ol>
-<p>这四个步骤是完全流水化的直到一整个batch被处理完, DNA依次计算每个卷积层, 然后batch处理FC.</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文从数据重用的角度实, 降低访问DRAM和片上SRAM(Buffer, Reg)带来的功耗损失. 从卷积映射的角度提高了PE资源的利用率. 针对卷积神经网络的不同层, 针对性的搜寻最合适的tiling parameters, 缓解了传统神经网络加速器使用单一计算模式导致性能损失的问题.</p>
-]]></content>
+    <title>我的第一篇博客</title>
+    <url>/2019/12/29/6_%E9%9A%8F%E7%AC%94/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<div id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <div class="hbe-input-container">
+  <input type="password" id="hbePass" placeholder="" />
+    <label for="hbePass">Hey, password is required here.</label>
+    <div class="bottom-line"></div>
+  </div>
+  <script id="hbeData" type="hbeData" data-hmacdigest="c60b1ad9f22f09a9905fa786aac12ca23e35ac28ef82a4d384ba02338c7309b0">2daa0e43d16059575e0358eeb13204c9334f10fe9f5b4c4ca9e491347ae1aac787a653f3bfdff483154faa9c306499459a543d8e0e9fdb7cb6a5691a3868df52cad9689da85c8199db4aac1924b04b538bf91d99cddcb7f67e38171e7d09e6b5597213a8b0d8533be2784f8c387f9f0e68d0da8bb048934a16c72aa145f07ad7ad2b10054f7f6b1d80b0d972ac6485d319be33fd5c92fbe1131f89956e7073ea85085780b1c6a34ebadafa0d52784ba9f0261bdd30c89b38edda4c7efe264159e6e8a362df38552661363061bfa6a36abe0affed58798e5a6d70904733b2ad67d59ed42e7b388d29ddb4d8010b266ca05db60cbedc9060a428ca1bad408deceeab54380c354fdfb78225304e7d4c88b8e72446d8af33f4178fb27faf0449b805d486d93cb7785dd7dbb3392434262aab7a601b8088edb79def0f6fdb4926f9d04f2c1e1aead921142879cb84a484b8e4dfcd34931c5fcea43e424ded1d1812eba22ca16c330fd68f276497435047212117eeb1a62d4c93242d72e10d6724aaad4dcfb180bc95b3f5b99e65330158bd894ce97a9c4fb53d4f5c1ea52ef8ff5dbe2648adca06564933bdac07b21b3cad5c719d3e3240f6c8552d75e8f2915a921e6d0843ea372193f682b95dcd3bf10c782b69c7ce44d3b0090bc7d681e2fc7b223cf6d6d0250200d0783bc24ad9075ab73f86040d8f679046798f5cd3a1ca8209329d43d6f89d643546670e222bb26ffd8b10a56ce2af5dbc3e12ae65c3f3216d657241a0657c72df14798ba83b10ccddbb47eef59f497761a407577164474a0c2e03e28634c6f9912748f2d6dd6a69b188d8cc2e21686e42bab33415c5f368932f753d1fd62ace6bbf3c7b75a9e2a799ed4d386784a9ce1405719dc52e00dc1f0c85e5c6ac756e1e14c66a268140ebf1b1ecfa515901fd273c9351202425498ae9b937346baa409fcfe66635c516435b9a929ec339333d2d8e0091b8bc155b1f24d6fe55d4d17d8a760648d92ccd7983b79df3cd5e2aa01f015c75216019495aabe0fedd9b61d1b5672d5643de5e7b7adff4dd66c76df3f67193d7e3812aca14eb90b0badc2dc2461c8a98524cb119b47ca1302e93962a861f229c0fdcc505cfb12451ec1bad993b4e8e23dee748821febba58e44b376a927b5b7a3d19439c3b9878319c543f34f7dec63c58fcf910fe08bb7335c34f277eedb08d61ac013b1c887783e609bfe2f17fe64abd6d402da318e9668de1a6d5b6ce48ceb45da8337e001be83a04e4351b653c4bbd9ee42d16b3c8639da1f7e5636130c198a212e168bc4dc35121d604ba0de0cb781467df42</script>
+</div>
+<script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">]]></content>
       <categories>
-        <category>论文阅读笔记</category>
-        <category>神经网络加速器</category>
+        <category>随笔</category>
       </categories>
-      <tags>
-        <tag>计算机体系结构</tag>
-        <tag>神经网络</tag>
-      </tags>
   </entry>
 </search>
