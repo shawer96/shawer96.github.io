@@ -1,140 +1,322 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>算法及算法的复杂度</title>
-    <url>/2020/06/24/3_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E5%8F%8A%E5%A4%8D%E6%9D%82%E5%BA%A6/</url>
-    <content><![CDATA[<h1 id="算法及算法效率的度量方法"><a href="#算法及算法效率的度量方法" class="headerlink" title="算法及算法效率的度量方法"></a>算法及算法效率的度量方法</h1><h2 id="1-算法"><a href="#1-算法" class="headerlink" title="1. 算法"></a>1. 算法</h2><h3 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义:"></a>1.1 定义:</h3><p>算法是解决特定问题求解步骤的描述, 在计算机中为指令的有限序列, 并且每条指令表示一个或多个操作.</p>
-<h3 id="1-2-算法的特性"><a href="#1-2-算法的特性" class="headerlink" title="1.2 算法的特性"></a>1.2 算法的特性</h3><ul>
-<li>输入和输出</li>
-<li>有穷性: 有合理边界</li>
-<li>可行性: 每一步都可以通过有限步骤实现</li>
-<li>确定性: 每一步都有确定含义, 不存在二义性</li>
+    <title>GDB使用教教程（一）--GDB的调试过程</title>
+    <url>/2020/11/18/GDB%E4%BD%BF%E7%94%A8%E6%95%99%E6%95%99%E7%A8%8B%EF%BC%88%E4%B8%80%EF%BC%89-GDB%E7%9A%84%E8%B0%83%E8%AF%95%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[<h2 id="GDB是什么"><a href="#GDB是什么" class="headerlink" title="GDB是什么"></a>GDB是什么</h2><p>要知道，哪怕是开发经验再丰富的程序员，编写的程序也避免不了出错。程序中的错误主要分为 2 类，分别为语法错误和逻辑错误：</p>
+<ul>
+<li>程序中的语法错误几乎都可以由编译器诊断出来，很容易就能发现并解决；</li>
+<li>逻辑错误指的是代码思路或者设计上的缺陷，程序出现逻辑错误的症状是：代码能够编译通过，没有语法错误，但是运行结果不对。对于这类错误，只能靠我们自己去发现和纠正。</li>
 </ul>
-<h3 id="1-3-算法设计的要求"><a href="#1-3-算法设计的要求" class="headerlink" title="1.3 算法设计的要求"></a>1.3 算法设计的要求</h3><ul>
-<li>正确性: 输入,输出和加工处理无歧义性, 能正确反映问题的需求, 能得到问题的正确答案</li>
-<li>可读性: 便于阅读理解和交流</li>
-<li>健壮性: 当输入数据不合法时也能得到相关处理</li>
-<li>时间效率低空间效率高</li>
-</ul>
-<p>经过分析发现, 一个用高级语言编写的程序在计算机上运行所消耗的时间取决于下列因素:</p>
-<ol>
-<li>算法的策略方法</li>
-<li>编译产生的代码质量</li>
-<li>问题的输入规模</li>
-<li>机器执行指令的速度</li>
-</ol>
-<p>第一条是算法好坏的根本, 一个程序的运行时间, 依赖于<strong>算法的好坏</strong>和<strong>问题的输入规模</strong>.</p>
-<h2 id="2-算法的时间复杂度"><a href="#2-算法的时间复杂度" class="headerlink" title="2. 算法的时间复杂度"></a>2. 算法的时间复杂度</h2><h3 id="2-1-定义"><a href="#2-1-定义" class="headerlink" title="2.1 定义"></a>2.1 定义</h3><p>在进行算法分析时，语句总的执行次数T(n)是关于问题规模n的函数，进而分析T(n)随n的变化情况并确定T(n)的数量级。算法的时间复杂度，也就是算法的时间量度，记作：T(n) = O(f(n))。它表示随问题规模n的增大，算法执行时间的增长率和f(n)的增长率相同，称作算法的渐近时间复杂度，简称为时间复杂度。其中f(n)是问题规模n的某个函数。</p>
-<p>通过大写O[ ]的方法体现时间复杂度的计法, 称为大O记法.</p>
-<h3 id="2-2-推导大O阶方法"><a href="#2-2-推导大O阶方法" class="headerlink" title="2.2 推导大O阶方法"></a>2.2 推导大O阶方法</h3><p>O(1)叫做常数阶；O(n)叫做线性阶；O(n^2)叫做平方阶。 </p>
-<ol>
-<li><p>用常数1取代运行时间中的所有加法常数, 没有加法的常数不予考虑。</p>
-</li>
-<li><p>在修改后的运行次数函数中，只保留最高阶项。</p>
-</li>
-<li><p>如果最高阶项存在且不是1，则去除与这个项相乘的常数。</p>
-</li>
-</ol>
-<p>得到的结果就是大O阶。 </p>
-<p>如果你没看懂，那继续往下看，笔者以例子与你详细介绍：</p>
-<p><strong>例子1：</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum=<span class="number">0</span>,i = <span class="number">0</span>;i &lt; N;i++)  <span class="comment">//1、</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>;j &lt;N;j++)     <span class="comment">//2、</span></span><br><span class="line">        sum=sum+i*j;            <span class="comment">//3、</span></span><br></pre></td></tr></table></figure>
-<p>我们以一个语句记为1次来分析：</p>
-<p>1、1+ (N+1)+N （这里定义两个变量共一次，而中间循环 理论是判断是N次,但是实际上应该是N+1 最后等于N时还有判断1次 0~N 故为N+1，循环变量的递增一共是N次）</p>
-<p>2、N+N(N+1)+NN（这里由第一个循环进入第二个循环，一共是N次，那么将会定义N次，单独分析判断语句它将会像第一层循环一样，一个判断N次 再算上 第一次循环进入第二次循环共有N次 故 为N(N+1) 后面类似 NN ）</p>
-<p>3、NN（第二层循环进入最里面语句 N次 第一层循环进入第二层循环 共N次 故实际为NN次）</p>
-<p>那么累加一下:<br>1+(N+1)+N+N(N+1)+NN+NN 保留最高项 N * N, 故算法的时间复杂度为O(N^2)</p>
-<p><strong>例子2:</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum = <span class="number">0</span>,i = <span class="number">1</span>;i &lt; N;i = i*<span class="number">2</span>)   <span class="comment">//1、</span></span><br><span class="line">        sum = sum+i*j;                 <span class="comment">//2、</span></span><br></pre></td></tr></table></figure>
-<p>看到这程序片段，你是不是一眼就得出答案了？如果你不注意的话，你的答案肯定是O(N)，对了吗？<br>先告诉你答案为O(log(N))，你可以试试代个确切的N值进去 看一下次数,自己体会一下，那么下面我和大家一起分析下：</p>
-<p>1、1+log(N)+1+log(N)</p>
-<p>2、log(N)</p>
-<p>其实这里做判断的时候，应该看一下循环变量的递增方式，这里它是i = i * 2 也就是 $2^x=N$ 那么$X=\log_2(N)$, X是次数，在计算复杂度里面，一般省略底数，也就是直接写log(N), 其他的计算方法与上面的解释一致。</p>
-<p><strong>例子3:</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum=<span class="number">0</span>,i = <span class="number">0</span>;i&lt;N;i++)          <span class="comment">//1、</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>;j &lt; N;j = j*<span class="number">2</span>)      <span class="comment">//2、</span></span><br><span class="line">        sum=sum+i*j;                  <span class="comment">//3、</span></span><br></pre></td></tr></table></figure>
-<p>分析:<br>1、1+N+1+N</p>
-<p>2、N+N(log(N)+1)+Nlog(N)</p>
-<p>3、Nlog(N)</p>
-<p>将它们累加并保留高阶项并去除常数, 得到时间复杂度O(Nlog(N))</p>
-<p><strong>例子4</strong>:</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum = <span class="number">0</span>,i = <span class="number">0</span>; i &lt; n; i++)    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = i; j &lt; n; j++)        </span><br><span class="line">       sum += i*j</span><br></pre></td></tr></table></figure>
-<p>分析:</p>
-<p>总的执行次数为n+(n-1)+(n-2)+…+1=(N^2)/2+n/2</p>
-<p>只保留高阶项并去除与这个项相乘的常数, 最终这段代码的复杂度为O(n^2)</p>
-<h3 id="2-3-常见的时间复杂度"><a href="#2-3-常见的时间复杂度" class="headerlink" title="2.3 常见的时间复杂度"></a>2.3 常见的时间复杂度</h3><div class="table-container">
+<p>也就是说，程序中出现的语法错误可以借助编译器解决；但逻辑错误则只能靠自己解决。实际场景中解决逻辑错误最高效的方法，就是借助调试工具对程序进行调试。</p>
+<p>所谓调试（Debug），就是让代码一步一步慢慢执行，跟踪程序的运行过程。比如，可以让程序停在某个地方，查看当前所有变量的值，或者内存中的数据；也可以让程序一次只执行一条或者几条语句，看看程序到底执行了哪些代码。</p>
+<p>也就是说，通过调试程序，我们可以监控程序执行的每一个细节，包括变量的值、函数的调用过程、内存中数据、线程的调度等，从而发现隐藏的错误或者低效的代码。</p>
+<a id="more"></a>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th>执行次数函数</th>
-<th>阶</th>
-<th>描述</th>
+<th>调试器名称</th>
+<th>特 点</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>$42$(常数)</td>
-<td>O(1)</td>
-<td>常数阶</td>
+<td>Remote Debugger</td>
+<td>Remote Debugger 是 VC/VS 自带的调试器，与整个IDE无缝衔接，使用非常方便。</td>
 </tr>
 <tr>
-<td>$2n+3$</td>
-<td>O(n)</td>
-<td>线性阶</td>
+<td>WinDbg</td>
+<td>大名鼎鼎的 Windows 下的调试器，它的功能甚至超越了 Remote Debugger，它还有一个命令行版本（cdb.exe），但是这个命令行版本的调试器指令比较复杂，不建议初学者使用。</td>
 </tr>
 <tr>
-<td>$3n^2+2n+1$</td>
-<td>O(n^2)</td>
-<td>平方阶</td>
+<td>LLDB</td>
+<td>XCode 自带的调试器，Mac OS X 下开发必备调试器。</td>
 </tr>
 <tr>
-<td>$5\log_2n+19$</td>
-<td>O(log(n))</td>
-<td>对数阶</td>
-</tr>
-<tr>
-<td>$2n+3n\log_2n+19$</td>
-<td>O(nlog(n))</td>
-<td>nlog(n)阶</td>
-</tr>
-<tr>
-<td>$6n^3 + 2n^2 + 3n +4$</td>
-<td>O(n^3)</td>
-<td>立方阶</td>
-</tr>
-<tr>
-<td>$2^n$</td>
-<td>O(2^n)</td>
-<td>指数阶</td>
+<td>GDB</td>
+<td>Linux 下使用最多的一款调试器，也有 Windows 的移植版。</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>常用时间复杂度耗费时间排序:</p>
-<script type="math/tex; mode=display">
-O(1)\lt O(\log n) \lt O(n) \lt O(n\log n) \lt  O(n^2) \lt O(n^3) \lt O(2^n) \lt O(n!)\lt O(n^n)</script><p>一般而言, 指数阶$O(2^n)$和阶乘阶$O(n!)$会使运行时间大到不可估计, 一般不考虑这种不切实际的算法时间复杂度.</p>
-<h3 id="2-4-最坏情况与平均情况"><a href="#2-4-最坏情况与平均情况" class="headerlink" title="2.4  最坏情况与平均情况"></a>2.4  最坏情况与平均情况</h3><p>比如查找数组中的某个数字, 最好情况是第一次找到, 复杂度为O(1), 最差是最后一次找到, 那么复杂度为O(n)</p>
-<ul>
-<li><p><strong>最坏情况</strong>是一种保障, 保证运行时间不会再坏了, <strong>除非特殊指定, 我们提到的运行时间都是最坏情况的运行时间</strong></p>
-</li>
-<li><p><strong>平均时间</strong>是所有情况中最有意义的, 因为它是期望运行的时间, 一般很难估算得到, 往往是通过一定量的数据实验得到</p>
-</li>
-</ul>
-<h2 id="3-算法的空间复杂度"><a href="#3-算法的空间复杂度" class="headerlink" title="3. 算法的空间复杂度"></a>3. 算法的空间复杂度</h2><h3 id="3-1-定义"><a href="#3-1-定义" class="headerlink" title="3.1 定义"></a>3.1 定义</h3><p>算法的空间复杂度通过计算算法所需的存储空间实现, 算法空间复杂度计算公式记作: S(n) = O(f(n)), 其中n为问题的规模, f(n)为语句所占空间的函数.</p>
-<p>一般情况下, 一个程序在机器上执行时,除了需要存储程序本身的指令、常数、变量和输入数据外,还需要存储对数据操作的存储单元,若输入数据所占空间只取决于问题本身,和算法无关,这样只需要分析该算法在实现时所需的辅助单元即可。若算法执行时所需的辅助空间相对于输入数据量而言是个常数, 则称此算法为原地工作, 空间复杂度为 O(1) 。</p>
-<p>在写代码时完全可以通过空间换时间.  通常我们不用限定词使用”复杂度”时通常都指时间复杂度. </p>
-<h3 id="3-2-计算方法"><a href="#3-2-计算方法" class="headerlink" title="3.2 计算方法"></a>3.2 计算方法</h3><p><strong>1. 空间复杂度 O(1)</strong><br>如果算法执行所需要的临时空间不随着某个变量n的大小而变化，即此算法空间复杂度为一个常量，可表示为 O(1)</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> j = <span class="number">2</span>;</span><br><span class="line">++i;</span><br><span class="line">j++;</span><br><span class="line"><span class="keyword">int</span> m = i + j;</span><br></pre></td></tr></table></figure>
-<p>变量 i、j、m 所分配的空间都不随着处理数据量变化，因此它的空间复杂度 S(n) = O(1)</p>
-<p><strong>2. 空间复杂度 O(n)</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[] m = <span class="keyword">new</span> <span class="keyword">int</span>[n]</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">1</span>; i&lt;=n; ++i)</span><br><span class="line">&#123;</span><br><span class="line">   j = i;</span><br><span class="line">   j++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这段代码中，第一行new了一个数组出来，这个数据占用的大小为n，这段代码的2-6行，虽然有循环，但没有再分配新的空间，因此，这段代码的空间复杂度主要看第一行即可，即 S(n) = O(n)</p>
+<p>GDB 全称“GNU symbolic debugger”，从名称上不难看出，它诞生于 GNU 计划（同时诞生的还有 GCC、Emacs 等），是 Linux 下常用的程序调试器。发展至今，GDB 已经迭代了诸多个版本，当下的 GDB 支持调试多种编程语言编写的程序，包括 C、C++、Go、Objective-C、OpenCL、Ada 等。实际场景中，GDB 更常用来调试 C 和 C++ 程序。</p>
+<p>总的来说，借助 GDB 调试器可以实现以下几个功能：</p>
+<ol>
+<li>程序启动时，可以按照我们自定义的要求运行程序，例如设置参数和环境变量；</li>
+<li>可使被调试程序在指定代码处暂停运行，并查看当前程序的运行状态（例如当前变量的值，函数的执行结果等），即支持断点调试；</li>
+<li>程序执行过程中，可以改变某个变量的值，还可以改变代码的执行顺序，从而尝试修改程序中出现的逻辑错误。</li>
+</ol>
+<h2 id="GDB调试C-C-程序的整个过程"><a href="#GDB调试C-C-程序的整个过程" class="headerlink" title="GDB调试C/C++程序的整个过程"></a>GDB调试C/C++程序的整个过程</h2><p>以下列源码为例，本文将延时GDB调试器的基本用法</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">int</span> n, sum;</span><br><span class="line"></span><br><span class="line">    n = <span class="number">1</span>;</span><br><span class="line">    sum = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (n &lt;= <span class="number">100</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        sum = sum + n;</span><br><span class="line">        n = n + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>GDB 的主要功能就是监控程序的执行流程，也就是说<strong>只有当源程序文件编译为可执行文件并执行时，GDB 才会派上用场。</strong></p>
+<h3 id="编译生成用于调试的可执行文件"><a href="#编译生成用于调试的可执行文件" class="headerlink" title="编译生成用于调试的可执行文件"></a>编译生成用于调试的可执行文件</h3><p>以 main.cc 源文件为例，正常情况下，使用 GCC 编译该源代码的指令如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@bogon demo] ls</span><br><span class="line">main.c</span><br><span class="line">[root@bogon demo] g++ main.cc -o main</span><br><span class="line">[root@bogon demo] ls</span><br><span class="line">main.c main.exe</span><br></pre></td></tr></table></figure>
+<p>可以看到，这里已经生成了 main.c 对应的执行文件 main.exe，但值得一提的是，此文件不支持使用 GDB 进行调试。原因很简单，<strong>使用 GDB 调试某个可执行文件，该文件中必须包含必要的调试信息（比如各行代码所在的行号、包含程序中所有变量名称的列表（又称为符号表）等），而上面生成的 main.exe 则没有。</strong></p>
+<p>那么，如何生成符合 GDB 调试要求的可执行文件呢？很简单，只需要使用<code>gcc -g</code>选项编译源文件，即可生成满足 GDB 要求的可执行文件。仍以 main.c 源程序文件为例：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@bogon demo] ls</span><br><span class="line">main.c</span><br><span class="line">[root@bogon demo] g++ main.cc -o main -g</span><br><span class="line">[root@bogon demo] ls</span><br><span class="line">main.c main.exe</span><br></pre></td></tr></table></figure>
+<p>由此生成的 main.exe，即可使用 GDB 进行调试。</p>
+<p>GCC 编译器支持 -O（等于同 -O1，优化生成的目标文件）和 -g 一起参与编译。GCC 编译过程对进行优化的程度可分为 5 个等级，分别为 O0~O4，O0 表示不优化（默认选项），从 O1 ~ O4 优化级别越来越高，O4 最高。</p>
+<p>而相对于 -O -g 选项，对 GDB 调试器更友好的是 -Og 选项，-Og 对代码所做的优化程序介于 O0 ~ O1 之间，真正可做到“在保持快速编译和良好调试体验的同时，提供较为合理的优化级别”。</p>
+<p>解决了如何生成满足 GDB 调试器要求的可执行文件，接下来正式学习 GDB 调试器的使用。</p>
+<h3 id="启动GDB调试器"><a href="#启动GDB调试器" class="headerlink" title="启动GDB调试器"></a>启动GDB调试器</h3><p>在生成包含调试信息的 main.exe 可执行文件的基础上，启动 GDB 调试器的指令如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@bogon demo]# gdb main</span><br><span class="line">GNU gdb (GDB) 8.0.1</span><br><span class="line">Copyright (C) 2017 Free Software Foundation, Inc.</span><br><span class="line">......</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure>
+<p>注意，该指令在启动 GDB 的同时，会打印出一堆免责条款。通过添加 —silent（或者 -q、—quiet）选项，可将比部分信息屏蔽掉：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@bogon demo]#  gdb main --silent</span><br><span class="line">Reading symbols from main.exe...(no debugging symbols found)...done.</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure>
+<p>无论使用以上哪种方式，最终都可以启动 GDB 调试器，启动成功的标志就是最终输出的 (gdb)。通过在 (gdb) 后面输入指令，即可调用 GDB 调试进行对应的调试工作。</p>
+<p>GDB 调试器提供有大量的调试选项，可满足大部分场景中调试代码的需要。如表 1 所示，罗列了几个最常用的调试指令及各自的作用：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>调试指令</th>
+<th>作 用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(gdb) break xxx (gdb) b xxx</td>
+<td>在源代码指定的某一行设置断点，其中 xxx 用于指定具体打断点的位置。</td>
+</tr>
+<tr>
+<td>(gdb) run (gdb) r</td>
+<td>执行被调试的程序，其会自动在第一个断点处暂停执行。</td>
+</tr>
+<tr>
+<td>(gdb) continue (gdb) c</td>
+<td>当程序在某一断点处停止运行后，使用该指令可以继续执行，直至遇到下一个断点或者程序结束。</td>
+</tr>
+<tr>
+<td>(gdb) next (gdb) n</td>
+<td>令程序一行代码一行代码的执行。</td>
+</tr>
+<tr>
+<td>(gdb) print xxx (gdb) p xxx</td>
+<td>打印指定变量的值，其中 xxx 指的就是某一变量名。</td>
+</tr>
+<tr>
+<td>(gdb) list (gdb) l</td>
+<td>显示源程序代码的内容，包括各行代码所在的行号。</td>
+</tr>
+<tr>
+<td>(gdb) quit (gdb) q</td>
+<td>终止调试。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>下面给出示例</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">(gdb) l                      &lt;-- 显示带行号的源代码</span><br><span class="line"><span class="number">1</span> <span class="comment">#include &lt;stdio.h&gt;</span></span><br><span class="line"><span class="number">2</span> int main ()</span><br><span class="line"><span class="number">3</span> &#123;</span><br><span class="line"><span class="number">4</span>     unsigned long long int n, sum;</span><br><span class="line"><span class="number">5</span>     n = <span class="number">1</span>;</span><br><span class="line"><span class="number">6</span>     sum = <span class="number">0</span>;</span><br><span class="line"><span class="number">7</span>     <span class="keyword">while</span> (n &lt;= <span class="number">100</span>)</span><br><span class="line"><span class="number">8</span>     &#123;</span><br><span class="line"><span class="number">9</span>         sum = sum + n;</span><br><span class="line"><span class="number">10</span>         n = n + <span class="number">1</span>;</span><br><span class="line">(gdb)                      &lt;-- 默认情况下，l 选项只显示 <span class="number">10</span> 行源代码，如果查看后续代码，安装 Enter 回车即可                                                               </span><br><span class="line"><span class="number">11</span>     &#125;</span><br><span class="line"><span class="number">12</span>     <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"><span class="number">13</span> &#125;</span><br><span class="line">(gdb) b <span class="number">7</span>               &lt;-- 在第 <span class="number">7</span> 行源代码处打断点</span><br><span class="line">Breakpoint <span class="number">1</span> at <span class="number">0</span>x400504: file main.c, line <span class="number">7</span>.</span><br><span class="line">(gdb) r                   &lt;-- 运行程序，遇到断点停止</span><br><span class="line">Starting program: /home/mozhiyan/demo1/main.exe</span><br><span class="line"></span><br><span class="line">Breakpoint <span class="number">1</span>, main () at main.c:<span class="number">7</span></span><br><span class="line"><span class="number">7</span>     <span class="keyword">while</span> (n &lt;= <span class="number">100</span>)</span><br><span class="line">Missing separate debuginfos, use: debuginfo<span class="literal">-install</span> glibc<span class="literal">-2</span>.<span class="number">17</span><span class="literal">-55</span>.el7.x86_64</span><br><span class="line">(gdb) p n               &lt;-- 查看代码中变量 n 的值</span><br><span class="line"><span class="variable">$1</span> = <span class="number">1</span>                   &lt;-- 当前 n 的值为 <span class="number">1</span>，<span class="variable">$1</span> 表示该变量所在存储区的名称</span><br><span class="line">(gdb) b <span class="number">12</span>             &lt;-- 在程序第 <span class="number">12</span> 行处打断点</span><br><span class="line">Breakpoint <span class="number">2</span> at <span class="number">0</span>x40051a: file main.c, line <span class="number">12</span>.</span><br><span class="line">(gdb) c                  &lt;-- 继续执行程序</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Breakpoint <span class="number">2</span>, main () at main.c:<span class="number">12</span></span><br><span class="line"><span class="number">12</span>     <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">(gdb) p n               &lt;-- 查看当前 n 变量的值</span><br><span class="line"><span class="variable">$2</span> = <span class="number">101</span>               &lt;-- 当前 n 的值为 <span class="number">101</span></span><br><span class="line">(gdb) q                  &lt;-- 退出调试</span><br><span class="line">A debugging session is active.</span><br><span class="line"></span><br><span class="line">Inferior <span class="number">1</span> [<span class="type">process</span> <span class="number">3080</span>] will be killed.</span><br><span class="line"></span><br><span class="line">Quit anyway? (y or n) y                 &lt;-- 确实是否退出调试，y 为退出，n 为不退出</span><br><span class="line">[<span class="type">root</span>@<span class="type">bogon</span> <span class="type">demo</span>]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>数据结构和算法</category>
+        <category>tools</category>
+        <category>GDB</category>
       </categories>
       <tags>
-        <tag>数据结构</tag>
-        <tag>算法</tag>
+        <tag>GDB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>GDB使用教教程（三）--监视变量</title>
+    <url>/2020/11/18/GDB%E4%BD%BF%E7%94%A8%E6%95%99%E6%95%99%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89-%E7%9B%91%E8%A7%86%E5%8F%98%E9%87%8F/</url>
+    <content><![CDATA[<h2 id="watch命令建立观察断点"><a href="#watch命令建立观察断点" class="headerlink" title="watch命令建立观察断点"></a>watch命令建立观察断点</h2><p>在某些场景下我们需要监控某个变量，通过值的变化情况判断程序的执行过程是否存在异常或者 Bug。这种情况下，break 命令显然不再适用，推荐大家使用 watch 命令。</p>
+<p>GDB中的断点分为三种，分别是<strong>普通断点、观察断点和捕捉断点</strong>。其中 break 命令打的就是普通断点，而 <code>watch</code> 命令打的为<strong>观察断点</strong>。</p>
+<p>使用 GDB 调试程序的过程中，借助观察断点可以监控程序中<strong>某个变量</strong>或者<strong>表达式的值</strong>，<strong>只要发生改变，程序就会停止执行</strong>。相比普通断点，观察断点不需要我们预测变量（表达式）值发生改变的具体位置。</p>
+<a id="more"></a>
+<p>对于监控 C、C++ 程序中某变量或表达式的值是否发生改变，watch 命令的语法非常简单，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(gdb) watch cond</span><br></pre></td></tr></table></figure>
+<p>其中，conde 指的就是要监控的变量或表达式。</p>
+<p>和 watch 命令功能相似的，还有 rwatch 和 awatch 命令。其中：</p>
+<ul>
+<li>rwatch 命令：只要程序中出现<strong>读取</strong>目标变量（表达式）的值的操作，程序就会停止运行；</li>
+<li>awatch 命令：只要程序中出现<strong>读取</strong>目标变量（表达式）的值或者<strong>修改</strong>值的操作，程序就会停止运行。</li>
+</ul>
+<p><strong>强调一下，watch 命令的功能是：只有当被监控变量（表达式）的值发生改变，程序才会停止运行。</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(gdb) l           &lt;--列出要调试的程序源码</span><br><span class="line">1 #include&lt;stdio.h&gt;</span><br><span class="line">2 int main(int argc,char* argv[])</span><br><span class="line">3 &#123;</span><br><span class="line">4     int num = 1;</span><br><span class="line">5     while(num&lt;=100)</span><br><span class="line">6     &#123;</span><br><span class="line">7         num *= 2;</span><br><span class="line">8     &#125;</span><br><span class="line">9     printf("%d",num);</span><br><span class="line">10     return 0;</span><br><span class="line">(gdb)</span><br><span class="line">11 &#125;</span><br><span class="line">(gdb) b 4       &lt;-- 使用 break 命令打断点</span><br><span class="line">Breakpoint 1 at 0x115c: file main.c, line 4.</span><br><span class="line">(gdb) r           &lt;-- 执行程序</span><br><span class="line">Starting program: /home/ubuntu64/demo/main.exe</span><br><span class="line"></span><br><span class="line">Breakpoint 1, main (argc=1, argv=0x7fffffffe088) at main.c:4</span><br><span class="line">4     int num = 1;</span><br><span class="line">(gdb) watch num   &lt;-- 监控程序中 num 变量的值</span><br><span class="line">Hardware watchpoint 2: num</span><br><span class="line">(gdb) c            &lt;-- 继续执行，当 num 值发生改变时，程序才停止执行</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Hardware watchpoint 2: num</span><br><span class="line"></span><br><span class="line">Old value = 0</span><br><span class="line">New value = 2</span><br><span class="line">main (argc=1, argv=0x7fffffffe088) at main.c:5</span><br><span class="line">5     while(num&lt;=100)</span><br><span class="line">(gdb) c           &lt;-- num 值发生了改变，继续执行程序</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Hardware watchpoint 2: num</span><br><span class="line"></span><br><span class="line">Old value = 2</span><br><span class="line">New value = 4</span><br><span class="line">main (argc=1, argv=0x7fffffffe088) at main.c:5</span><br><span class="line">5     while(num&lt;=100)</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure>
+<p>值得一提的是，对于使用 <code>watch（rwatch、awatch）</code>命令监控 C、C++ 程序中变量或者表达式的值，有以下几点需要注意：</p>
+<ul>
+<li>当监控的变量（表达式）为局部变量（表达式）时，<strong>一旦局部变量（表达式）失效，则监控操作也随即失效</strong>；</li>
+<li>如果监控的是一个指针变量（例如 <em>p），则 watch </em>p 和 watch p 是有区别的，前者监控的是 p 所指数据的变化情况，而后者监控的是 p 指针本身有没有改变指向；</li>
+<li>这 3 个监控命令还可以用于监控数组中元素值的变化情况，例如对于 a[10] 这个数组，watch a 表示只要 a 数组中存储的数据发生改变，程序就会停止执行。</li>
+</ul>
+<h2 id="watch命令的实现原理"><a href="#watch命令的实现原理" class="headerlink" title="watch命令的实现原理"></a>watch命令的实现原理</h2><p>watch 命令实现监控机制的方式有 2 种，一种是为目标变量（表达式）设置<strong>硬件观察点</strong>，另一种是为目标变量（表达式）设置<strong>软件观察点</strong>。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>硬件观察点</th>
+<th>软件观察点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>利用系统提供的少量调试寄存器</td>
+<td>单步执行观察变量是否改变,效率低</td>
+</tr>
+<tr>
+<td>寄存器限制硬件观察点个数</td>
+<td>不受限制</td>
+</tr>
+<tr>
+<td>受到字节长度的限制</td>
+<td>不受限制</td>
+</tr>
+<tr>
+<td>awatch和rwatch只能建立硬件观察点</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="catch命令建立捕捉断点"><a href="#catch命令建立捕捉断点" class="headerlink" title="catch命令建立捕捉断点"></a>catch命令建立捕捉断点</h2><p>捕捉断点的作用是，监控程序中某一事件的发生，例如程序发生某种异常时、某一动态库被加载时等等，一旦目标时间发生，则程序停止执行。</p>
+<p><strong>用捕捉断点监控某一事件的发生，等同于在程序中该事件发生的位置打普通断点。</strong></p>
+<p>建立捕捉断点的方式很简单，就是使用 catch 命令，其基本格式为：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(gdb) catch event</span><br></pre></td></tr></table></figure>
+<p>其中，event 参数表示要监控的具体事件。对于使用 GDB 调试 C、C++ 程序，常用的 event 事件类型如表 1 所示。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>event 事件</th>
+<th>含 义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>throw [exception]</td>
+<td>当程序中抛出 exception 指定类型异常时，程序停止执行。如果不指定异常类型（即省略 exception），则表示只要程序发生异常，程序就停止执行。</td>
+</tr>
+<tr>
+<td>catch [exception]</td>
+<td>当程序中捕获到 exception 异常时，程序停止执行。exception 参数也可以省略，表示无论程序中捕获到哪种异常，程序都暂停执行。</td>
+</tr>
+<tr>
+<td>load [regexp] unload [regexp]</td>
+<td>其中，regexp 表示目标动态库的名称，load 命令表示当 regexp 动态库加载时程序停止执行；unload 命令表示当 regexp 动态库被卸载时，程序暂停执行。regexp 参数也可以省略，此时只要程序中某一动态库被加载或卸载，程序就会暂停执行。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>注意，当前 GDB 调试器对监控 C++ 程序中异常的支持还有待完善，使用 catch 命令时，有以下几点需要说明：</p>
+<ol>
+<li>对于使用 catch 监控指定的 event 事件，其匹配过程需要借助 libstdc++ 库中的一些 SDT 探针，而这些探针最早出现在 GCC 4.8 版本中。也就是说，想使用 catch 监控指定类型的 event 事件，系统中 GCC 编译器的版本最低为 4.8，但即便如此，catch 命令是否能正常发挥作用，还可能受到系统中其它因素的影响。</li>
+<li>当 catch 命令捕获到指定的 event 事件时，程序暂停执行的位置往往位于某个系统库（例如 libstdc++）中。这种情况下，通过执行 up 命令，即可返回发生 event 事件的源代码处。</li>
+<li>catch 无法捕获以交互方式引发的异常。</li>
+</ol>
+<p>如同 break 命令和 tbreak 命令的关系一样（前者的断点是永久的，后者是一次性的），catch 命令也有另一个版本，即 tcatch 命令。tcatch 命令和 catch 命令的用法完全相同，唯一不同之处在于，对于目标事件，catch 命令的监控是永久的，而 tcatch 命令只监控一次，也就是说，只有目标时间第一次触发时，tcath 命令才会捕获并使程序暂停，之后将失效。</p>
+]]></content>
+      <categories>
+        <category>tools</category>
+        <category>GDB</category>
+      </categories>
+      <tags>
+        <tag>GDB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>GDB使用教教程（二）--启动程序和打断点</title>
+    <url>/2020/11/18/GDB%E4%BD%BF%E7%94%A8%E6%95%99%E6%95%99%E7%A8%8B%EF%BC%88%E4%BA%8C%EF%BC%89-%E5%90%AF%E5%8A%A8%E7%A8%8B%E5%BA%8F%E5%92%8C%E6%89%93%E6%96%AD%E7%82%B9/</url>
+    <content><![CDATA[<h2 id="run（r）命令：启动程序"><a href="#run（r）命令：启动程序" class="headerlink" title="run（r）命令：启动程序"></a>run（r）命令：启动程序</h2><p>启动目标程序的两种方式</p>
+<ul>
+<li><strong>run</strong>：默认情况下，run 指令会一直执行程序，直到执行结束。如果程序中手动设置有断点，则 run 指令会执行程序至第一个断点处；</li>
+<li><strong>start</strong>：start指令会执行程序至 main() 主函数的起始位置，即在 main() 函数的第一行语句处停止执行（该行代码尚未执行）。</li>
+</ul>
+<blockquote>
+<p>可以这样理解，使用 start 指令启动程序，完全等价于先在 main() 主函数起始位置设置一个断点，然后再使用 run 指令启动程序。另外，程序执行过程中使用 run 或者 start 指令，表示的是重新启动程序。</p>
+</blockquote>
+<p>在进行 run 或者 start 指令启动目标程序之前，还可能需要做一些必要的准备工作，大致包括以下几个方面：</p>
+<a id="more"></a>
+<ul>
+<li><p>如果启动 GDB 调试器时未指定要调试的目标程序，或者由于各种原因 GDB 调试器并为找到所指定的目标程序，这种情况下就需要再次手动指定；</p>
+</li>
+<li><p>有些 C 或者 C++ 程序的执行，需要接收一些参数（程序中用 argc 和 argv[] 接收）；</p>
+</li>
+<li><p>目标程序在执行过程中，可能需要临时设置 PATH 环境变量；</p>
+</li>
+<li><p>默认情况下，GDB 调试器将启动时所在的目录作为工作目录，但很多情况下，该目录并不符合要求，需要在启动程序手动为 GDB 调试器指定工作目录。</p>
+</li>
+<li><p>默认情况下，GDB 调试器启动程序后，会接收键盘临时输入的数据，并将执行结果会打印在屏幕上。但 GDB 调试器允许对执行程序的输入和输出进行重定向，使其从文件或其它终端接收输入，或者将执行结果输出到文件或其它终端。</p>
+</li>
+</ul>
+<p>假设使用 GDB 调试器调试如下程序：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//存储路径为 /tmp/demo/main.c</span></span><br><span class="line"><span class="comment">//其生成的可执行文件为 main，位于同一路径下</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    FILE * fp;</span><br><span class="line">    <span class="keyword">if</span>((fp = fopen(argv[<span class="number">1</span>],<span class="string">"r"</span>)) == <span class="literal">NULL</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"file open fail"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"file open true"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>1)对于已经启动的GDB调试器，使用<code>file</code>命令手动指定目标和程序</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(gdb) file /tmp/demo/main</span><br><span class="line">Reading symbols from /tmp/demo/main...</span><br><span class="line">(gdb) l</span><br><span class="line">1 #include&lt;stdio.h&gt;</span><br><span class="line">2 int main(int argc,char* argv[])</span><br><span class="line">3 &#123;</span><br><span class="line">4     FILE * fp;</span><br><span class="line">5     if((fp = fopen(argv[1],"r")) == NULL)&#123;</span><br><span class="line">6         printf("file open fail");</span><br><span class="line">7     &#125;</span><br><span class="line">8     else&#123;</span><br><span class="line">9         printf("file open true");</span><br><span class="line">10     &#125;</span><br><span class="line">(gdb)</span><br><span class="line">11     return 0;</span><br><span class="line">12 &#125;</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure>
+<p>2)为 GDB 调试器指定的目标程序传递参数，常用的方法有 3 种：</p>
+<ol>
+<li><p>启动 GDB 调试器时，可以在指定目标调试程序的同时，使用 —args 选项指定需要传递给该程序的数据。仍以 main程序为例：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@bogon demo]# gdb --args main a.txt</span><br></pre></td></tr></table></figure>
+<p>整个指令的意思是：启动 GDB 调试器调试 main.exe 程序，并为其传递 “a.txt” 这个字符串（其会被 argv[] 字符串数组接收）。</p>
+</li>
+<li><p>除此之外，还可以使用 run 或者 start 启动目标程序时，指定其所需要的数据。例如：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(gdb) set args a.txt</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用 run 或者 start 启动目标程序时，指定其所需要的数据。例如：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(gdb) run a.txt</span><br><span class="line">(gdb) start a.txt</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>3)默认情况下，GDB 调试器的工作目录为启动时所使用的目录。例如在 ~ 路径下启动的 GDB 调试器，其工作目录就为 ~（当前用户的 home 目录）。</p>
+<p>4)某些场景中，目标调试程序的执行还需要临时修改 PATH 环境变量，此时就可以借助 path 指令，例如：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(gdb) path /temp/demo</span><br><span class="line">Executable and object file path: /temp/demo:/usr/local/sbin:/usr/local/bin...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意，此修改方式只是临时的，退出 GDB 调试后会失效。</p>
+</blockquote>
+<p>5) 默认情况下，GDB 调试的程序会接收 set args 等方式指定的参数，同时会将输出结果打印到屏幕上。而通过对输入、输出重定向，可以令调试程序接收指定文件或者终端提供的数据，也可以将执行结果输出到文件或者某个终端上</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(gdb) run &gt; a.txt</span><br></pre></td></tr></table></figure>
+<p>将输入重定向到a.txt</p>
+<p>总的来说，只有将调试程序所需的运行环境搭建好后，才能使用 run 或者 start 命令开始调试。如下是一个完整的实例，演示了 GDB 调试 mian.exe 之前所做的准备工作：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@bogon demo]# pwd  &lt;--显示当前工作路径</span><br><span class="line">/tmp/demo</span><br><span class="line">[root@bogon demo]# ls    &lt;-- 显示当前路径下的文件</span><br><span class="line">a.txt main.c main.exe</span><br><span class="line">[root@bogon demo]# cd ~ &lt;-- 进入 home 目录</span><br><span class="line">[root@bogon ~]# gdb -q   &lt;-- 开启 GDB 调试器</span><br><span class="line">(gdb) cd /tmp/demo      &lt;-- 修改 GDB 调试器的工作目录</span><br><span class="line">Working directory /tmp/demo.</span><br><span class="line">(gdb) file main.exe        &lt;-- 指定要调试的目标文件</span><br><span class="line">Reading symbols from main.exe...</span><br><span class="line">(gdb) set args a.txt        &lt;-- 指定传递的数据</span><br><span class="line">(gdb) run                &lt;-- 运行程序</span><br><span class="line">Starting program: /tmp/demo/main.exe a.txt</span><br><span class="line">file open true[Inferior 1 (process 43065) exited normally]</span><br></pre></td></tr></table></figure>
+<h2 id="break（b）命令：设置断点"><a href="#break（b）命令：设置断点" class="headerlink" title="break（b）命令：设置断点"></a>break（b）命令：设置断点</h2><p>这一解将会介绍三个命令分别是break，tbreak和rbreak</p>
+<h3 id="break"><a href="#break" class="headerlink" title="break"></a>break</h3><p>break 命令（可以用 b 代替）常用的语法格式有以下 2 种。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">1、(gdb) break location     // b location</span><br><span class="line">2、(gdb) break location if cond   // b .. if cond</span><br></pre></td></tr></table></figure>
+<p><strong>location</strong>有以下几种表示方法</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>location 的值</th>
+<th>含 义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>linenum</td>
+<td>linenum 是一个整数，表示要打断点处代码的行号。要知道，程序中各行代码都有对应的行号，可通过执行 l（小写的 L）命令看到。</td>
+</tr>
+<tr>
+<td>filename:linenum</td>
+<td>filename 表示源程序文件名；linenum 为整数，表示具体行数。整体的意思是在指令文件 filename 中的第 linenum 行打断点。</td>
+</tr>
+<tr>
+<td>+ offset - offset</td>
+<td>offset 为整数（假设值为 2），+offset 表示以当前程序暂停位置（例如第 4 行）为准，向后数 offset 行处（第 6 行）打断点；-offset 表示以当前程序暂停位置为准，向前数 offset 行处（第 2 行）打断点。</td>
+</tr>
+<tr>
+<td>function</td>
+<td>function 表示程序中包含的函数的函数名，即 break 命令会在该函数内部的开头位置打断点，程序会执行到该函数第一行代码处暂停。</td>
+</tr>
+<tr>
+<td>filename:function</td>
+<td>filename 表示远程文件名；function 表示程序中函数的函数名。整体的意思是在指定文件 filename 中 function 函数的开头位置打断点。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>第二种格式中，location可以是表 1 中所有参数的值，用于指定打断点的具体位置；cond 为某个表达式。整体的含义为：每次程序执行到 … 位置时都计算 cond 的值，如果为 True，则程序在该位置暂停；反之，程序继续执行。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(gdb) l</span><br><span class="line">1 #include&lt;stdio.h&gt;</span><br><span class="line">2 int main(int argc,char* argv[])</span><br><span class="line">3 &#123;</span><br><span class="line">4     int num = 1;</span><br><span class="line">5     while(num&lt;100)</span><br><span class="line">6     &#123;</span><br><span class="line">7         num *= 2;</span><br><span class="line">8     &#125;</span><br><span class="line">9     printf("num=%d",num);</span><br><span class="line">10   return 0;</span><br><span class="line">(gdb)</span><br><span class="line">11 &#125;</span><br><span class="line">(gdb) b 4          &lt;-- 程序第 4 行打断点</span><br><span class="line">Breakpoint 1 at 0x1138: file main.c, line 4.</span><br><span class="line">(gdb) r              &lt;-- 运行程序，至第 4 行暂停</span><br><span class="line">Starting program: /home/ubuntu64/demo/main.exe</span><br><span class="line"></span><br><span class="line">Breakpoint 1, main (argc=1, argv=0x7fffffffe078) at main.c:4</span><br><span class="line">4     int num = 1;</span><br><span class="line">(gdb) b +1        &lt;-- 在第 4 行的基础上，在第 5 行代码处打断点</span><br><span class="line">Breakpoint 2 at 0x55555555513f: file main.c, line 5.</span><br><span class="line">(gdb) c             &lt;-- 继续执行程序，至第 5 行暂停</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Breakpoint 2, main (argc=1, argv=0x7fffffffe078) at main.c:5</span><br><span class="line">5     while(num&lt;100)</span><br><span class="line">(gdb) b 7 if num&gt;10     &lt;-- 如果 num&gt;10 在第 7 行打断点</span><br><span class="line">Breakpoint 3 at 0x555555555141: file main.c, line 7.</span><br><span class="line">(gdb) c               &lt;-- 继续执行</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Breakpoint 3, main (argc=1, argv=0x7fffffffe078) at main.c:7</span><br><span class="line">7         num *= 2;       &lt;-- 程序在第 7 行暂停</span><br><span class="line">(gdb) p num      &lt;-- p 命令查看 num 当前的值</span><br><span class="line"><span class="meta">$</span><span class="bash">1 = 16             &lt;-- num=16</span></span><br></pre></td></tr></table></figure>
+<p>c为继续执行直到下一个断点，p为打印变量的值</p>
+<h3 id="tbreak"><a href="#tbreak" class="headerlink" title="tbreak"></a>tbreak</h3><p>tbreak 命令可以看到是 break 命令的另一个版本，tbreak 和 break 命令的用法和功能都非常相似，唯一的不同在于，<strong>使用 tbreak 命令打的断点仅会作用 1 次</strong>，即使程序暂停之后，该断点就会自动消失。</p>
+<h3 id="rbreak"><a href="#rbreak" class="headerlink" title="rbreak"></a>rbreak</h3><p>和 break 和 tbreak 命令不同，rbreak 命令的作用对象是 C、C++ 程序中的函数，<strong>它会在指定函数的开头位置打断点</strong>。</p>
+<p>tbreak 命令的使用语法格式为：</p>
+<p><code>(gdb) tbreak regex</code></p>
+<p>其中 <strong>regex</strong> 为一个<strong>正则表达式</strong>，程序中函数的函数名只要满足 regex 条件，tbreak 命令就会其内部的开头位置打断点。值得一提的是，tbreak 命令打的断点和 break 命令打断点的效果是一样的，会一直存在，不会自动消失。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(gdb) l      &lt;-- 显示源码</span><br><span class="line">1 #include&lt;stdio.h&gt;</span><br><span class="line">2 void rb_one()&#123;</span><br><span class="line">3    printf("rb_one\n");</span><br><span class="line">4 &#125;</span><br><span class="line">5 void rb_second()&#123;</span><br><span class="line">6   printf("rb_second");</span><br><span class="line">7 &#125;</span><br><span class="line">8 int main(int argc,char* argv[])</span><br><span class="line">9 &#123;</span><br><span class="line">10     rb_one();</span><br><span class="line">(gdb)</span><br><span class="line">11     rb_second();</span><br><span class="line">12     return 0;</span><br><span class="line">13 &#125;</span><br><span class="line">(gdb) rbreak rb_*       &lt;--匹配所有以 rb_ 开头的函数</span><br><span class="line">Breakpoint 1 at 0x1169: file main.c, line 2.</span><br><span class="line">void rb_one();</span><br><span class="line">Breakpoint 2 at 0x1180: file main.c, line 5.</span><br><span class="line">void rb_second();</span><br><span class="line">(gdb) r</span><br><span class="line">Starting program: /home/ubuntu64/demo/main.exe</span><br><span class="line"></span><br><span class="line">Breakpoint 1, rb_one () at main.c:2</span><br><span class="line">2 void rb_one()&#123;</span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line">rb_one</span><br><span class="line"></span><br><span class="line">Breakpoint 2, rb_second () at main.c:5</span><br><span class="line">5 void rb_second()&#123;</span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line">rb_second[Inferior 1 (process 7882) exited normally]</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>tools</category>
+        <category>GDB</category>
+      </categories>
+      <tags>
+        <tag>GDB</tag>
       </tags>
   </entry>
   <entry>
@@ -407,10 +589,148 @@ O(1)\lt O(\log n) \lt O(n) \lt O(n\log n) \lt  O(n^2) \lt O(n^3) \lt O(2^n) \lt 
 </blockquote>
 ]]></content>
       <categories>
+        <category>tools</category>
         <category>git</category>
       </categories>
       <tags>
         <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>算法及算法的复杂度</title>
+    <url>/2020/06/24/3_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E5%8F%8A%E5%A4%8D%E6%9D%82%E5%BA%A6/</url>
+    <content><![CDATA[<h1 id="算法及算法效率的度量方法"><a href="#算法及算法效率的度量方法" class="headerlink" title="算法及算法效率的度量方法"></a>算法及算法效率的度量方法</h1><h2 id="1-算法"><a href="#1-算法" class="headerlink" title="1. 算法"></a>1. 算法</h2><h3 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义:"></a>1.1 定义:</h3><p>算法是解决特定问题求解步骤的描述, 在计算机中为指令的有限序列, 并且每条指令表示一个或多个操作.</p>
+<h3 id="1-2-算法的特性"><a href="#1-2-算法的特性" class="headerlink" title="1.2 算法的特性"></a>1.2 算法的特性</h3><ul>
+<li>输入和输出</li>
+<li>有穷性: 有合理边界</li>
+<li>可行性: 每一步都可以通过有限步骤实现</li>
+<li>确定性: 每一步都有确定含义, 不存在二义性</li>
+</ul>
+<h3 id="1-3-算法设计的要求"><a href="#1-3-算法设计的要求" class="headerlink" title="1.3 算法设计的要求"></a>1.3 算法设计的要求</h3><ul>
+<li>正确性: 输入,输出和加工处理无歧义性, 能正确反映问题的需求, 能得到问题的正确答案</li>
+<li>可读性: 便于阅读理解和交流</li>
+<li>健壮性: 当输入数据不合法时也能得到相关处理</li>
+<li>时间效率低空间效率高</li>
+</ul>
+<p>经过分析发现, 一个用高级语言编写的程序在计算机上运行所消耗的时间取决于下列因素:</p>
+<ol>
+<li>算法的策略方法</li>
+<li>编译产生的代码质量</li>
+<li>问题的输入规模</li>
+<li>机器执行指令的速度</li>
+</ol>
+<p>第一条是算法好坏的根本, 一个程序的运行时间, 依赖于<strong>算法的好坏</strong>和<strong>问题的输入规模</strong>.</p>
+<h2 id="2-算法的时间复杂度"><a href="#2-算法的时间复杂度" class="headerlink" title="2. 算法的时间复杂度"></a>2. 算法的时间复杂度</h2><h3 id="2-1-定义"><a href="#2-1-定义" class="headerlink" title="2.1 定义"></a>2.1 定义</h3><p>在进行算法分析时，语句总的执行次数T(n)是关于问题规模n的函数，进而分析T(n)随n的变化情况并确定T(n)的数量级。算法的时间复杂度，也就是算法的时间量度，记作：T(n) = O(f(n))。它表示随问题规模n的增大，算法执行时间的增长率和f(n)的增长率相同，称作算法的渐近时间复杂度，简称为时间复杂度。其中f(n)是问题规模n的某个函数。</p>
+<p>通过大写O[ ]的方法体现时间复杂度的计法, 称为大O记法.</p>
+<h3 id="2-2-推导大O阶方法"><a href="#2-2-推导大O阶方法" class="headerlink" title="2.2 推导大O阶方法"></a>2.2 推导大O阶方法</h3><p>O(1)叫做常数阶；O(n)叫做线性阶；O(n^2)叫做平方阶。 </p>
+<ol>
+<li><p>用常数1取代运行时间中的所有加法常数, 没有加法的常数不予考虑。</p>
+</li>
+<li><p>在修改后的运行次数函数中，只保留最高阶项。</p>
+</li>
+<li><p>如果最高阶项存在且不是1，则去除与这个项相乘的常数。</p>
+</li>
+</ol>
+<p>得到的结果就是大O阶。 </p>
+<p>如果你没看懂，那继续往下看，笔者以例子与你详细介绍：</p>
+<p><strong>例子1：</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum=<span class="number">0</span>,i = <span class="number">0</span>;i &lt; N;i++)  <span class="comment">//1、</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>;j &lt;N;j++)     <span class="comment">//2、</span></span><br><span class="line">        sum=sum+i*j;            <span class="comment">//3、</span></span><br></pre></td></tr></table></figure>
+<p>我们以一个语句记为1次来分析：</p>
+<p>1、1+ (N+1)+N （这里定义两个变量共一次，而中间循环 理论是判断是N次,但是实际上应该是N+1 最后等于N时还有判断1次 0~N 故为N+1，循环变量的递增一共是N次）</p>
+<p>2、N+N(N+1)+NN（这里由第一个循环进入第二个循环，一共是N次，那么将会定义N次，单独分析判断语句它将会像第一层循环一样，一个判断N次 再算上 第一次循环进入第二次循环共有N次 故 为N(N+1) 后面类似 NN ）</p>
+<p>3、NN（第二层循环进入最里面语句 N次 第一层循环进入第二层循环 共N次 故实际为NN次）</p>
+<p>那么累加一下:<br>1+(N+1)+N+N(N+1)+NN+NN 保留最高项 N * N, 故算法的时间复杂度为O(N^2)</p>
+<p><strong>例子2:</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum = <span class="number">0</span>,i = <span class="number">1</span>;i &lt; N;i = i*<span class="number">2</span>)   <span class="comment">//1、</span></span><br><span class="line">        sum = sum+i*j;                 <span class="comment">//2、</span></span><br></pre></td></tr></table></figure>
+<p>看到这程序片段，你是不是一眼就得出答案了？如果你不注意的话，你的答案肯定是O(N)，对了吗？<br>先告诉你答案为O(log(N))，你可以试试代个确切的N值进去 看一下次数,自己体会一下，那么下面我和大家一起分析下：</p>
+<p>1、1+log(N)+1+log(N)</p>
+<p>2、log(N)</p>
+<p>其实这里做判断的时候，应该看一下循环变量的递增方式，这里它是i = i * 2 也就是 $2^x=N$ 那么$X=\log_2(N)$, X是次数，在计算复杂度里面，一般省略底数，也就是直接写log(N), 其他的计算方法与上面的解释一致。</p>
+<p><strong>例子3:</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum=<span class="number">0</span>,i = <span class="number">0</span>;i&lt;N;i++)          <span class="comment">//1、</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>;j &lt; N;j = j*<span class="number">2</span>)      <span class="comment">//2、</span></span><br><span class="line">        sum=sum+i*j;                  <span class="comment">//3、</span></span><br></pre></td></tr></table></figure>
+<p>分析:<br>1、1+N+1+N</p>
+<p>2、N+N(log(N)+1)+Nlog(N)</p>
+<p>3、Nlog(N)</p>
+<p>将它们累加并保留高阶项并去除常数, 得到时间复杂度O(Nlog(N))</p>
+<p><strong>例子4</strong>:</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> sum = <span class="number">0</span>,i = <span class="number">0</span>; i &lt; n; i++)    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = i; j &lt; n; j++)        </span><br><span class="line">       sum += i*j</span><br></pre></td></tr></table></figure>
+<p>分析:</p>
+<p>总的执行次数为n+(n-1)+(n-2)+…+1=(N^2)/2+n/2</p>
+<p>只保留高阶项并去除与这个项相乘的常数, 最终这段代码的复杂度为O(n^2)</p>
+<h3 id="2-3-常见的时间复杂度"><a href="#2-3-常见的时间复杂度" class="headerlink" title="2.3 常见的时间复杂度"></a>2.3 常见的时间复杂度</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>执行次数函数</th>
+<th>阶</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$42$(常数)</td>
+<td>O(1)</td>
+<td>常数阶</td>
+</tr>
+<tr>
+<td>$2n+3$</td>
+<td>O(n)</td>
+<td>线性阶</td>
+</tr>
+<tr>
+<td>$3n^2+2n+1$</td>
+<td>O(n^2)</td>
+<td>平方阶</td>
+</tr>
+<tr>
+<td>$5\log_2n+19$</td>
+<td>O(log(n))</td>
+<td>对数阶</td>
+</tr>
+<tr>
+<td>$2n+3n\log_2n+19$</td>
+<td>O(nlog(n))</td>
+<td>nlog(n)阶</td>
+</tr>
+<tr>
+<td>$6n^3 + 2n^2 + 3n +4$</td>
+<td>O(n^3)</td>
+<td>立方阶</td>
+</tr>
+<tr>
+<td>$2^n$</td>
+<td>O(2^n)</td>
+<td>指数阶</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>常用时间复杂度耗费时间排序:</p>
+<script type="math/tex; mode=display">
+O(1)\lt O(\log n) \lt O(n) \lt O(n\log n) \lt  O(n^2) \lt O(n^3) \lt O(2^n) \lt O(n!)\lt O(n^n)</script><p>一般而言, 指数阶$O(2^n)$和阶乘阶$O(n!)$会使运行时间大到不可估计, 一般不考虑这种不切实际的算法时间复杂度.</p>
+<h3 id="2-4-最坏情况与平均情况"><a href="#2-4-最坏情况与平均情况" class="headerlink" title="2.4  最坏情况与平均情况"></a>2.4  最坏情况与平均情况</h3><p>比如查找数组中的某个数字, 最好情况是第一次找到, 复杂度为O(1), 最差是最后一次找到, 那么复杂度为O(n)</p>
+<ul>
+<li><p><strong>最坏情况</strong>是一种保障, 保证运行时间不会再坏了, <strong>除非特殊指定, 我们提到的运行时间都是最坏情况的运行时间</strong></p>
+</li>
+<li><p><strong>平均时间</strong>是所有情况中最有意义的, 因为它是期望运行的时间, 一般很难估算得到, 往往是通过一定量的数据实验得到</p>
+</li>
+</ul>
+<h2 id="3-算法的空间复杂度"><a href="#3-算法的空间复杂度" class="headerlink" title="3. 算法的空间复杂度"></a>3. 算法的空间复杂度</h2><h3 id="3-1-定义"><a href="#3-1-定义" class="headerlink" title="3.1 定义"></a>3.1 定义</h3><p>算法的空间复杂度通过计算算法所需的存储空间实现, 算法空间复杂度计算公式记作: S(n) = O(f(n)), 其中n为问题的规模, f(n)为语句所占空间的函数.</p>
+<p>一般情况下, 一个程序在机器上执行时,除了需要存储程序本身的指令、常数、变量和输入数据外,还需要存储对数据操作的存储单元,若输入数据所占空间只取决于问题本身,和算法无关,这样只需要分析该算法在实现时所需的辅助单元即可。若算法执行时所需的辅助空间相对于输入数据量而言是个常数, 则称此算法为原地工作, 空间复杂度为 O(1) 。</p>
+<p>在写代码时完全可以通过空间换时间.  通常我们不用限定词使用”复杂度”时通常都指时间复杂度. </p>
+<h3 id="3-2-计算方法"><a href="#3-2-计算方法" class="headerlink" title="3.2 计算方法"></a>3.2 计算方法</h3><p><strong>1. 空间复杂度 O(1)</strong><br>如果算法执行所需要的临时空间不随着某个变量n的大小而变化，即此算法空间复杂度为一个常量，可表示为 O(1)</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> j = <span class="number">2</span>;</span><br><span class="line">++i;</span><br><span class="line">j++;</span><br><span class="line"><span class="keyword">int</span> m = i + j;</span><br></pre></td></tr></table></figure>
+<p>变量 i、j、m 所分配的空间都不随着处理数据量变化，因此它的空间复杂度 S(n) = O(1)</p>
+<p><strong>2. 空间复杂度 O(n)</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[] m = <span class="keyword">new</span> <span class="keyword">int</span>[n]</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">1</span>; i&lt;=n; ++i)</span><br><span class="line">&#123;</span><br><span class="line">   j = i;</span><br><span class="line">   j++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这段代码中，第一行new了一个数组出来，这个数据占用的大小为n，这段代码的2-6行，虽然有循环，但没有再分配新的空间，因此，这段代码的空间复杂度主要看第一行即可，即 S(n) = O(n)</p>
+]]></content>
+      <categories>
+        <category>数据结构和算法</category>
+      </categories>
+      <tags>
+        <tag>数据结构</tag>
+        <tag>算法</tag>
       </tags>
   </entry>
   <entry>
@@ -562,194 +882,7 @@ f_i(key)=RH_i(key)\ (i=1,2,3,\dots,k)</script><p>事先准备多个散列函数,
         <category>数据结构和算法</category>
       </categories>
       <tags>
-        <tag>数据结构和算法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>转载：详解二分查找算法</title>
-    <url>/2020/07/25/3_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/%E8%AF%A6%E8%A7%A3%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/</url>
-    <content><![CDATA[<h1 id="转载：详解二分查找算法"><a href="#转载：详解二分查找算法" class="headerlink" title="转载：详解二分查找算法"></a>转载：详解二分查找算法</h1><p>我周围的人几乎都认为二分查找很简单，但事实真的如此吗？二分查找真的很简单吗？并不简单。看看 Knuth 大佬（发明 KMP 算法的那位）怎么说的：</p>
-<blockquote>
-<p>Although the basic idea of binary search is comparatively straightforward, the details can be surprisingly tricky…</p>
-</blockquote>
-<p>这句话可以这样理解：<strong>思路很简单，细节是魔鬼。</strong></p>
-<p>本文就来探究几个最常用的二分查找场景：寻找一个数、寻找左侧边界、寻找右侧边界。</p>
-<p>而且，我们就是要深入细节，比如while循环中的不等号是否应该带等号，mid 是否应该加一等等。分析这些细节的差异以及出现这些差异的原因，保证你能灵活准确地写出正确的二分查找算法。</p>
-<a id="more"></a>
-<h2 id="一、二分查找的框架"><a href="#一、二分查找的框架" class="headerlink" title="一、二分查找的框架"></a>一、二分查找的框架</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">binarySearch</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>, right = ...;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(...) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = (right + left) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">            left = ...</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target) &#123;</span><br><span class="line">            right = ...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ...;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>分析二分查找的一个技巧是：不要出现 else，而是把所有情况用 else if 写清楚，这样可以清楚地展现所有细节</strong>。本文都会使用 else if，旨在讲清楚，读者理解后可自行简化。</p>
-<p>其中…标记的部分，就是可能出现细节问题的地方，当你见到一个二分查找的代码时，首先注意这几个地方。后文用实例分析这些地方能有什么样的变化。</p>
-<p>另外声明一下，计算 mid 时需要技巧防止溢出，建议写成: <strong>mid = left + (right - left) / 2</strong>，本文暂时忽略这个问题。</p>
-<h2 id="二、寻找一个数（基本的二分搜索）"><a href="#二、寻找一个数（基本的二分搜索）" class="headerlink" title="二、寻找一个数（基本的二分搜索）"></a>二、寻找一个数（基本的二分搜索）</h2><p>这个场景是最简单的，可能也是大家最熟悉的，即搜索一个数，如果存在，返回其索引，否则返回 -1。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">binarySearch</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>; </span><br><span class="line">    <span class="keyword">int</span> right = nums.length - <span class="number">1</span>; <span class="comment">// 注意</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(left &lt;= right) &#123; <span class="comment">// 注意</span></span><br><span class="line">        <span class="keyword">int</span> mid = (right + left) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span>(nums[mid] == target)</span><br><span class="line">            <span class="keyword">return</span> mid; </span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &lt; target)</span><br><span class="line">            left = mid + <span class="number">1</span>; <span class="comment">// 注意</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target)</span><br><span class="line">            right = mid - <span class="number">1</span>; <span class="comment">// 注意</span></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong><em>1</em>. 为什么 while 循环的条件中是 &lt;=，而不是 &lt; ？</strong></p>
-<p>答：因为初始化 right 的赋值是 nums.length - 1，即最后一个元素的索引，而不是 nums.length。</p>
-<p>这二者可能出现在不同功能的二分查找中，区别是：前者相当于两端都闭区间 [left, right]，后者相当于左闭右开区间 [left, right)，因为索引大小为 nums.length 是越界的。</p>
-<p>我们这个算法中使用的是 [left, right] 两端都闭的区间。<strong>这个区间就是每次进行搜索的区间，我们不妨称为「搜索区间」(search space)</strong>。</p>
-<p>什么时候应该停止搜索呢？当然，找到了目标值的时候可以终止：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(nums[mid] == target)</span><br><span class="line">    <span class="keyword">return</span> mid;</span><br></pre></td></tr></table></figure>
-<p>但如果没找到，就需要 while 循环终止，然后返回 -1。那 while 循环什么时候应该终止？<strong>搜索区间为空的时候应该终止</strong>，意味着你没得找了，就等于没找到嘛。</p>
-<p>while(left &lt;= right)的终止条件是 left == right + 1，写成区间的形式就是 [right + 1, right]，或者带个具体的数字进去 [3, 2]，可见<strong>这时候搜索区间为空</strong>，因为没有数字既大于等于 3 又小于等于 2 的吧。所以这时候 while 循环终止是正确的，直接返回 -1 即可。</p>
-<p>while(left &lt; right)的终止条件是 left == right，写成区间的形式就是 [right, right]，或者带个具体的数字进去 [2, 2]，<strong>这时候搜索区间非空</strong>，还有一个数 2，但此时 while 循环终止了。也就是说这区间 [2, 2] 被漏掉了，索引 2 没有被搜索，如果这时候直接返回 -1 就可能出现错误。</p>
-<p>当然，如果你非要用 while(left &lt; right) 也可以，我们已经知道了出错的原因，就打个补丁好了：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//...</span></span><br><span class="line"><span class="keyword">while</span>(left &lt; right) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> nums[left] == target ? left : -<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-<p><strong><em>2</em>. 为什么 left = mid + 1，right = mid - 1？我看有的代码是 right = mid 或者 left = mid，没有这些加加减减，到底怎么回事，怎么判断？</strong></p>
-<p>答：这也是二分查找的一个难点，不过只要你能理解前面的内容，就能够很容易判断。</p>
-<p>刚才明确了「搜索区间」这个概念，而且本算法的搜索区间是两端都闭的，即 [left, right]。那么当我们发现索引 mid 不是要找的 target 时，如何确定下一步的搜索区间呢？</p>
-<p>当然是去搜索 [left, mid - 1] 或者 [mid + 1, right] 对不对？因为 mid 已经搜索过，应该从搜索区间中去除。</p>
-<p><strong><em>3</em>. 此算法有什么缺陷？</strong></p>
-<p>答：至此，你应该已经掌握了该算法的所有细节，以及这样处理的原因。但是，这个算法存在局限性。</p>
-<p>比如说给你有序数组 nums = [1,2,2,2,3]，target = 2，此算法返回的索引是 2，没错。但是如果我想得到 target 的左侧边界，即索引 1，或者我想得到 target 的右侧边界，即索引 3，这样的话此算法是无法处理的。</p>
-<p>这样的需求很常见。你也许会说，找到一个 target 索引，然后向左或向右线性搜索不行吗？可以，但是不好，因为这样难以保证二分查找对数级的时间复杂度了。</p>
-<p>我们后续的算法就来讨论这两种二分查找的算法。</p>
-<h2 id="三、寻找左侧边界的二分搜索"><a href="#三、寻找左侧边界的二分搜索" class="headerlink" title="三、寻找左侧边界的二分搜索"></a><strong>三、寻找左侧边界的二分搜索</strong></h2><p>直接看代码，其中的标记是需要注意的细节：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">left_bound</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nums.length == <span class="number">0</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> right = nums.length; <span class="comment">// 注意</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (left &lt; right) &#123; <span class="comment">// 注意</span></span><br><span class="line">        <span class="keyword">int</span> mid = (left + right) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">            right = mid;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">            left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target) &#123;</span><br><span class="line">            right = mid; <span class="comment">// 注意</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> left;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong><em>1.</em> 为什么 while(left &lt; right) 而不是 &lt;= ?</strong></p>
-<p>答：用相同的方法分析，因为初始化 right = nums.length 而不是 nums.length - 1 。因此每次循环的「搜索区间」是 [left, right) 左闭右开。</p>
-<p>while(left &lt; right) 终止的条件是 left == right，此时搜索区间 [left, left) 恰巧为空，所以可以正确终止。</p>
-<p><strong><em>2.</em> 为什么没有返回 -1 的操作？如果 nums 中不存在 target 这个值，怎么办？</strong></p>
-<p>答：因为要一步一步来，先理解一下这个「左侧边界」有什么特殊含义：</p>
-<p><img src="https://i.loli.net/2020/09/24/M21aBrXS7CQ6hd8.png" alt="image-20200924163606976"></p>
-<p>对于这个数组，算法会返回 1。这个 1 的含义可以这样解读：nums 中小于 2 的元素有 1 个。</p>
-<p>比如对于有序数组 nums = [2,3,5,7], target = 1，算法会返回 0，含义是：nums 中小于 1 的元素有 0 个。如果 target = 8，算法会返回 4，含义是：nums 中小于 8 的元素有 4 个。</p>
-<p>综上可以看出，函数的返回值（即 left 变量的值）取值区间是闭区间 [0, nums.length]，所以我们简单添加两行代码就能在正确的时候 return -1：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (left &lt; right) &#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// target 比所有数都大</span></span><br><span class="line"><span class="keyword">if</span> (left == nums.length) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line"><span class="comment">// 类似之前算法的处理方式</span></span><br><span class="line"><span class="keyword">return</span> nums[left] == target ? left : -<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-<p><strong><em>3.</em> 为什么 left = mid + 1，right = mid ？和之前的算法不一样？</strong></p>
-<p>答：这个很好解释，因为我们的「搜索区间」是 [left, right) 左闭右开，所以当 nums[mid] 被检测之后，下一步的搜索区间应该去掉 mid 分割成两个区间，即 [left, mid) 或 [mid + 1, right)。</p>
-<p><strong><em>4.</em> 为什么该算法能够搜索左侧边界？</strong></p>
-<p>答：关键在于对于 nums[mid] == target 这种情况的处理：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (nums[mid] == target)</span><br><span class="line">    right = mid;</span><br></pre></td></tr></table></figure>
-<p>可见，找到 target 时不要立即返回，而是缩小「搜索区间」的上界 right，在区间 [left, mid) 中继续搜索，即不断向左收缩，达到锁定左侧边界的目的。</p>
-<p><strong><em>5.</em> 为什么返回 left 而不是 right？</strong></p>
-<p>答：返回left和right都是一样的，因为 while 终止的条件是 left == right。</p>
-<p><strong><em>6.</em> 能不能想办法把 right 变成 nums.length - 1，也就是继续使用两边都闭的「搜索区间」？这样就可以和第一种二分搜索在某种程度上统一起来了。</strong></p>
-<p>答：当然可以，只要你明白了「搜索区间」这个概念，就能有效避免漏掉元素，随便你怎么改都行。下面我们严格根据逻辑来修改：</p>
-<p>因为你非要让搜索区间两端都闭，所以 right 应该初始化为 nums.length - 1，while 的终止条件应该是 left == right + 1，也就是其中应该用 &lt;=：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">left_bound</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 搜索区间为 [left, right]</span></span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.length - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">        <span class="comment">// if else ...</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>因为搜索区间是两端都闭的，且现在是搜索左侧边界，所以 left 和 right 的更新逻辑如下：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">    <span class="comment">// 搜索区间变为 [mid+1, right]</span></span><br><span class="line">    left = mid + <span class="number">1</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target) &#123;</span><br><span class="line">    <span class="comment">// 搜索区间变为 [left, mid-1]</span></span><br><span class="line">    right = mid - <span class="number">1</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">    <span class="comment">// 收缩右侧边界</span></span><br><span class="line">    right = mid - <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>由于 while 的退出条件是 left == right + 1，所以当 target 比 nums 中所有元素都大时，会存在以下情况使得索引越界：</p>
-<p><img src="https://i.loli.net/2020/09/24/nvfVRIX1A9qLdyP.png" alt="image-20200924163652700"></p>
-<p>因此，最后返回结果的代码应该检查越界情况：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (left &gt;= nums.length || nums[left] != target)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line"><span class="keyword">return</span> left;</span><br><span class="line">至此，整个算法就写完了，完整代码如下：</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">left_bound</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.length - <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// 搜索区间为 [left, right]</span></span><br><span class="line">    <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">            <span class="comment">// 搜索区间变为 [mid+1, right]</span></span><br><span class="line">            left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target) &#123;</span><br><span class="line">            <span class="comment">// 搜索区间变为 [left, mid-1]</span></span><br><span class="line">            right = mid - <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">            <span class="comment">// 收缩右侧边界</span></span><br><span class="line">            right = mid - <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 检查出界情况</span></span><br><span class="line">    <span class="keyword">if</span> (left &gt;= nums.length || nums[left] != target)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">return</span> left;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样就和第一种二分搜索算法统一了，都是两端都闭的「搜索区间」，而且最后返回的也是 left 变量的值。只要把住二分搜索的逻辑，两种形式大家看自己喜欢哪种记哪种吧。</p>
-<h2 id="四、寻找右侧边界的二分查找"><a href="#四、寻找右侧边界的二分查找" class="headerlink" title="四、寻找右侧边界的二分查找"></a>四、寻找右侧边界的二分查找</h2><p>寻找右侧边界和寻找左侧边界的代码差不多，只有两处不同，已标注：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">right_bound</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nums.length == <span class="number">0</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.length;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (left &lt; right) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = (left + right) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">            left = mid + <span class="number">1</span>; <span class="comment">// 注意</span></span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">            left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target) &#123;</span><br><span class="line">            right = mid;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> left - <span class="number">1</span>; <span class="comment">// 注意</span></span><br></pre></td></tr></table></figure>
-<p><strong><em>1.</em> 为什么这个算法能够找到右侧边界？</strong></p>
-<p>答：类似地，关键点还是这里：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">    left = mid + <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-<p>当 nums[mid] == target 时，不要立即返回，而是增大「搜索区间」的下界 left，使得区间不断向右收缩，达到锁定右侧边界的目的。</p>
-<p><strong><em>2.</em> 为什么最后返回 left - 1 而不像左侧边界的函数，返回 left？而且我觉得这里既然是搜索右侧边界，应该返回 right 才对。</strong></p>
-<p>答：首先，while 循环的终止条件是 left == right，所以 left 和 right 是一样的，你非要体现右侧的特点，返回 right - 1 好了。</p>
-<p>至于为什么要减一，这是搜索右侧边界的一个特殊点，关键在这个条件判断：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">    left = mid + <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// 这样想: mid = left - 1</span></span><br></pre></td></tr></table></figure>
-<p><img src="https://i.loli.net/2020/09/24/NicfsTJxUSQhYzE.png" alt="image-20200924163724033"></p>
-<p>因为我们对 left 的更新必须是 left = mid + 1，就是说 while 循环结束时，nums[left] <strong>一定不等于</strong> target 了，而 nums[left - 1]<strong>可能是</strong>target。</p>
-<p>至于为什么 left 的更新必须是 left = mid + 1，同左侧边界搜索，就不再赘述。</p>
-<p><strong><em>3.</em> 为什么没有返回 -1 的操作？如果 nums 中不存在 target 这个值，怎么办？</strong></p>
-<p>答：类似之前的左侧边界搜索，因为 while 的终止条件是 left == right，就是说 left 的取值范围是 [0, nums.length]，所以可以添加两行代码，正确地返回 -1：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (left &lt; right) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (left == <span class="number">0</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line"><span class="keyword">return</span> nums[left-<span class="number">1</span>] == target ? (left-<span class="number">1</span>) : -<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-<p>是否也可以把这个算法的「搜索区间」也统一成两端都闭的形式呢？这样这三个写法就完全统一了，以后就可以闭着眼睛写出来了。</p>
-<p>答：当然可以，类似搜索左侧边界的统一写法，其实只要改两个地方就行了：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">right_bound</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.length - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">            left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target) &#123;</span><br><span class="line">            right = mid - <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">            <span class="comment">// 这里改成收缩左侧边界即可</span></span><br><span class="line">            left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 这里改为检查 right 越界的情况，见下图</span></span><br><span class="line">    <span class="keyword">if</span> (right &lt; <span class="number">0</span> || nums[right] != target)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">return</span> right;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>当 target 比所有元素都小时，right 会被减到 -1，所以需要在最后防止越界：</p>
-<p>至此，搜索右侧边界的二分查找的两种写法也完成了，其实将「搜索区间」统一成两端都闭反而更容易记忆，你说是吧？</p>
-<h2 id="五、最后总结"><a href="#五、最后总结" class="headerlink" title="五、最后总结"></a>五、最后总结</h2><p>先来梳理一下这些细节差异的因果逻辑：</p>
-<p>第一个，最基本的二分查找算法：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">因为我们初始化 right = nums.length - <span class="number">1</span></span><br><span class="line">所以决定了我们的「搜索区间」是 [left, right]</span><br><span class="line">所以决定了 <span class="keyword">while</span> (left &lt;= right)</span><br><span class="line">同时也决定了 left = mid+<span class="number">1</span> 和 right = mid-<span class="number">1</span></span><br><span class="line"></span><br><span class="line">因为我们只需找到一个 target 的索引即可</span><br><span class="line">所以当 nums[mid] == target 时可以立即返回</span><br></pre></td></tr></table></figure>
-<p>第二个，寻找左侧边界的二分查找：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">因为我们初始化 right = nums.length</span><br><span class="line">所以决定了我们的「搜索区间」是 [left, right)</span><br><span class="line">所以决定了 <span class="keyword">while</span> (left &lt; right)</span><br><span class="line">同时也决定了 left = mid+<span class="number">1</span> 和 right = mid</span><br><span class="line"></span><br><span class="line">因为我们需找到 target 的最左侧索引</span><br><span class="line">所以当 nums[mid] == target 时不要立即返回</span><br><span class="line">而要收紧右侧边界以锁定左侧边界</span><br></pre></td></tr></table></figure>
-<p>第三个，寻找右侧边界的二分查找：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">因为我们初始化 right = nums.length</span><br><span class="line">所以决定了我们的「搜索区间」是 [left, right)</span><br><span class="line">所以决定了 <span class="keyword">while</span> (left &lt; right)</span><br><span class="line">同时也决定了 left = mid+<span class="number">1</span> 和 right = mid</span><br><span class="line"></span><br><span class="line">因为我们需找到 target 的最右侧索引</span><br><span class="line">所以当 nums[mid] == target 时不要立即返回</span><br><span class="line">而要收紧左侧边界以锁定右侧边界</span><br><span class="line"></span><br><span class="line">又因为收紧左侧边界时必须 left = mid + <span class="number">1</span></span><br><span class="line">所以最后无论返回 left 还是 right，必须减一</span><br></pre></td></tr></table></figure>
-<p><strong>对于寻找左右边界的二分搜索，常见的手法是使用左闭右开的「搜索区间」，我们还根据逻辑将「搜索区间」全都统一成了两端都闭，便于记忆，只要修改两处即可变化出三种写法：</strong></p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">binary_search</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.length - <span class="number">1</span>; </span><br><span class="line">    <span class="keyword">while</span>(left &lt;= right) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">            left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target) &#123;</span><br><span class="line">            right = mid - <span class="number">1</span>; </span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(nums[mid] == target) &#123;</span><br><span class="line">            <span class="comment">// 直接返回</span></span><br><span class="line">            <span class="keyword">return</span> mid;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 直接返回</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">left_bound</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.length - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">            left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target) &#123;</span><br><span class="line">            right = mid - <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">            <span class="comment">// 别返回，锁定左侧边界</span></span><br><span class="line">            right = mid - <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 最后要检查 left 越界的情况</span></span><br><span class="line">    <span class="keyword">if</span> (left &gt;= nums.length || nums[left] != target)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">return</span> left;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">right_bound</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.length - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">            left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target) &#123;</span><br><span class="line">            right = mid - <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">            <span class="comment">// 别返回，锁定右侧边界</span></span><br><span class="line">            left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 最后要检查 right 越界的情况</span></span><br><span class="line">    <span class="keyword">if</span> (right &lt; <span class="number">0</span> || nums[right] != target)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">return</span> right;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果以上内容你都能理解，那么恭喜你，二分查找算法的细节不过如此。</p>
-<p>通过本文，你学会了：</p>
-<p><em>1.</em> 分析二分查找代码时，不要出现 else，全部展开成 else if 方便理解。</p>
-<p><em>2.</em> 注意「搜索区间」和 while 的终止条件，如果存在漏掉的元素，记得在最后检查。</p>
-<p><em>3.</em> 如需要搜索左右边界，只要在 nums[mid] == target 时做修改即可。搜索右侧时需要减一。</p>
-<p>就算遇到其他的二分查找变形，运用这几点技巧，也能保证你写出正确的代码。LeetCode Explore 中有二分查找的专项练习，其中提供了三种不同的代码模板，现在你再去看看，很容易就知道这几个模板的实现原理了。</p>
-<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><p> 二分法刷题目录：<a href="https://leetcode-cn.com/problems/search-insert-position/solution/te-bie-hao-yong-de-er-fen-cha-fa-fa-mo-ban-python-/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/search-insert-position/solution/te-bie-hao-yong-de-er-fen-cha-fa-fa-mo-ban-python-/</a></p>
-<p>原作者：labuladong</p>
-<p>原文链接：<a href="https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/solution/er-fen-cha-zhao-suan-fa-xi-jie-xiang-jie-by-labula/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/solution/er-fen-cha-zhao-suan-fa-xi-jie-xiang-jie-by-labula/</a></p>
-<p>来源：力扣（LeetCode）著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
-]]></content>
-      <categories>
-        <category>数据结构和算法</category>
-      </categories>
-      <tags>
-        <tag>算法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>转载：关于CPU Cache——程序员需要知道的事</title>
-    <url>/2020/07/11/4_%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E5%85%B3%E4%BA%8ECPU-Cache-%E7%A8%8B%E5%BA%8F%E5%91%98%E9%9C%80%E8%A6%81%E7%9F%A5%E9%81%93%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/</url>
-    <content><![CDATA[<blockquote>
-<p>本文将介绍一些作为程序猿或者IT从业者应该知道的CPU Cache相关的知识</p>
-<p>文章欢迎转载，但转载时请保留本段文字，并置于文章的顶部 作者：卢钧轶(cenalulu) 本文原文地址：<a href="http://cenalulu.github.io/linux/all-about-cpu-cache/" target="_blank" rel="noopener">http://cenalulu.github.io/linux/all-about-cpu-cache/</a></p>
-</blockquote>
-<p>先来看一张本文所有概念的一个思维导图</p>
-<p><img src="http://cenalulu.github.io/images/linux/cache_line/mind_map.png" alt="mind_map"></p>
-<a id="more"></a>
-<h2 id="为什么要有CPU-Cache"><a href="#为什么要有CPU-Cache" class="headerlink" title="为什么要有CPU Cache"></a>为什么要有CPU Cache</h2><p>随着工艺的提升最近几十年CPU的频率不断提升，而受制于制造工艺和成本限制，目前计算机的内存主要是DRAM并且在访问速度上没有质的突破。因此，CPU的处理速度和内存的访问速度差距越来越大，甚至可以达到上万倍。这种情况下传统的CPU通过FSB直连内存的方式显然就会因为内存访问的等待，导致计算资源大量闲置，降低CPU整体吞吐量。同时又由于内存数据访问的热点集中性，在CPU和内存之间用较为快速而成本较高的SDRAM做一层缓存，就显得性价比极高了。</p>
-<h2 id="为什么要有多级CPU-Cache"><a href="#为什么要有多级CPU-Cache" class="headerlink" title="为什么要有多级CPU Cache"></a>为什么要有多级CPU Cache</h2><p>随着科技发展，热点数据的体积越来越大，单纯的增加一级缓存大小的性价比已经很低了。因此，就慢慢出现了在一级缓存(L1 Cache)和内存之间又增加一层访问速度和成本都介于两者之间的二级缓存(L2 Cache)。下面是一段从<a href="http://cenalulu.github.io/linux/all-about-cpu-cache/(www.akkadia.org/drepper/cpumemory.pdf" target="_blank" rel="noopener">What Every Programmer Should Know About Memory</a>)中摘录的解释：</p>
-<blockquote>
-<p>Soon after the introduction of the cache the system got more complicated. The speed difference between the cache and the main memory increased again, to a point that another level of cache was added, bigger and slower than the first-level cache. Only increasing the size of the first-level cache was not an option for economical rea- sons.</p>
-</blockquote>
-<p>此外，又由于程序指令和程序数据的行为和热点分布差异很大，因此L1 Cache也被划分成L1i (i for instruction)和L1d (d for data)两种专门用途的缓存。 下面<a href="https://datatake.files.wordpress.com/2015/01/cpu-cache-access-in-cpu-cycles.png" target="_blank" rel="noopener">一张图</a>可以看出各级缓存之间的响应时间差距，以及内存到底有多慢！</p>
-<p><img src="http://cenalulu.github.io/images/linux/cache_line/latency.png" alt="latency"></p>
-<h2 id="什么是Cache-Line"><a href="#什么是Cache-Line" class="headerlink" title="什么是Cache Line"></a>什么是Cache Line</h2><p>Cache Line可以简单的理解为CPU Cache中的最小缓存单位。目前主流的CPU Cache的Cache Line大小都是64Bytes。假设我们有一个512字节的一级缓存，那么按照64B的缓存单位大小来算，这个一级缓存所能存放的缓存个数就是<code>512/64 = 8</code>个。具体参见下图：</p>
-<p><img src="http://cenalulu.github.io/images/linux/cache_line/cache_line.png" alt="img"></p>
-<p>为了更好的了解Cache Line，我们还可以在自己的电脑上做下面这个有趣的实验。</p>
-<p>下面这段C代码，会从命令行接收一个参数作为数组的大小创建一个数量为N的int数组。并依次循环的从这个数组中进行数组内容访问，循环10亿次。最终输出数组总大小和对应总执行时间。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &quot;stdio.h&quot;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;sys&#x2F;time.h&gt;</span><br><span class="line"></span><br><span class="line">long timediff(clock_t t1, clock_t t2) &#123;</span><br><span class="line">    long elapsed;</span><br><span class="line">    elapsed &#x3D; ((double)t2 - t1) &#x2F; CLOCKS_PER_SEC * 1000;</span><br><span class="line">    return elapsed;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main(int argc, char *argv[])</span><br><span class="line">#*******</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    int array_size&#x3D;atoi(argv[1]);</span><br><span class="line">    int repeat_times &#x3D; 1000000000;</span><br><span class="line">    long array[array_size];</span><br><span class="line">    for(int i&#x3D;0; i&lt;array_size; i++)&#123;</span><br><span class="line">        array[i] &#x3D; 0;</span><br><span class="line">    &#125;</span><br><span class="line">    int j&#x3D;0;</span><br><span class="line">    int k&#x3D;0;</span><br><span class="line">    int c&#x3D;0;</span><br><span class="line">    clock_t start&#x3D;clock();</span><br><span class="line">    while(j++&lt;repeat_times)&#123;</span><br><span class="line">        if(k&#x3D;&#x3D;array_size)&#123;</span><br><span class="line">            k&#x3D;0;</span><br><span class="line">        &#125;</span><br><span class="line">        c &#x3D; array[k++];</span><br><span class="line">    &#125;</span><br><span class="line">    clock_t end &#x3D;clock();</span><br><span class="line">    printf(&quot;%lu\n&quot;, timediff(start,end));</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果我们把这些数据做成折线图后就会发现：总执行时间在数组大小超过64Bytes时有较为明显的拐点（当然，由于博主是在自己的Mac笔记本上测试的，会受到很多其他程序的干扰，因此会有波动）。原因是当数组小于64Bytes时数组极有可能落在一条Cache Line内，而一个元素的访问就会使得整条Cache Line被填充，因而值得后面的若干个元素受益于缓存带来的加速。而当数组大于64Bytes时，必然至少需要两条Cache Line，继而在循环访问时会出现两次Cache Line的填充，由于缓存填充的时间远高于数据访问的响应时间，因此多一次缓存填充对于总执行的影响会被放大，最终得到下图的结果： <img src="http://cenalulu.github.io/images/linux/cache_line/cache_line_size2.png" alt="cache_size"> 如果读者有兴趣的话也可以在自己的linux或者MAC上通过<code>gcc cache_line_size.c -o cache_line_size</code>编译，并通过<code>./cache_line_size</code>执行。</p>
-<p><strong>了解Cache Line的概念对我们程序猿有什么帮助？</strong> 我们来看下面这个C语言中<a href="http://qr.ae/ja9ov" target="_blank" rel="noopener">常用的循环优化例子</a> 下面两段代码中，第一段代码在C语言中总是比第二段代码的执行速度要快。具体的原因相信你仔细阅读了Cache Line的介绍后就很容易理解了。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">for(int i &#x3D; 0; i &lt; n; i++) &#123;</span><br><span class="line">    for(int j &#x3D; 0; j &lt; n; j++) &#123;</span><br><span class="line">        int num;    </span><br><span class="line">        &#x2F;&#x2F;code</span><br><span class="line">        arr[i][j] &#x3D; num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">for(int i &#x3D; 0; i &lt; n; i++) &#123;</span><br><span class="line">    for(int j &#x3D; 0; j &lt; n; j++) &#123;</span><br><span class="line">        int num;    </span><br><span class="line">        &#x2F;&#x2F;code</span><br><span class="line">        arr[j][i] &#x3D; num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr>
-<h2 id="CPU-Cache-是如何存放数据的"><a href="#CPU-Cache-是如何存放数据的" class="headerlink" title="CPU Cache 是如何存放数据的"></a>CPU Cache 是如何存放数据的</h2><h4 id="你会怎么设计Cache的存放规则"><a href="#你会怎么设计Cache的存放规则" class="headerlink" title="你会怎么设计Cache的存放规则"></a>你会怎么设计Cache的存放规则</h4><p>我们先来尝试回答一下那么这个问题：</p>
-<blockquote>
-<p>假设我们有一块4MB的区域用于缓存，每个缓存对象的唯一标识是它所在的物理内存地址。每个缓存对象大小是64Bytes，所有可以被缓存对象的大小总和（即物理内存总大小）为4GB。那么我们该如何设计这个缓存？</p>
-</blockquote>
-<p>如果你和<a href="http://cenalulu.github.io/" target="_blank" rel="noopener">博主</a>一样是一个大学没有好好学习基础/数字电路的人的话，会觉得最靠谱的的一种方式就是：Hash表。把Cache设计成一个Hash数组。内存地址的Hash值作为数组的Index，缓存对象的值作为数组的Value。每次存取时，都把地址做一次Hash然后找到Cache中对应的位置操作即可。 这样的设计方式在高等语言中很常见，也显然很高效。因为Hash值得计算虽然耗时(<a href="http://programmers.stackexchange.com/questions/49550/which-hashing-algorithm-is-best-for-uniqueness-and-speed" target="_blank" rel="noopener">10000个CPU Cycle左右</a>)，但是相比程序中其他操作（上百万的CPU Cycle）来说可以忽略不计。而对于CPU Cache来说，本来其设计目标就是在几十CPU Cycle内获取到数据。如果访问效率是百万Cycle这个等级的话，还不如到Memory直接获取数据。当然，更重要的原因是在硬件上要实现Memory Address Hash的功能在成本上是非常高的。</p>
-<h4 id="为什么Cache不能做成Fully-Associative"><a href="#为什么Cache不能做成Fully-Associative" class="headerlink" title="为什么Cache不能做成Fully Associative"></a>为什么Cache不能做成Fully Associative</h4><p>Fully Associative 字面意思是全关联。在CPU Cache中的含义是：如果在一个Cache集内，任何一个内存地址的数据可以被缓存在任何一个Cache Line里，那么我们成这个cache是Fully Associative。从定义中我们可以得出这样的结论：给到一个内存地址，要知道他是否存在于Cache中，需要遍历所有Cache Line并比较缓存内容的内存地址。而Cache的本意就是为了在尽可能少得CPU Cycle内取到数据。那么想要设计一个快速的Fully Associative的Cache几乎是不可能的。</p>
-<h4 id="为什么Cache不能做成Direct-Mapped"><a href="#为什么Cache不能做成Direct-Mapped" class="headerlink" title="为什么Cache不能做成Direct Mapped"></a>为什么Cache不能做成Direct Mapped</h4><p>和Fully Associative完全相反，使用Direct Mapped模式的Cache给定一个内存地址，就唯一确定了一条Cache Line。设计复杂度低且速度快。那么为什么Cache不使用这种模式呢？让我们来想象这么一种情况：一个拥有1M L2 Cache的32位CPU，每条Cache Line的大小为64Bytes。那么整个L2Cache被划为了<code>1M/64=16384</code>条Cache Line。我们为每条Cache Line从0开始编上号。同时32位CPU所能管理的内存地址范围是<code>2^32=4G</code>，那么Direct Mapped模式下，内存也被划为<code>4G/16384=256K</code>的小份。也就是说每256K的内存地址共享一条Cache Line。但是，这种模式下每条Cache Line的使用率如果要做到接近100%，就需要操作系统对于内存的分配和访问在地址上也是近乎平均的。而与我们的意愿相反，为了减少内存碎片和实现便捷，操作系统更多的是连续集中的使用内存。这样会出现的情况就是0-1000号这样的低编号Cache Line由于内存经常被分配并使用，而16000号以上的Cache Line由于内存鲜有进程访问，几乎一直处于空闲状态。这种情况下，本来就宝贵的1M二级CPU缓存，使用率也许50%都无法达到。</p>
-<h4 id="什么是N-Way-Set-Associative"><a href="#什么是N-Way-Set-Associative" class="headerlink" title="什么是N-Way Set Associative"></a>什么是N-Way Set Associative</h4><p>为了避免以上两种设计模式的缺陷，N-Way Set Associative缓存就出现了。他的原理是把一个缓存按照N个Cache Line作为一组（set），缓存按组划为等分。这样一个64位系统的内存地址在4MB二级缓存中就划成了三个部分（见下图），低位6个bit表示在Cache Line中的偏移量，中间12bit表示Cache组号（set index），剩余的高位46bit就是内存地址的唯一id。这样的设计相较前两种设计有以下两点好处：</p>
-<ul>
-<li>给定一个内存地址可以唯一对应一个set，对于set中只需遍历16个元素就可以确定对象是否在缓存中（Full Associative中比较次数随内存大小线性增加）</li>
-<li>每<code>2^18(256K)*16(way)</code>=<code>4M</code>(这里的<code>2^18</code>可能是按照64位CPU通常采用40位地址总线计算得到的, 即<code>2^40/4MB=2^18</code>)的连续热点数据才会导致一个set内的conflict（Direct Mapped中512K的连续热点数据就会出现conflict）</li>
-</ul>
-<p><img src="http://cenalulu.github.io/images/linux/cache_line/addr_bits.png" alt="addr"></p>
-<p><strong>为什么N-Way Set Associative的Set段是从低位而不是高位开始的</strong></p>
-<p>下面是一段从<a href="http://danluu.com/3c-conflict/#fn3" target="_blank" rel="noopener">How Misaligning Data Can Increase Performance 12x by Reducing Cache Misses</a>摘录的解释：</p>
-<blockquote>
-<p>The vast majority of accesses are close together, so moving the set index bits upwards would cause more conflict misses. You might be able to get away with a hash function that isn’t simply the least significant bits, but most proposed schemes hurt about as much as they help while adding extra complexity.</p>
-</blockquote>
-<p>由于内存的访问通常是大片连续的，或者是因为在同一程序中而导致地址接近的（即这些内存地址的高位都是一样的）。所以如果把内存地址的高位作为set index的话，那么短时间的大量内存访问都会因为set index相同而落在同一个set index中，从而导致cache conflicts使得L2, L3 Cache的命中率低下，影响程序的整体执行效率。</p>
-<p><strong>了解N-Way Set Associative的存储模式对我们有什么帮助</strong></p>
-<p>了解N-Way Set的概念后，我们不难得出以下结论：<code>2^(6Bits &lt;Cache Line Offset&gt; + 12Bits &lt;Set Index&gt;)</code> = <code>2^18</code> = <code>256K</code>。即在连续的内存地址中每256K都会出现一个处于同一个Cache Set中的缓存对象。也就是说这些对象都会争抢一个仅有16个空位的缓存池（16-Way Set）。而如果我们在程序中又使用了所谓优化神器的“内存对齐”的时候，这种争抢就会越发增多。效率上的损失也会变得非常明显。具体的实际测试我们可以参考： <a href="http://danluu.com/3c-conflict/#fn3" target="_blank" rel="noopener">How Misaligning Data Can Increase Performance 12x by Reducing Cache Misses</a> 一文。 这里我们引用一张<a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">Gallery of Processor Cache Effects</a> 中的测试结果图，来解释下内存对齐在极端情况下带来的性能损失。 <img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/assoc_big1.png" alt="memory_align"></p>
-<p>该图实际上是我们上文中第一个测试的一个变种。纵轴表示了测试对象数组的大小。横轴表示了每次数组元素访问之间的index间隔。而图中的颜色表示了响应时间的长短，蓝色越明显的部分表示响应时间越长。从这个图我们可以得到很多结论。当然这里我们只对内存带来的性能损失感兴趣。有兴趣的读者也可以阅读<a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">原文</a>分析理解其他从图中可以得到的结论。</p>
-<p>从图中我们不难看出图中每1024个步进，即每<code>1024*4</code>即4096Bytes，都有一条特别明显的蓝色竖线。也就是说，只要我们按照4K的步进去访问内存(内存根据4K对齐），无论热点数据多大它的实际效率都是非常低的！按照我们上文的分析，如果4KB的内存对齐，那么一个240MB的数组就含有61440个可以被访问到的数组元素；而对于一个每256K就会有set冲突的16Way二级缓存，总共有<code>256K/4K</code>=<code>64</code>个元素要去争抢16个空位，总共有<code>61440/64</code>=<code>960</code>个这样的元素。那么缓存命中率只有1%，自然效率也就低了。</p>
-<p>除了这个例子，有兴趣的读者还可以查阅另一篇国人对Page Align导致效率低的实验：<a href="http://evol128.is-programmer.com/posts/35453.html" target="_blank" rel="noopener">http://evol128.is-programmer.com/posts/35453.html</a></p>
-<p>想要知道更多关于内存地址对齐在目前的这种CPU-Cache的架构下会出现的问题可以详细阅读以下两篇文章：</p>
-<ul>
-<li><a href="http://danluu.com/3c-conflict/" target="_blank" rel="noopener">How Misaligning Data Can Increase Performance 12x by Reducing Cache Misses</a></li>
-<li><a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">Gallery of Processor Cache Effects</a></li>
-</ul>
-<hr>
-<h2 id="Cache淘汰策略"><a href="#Cache淘汰策略" class="headerlink" title="Cache淘汰策略"></a>Cache淘汰策略</h2><p>在文章的最后我们顺带提一下CPU Cache的淘汰策略。常见的淘汰策略主要有<code>LRU</code>和<code>Random</code>两种。通常意义下LRU对于Cache的命中率会比Random更好，所以CPU Cache的淘汰策略选择的是<code>LRU</code>。当然也有些实验显示<a href="http://danluu.com/2choices-eviction/" target="_blank" rel="noopener">在Cache Size较大的时候Random策略会有更高的命中率</a></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>CPU Cache对于程序猿是透明的，所有的操作和策略都在CPU内部完成。但是，了解和理解CPU Cache的设计、工作原理有利于我们更好的利用CPU Cache，写出更多对CPU Cache友好的程序</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
-<li><a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">Gallery of Processor Cache Effects</a></li>
-<li><a href="http://danluu.com/3c-conflict/" target="_blank" rel="noopener">How Misaligning Data Can Increase Performance 12x by Reducing Cache Misses</a></li>
-<li><a href="http://www.cs.umd.edu/class/sum2003/cmsc311/Notes/Memory/introCache.html" target="_blank" rel="noopener">Introduction to Caches</a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>计算机体系结构</category>
-      </categories>
-      <tags>
-        <tag>计算机体系结构</tag>
+        <tag>数据结构</tag>
       </tags>
   </entry>
   <entry>
@@ -946,6 +1079,180 @@ LOC(a_i) = LOC(a_1) + (i-1)C</script><p>则不论ai位于何处 , 计算地址�
       </tags>
   </entry>
   <entry>
+    <title>Hexo主题美化</title>
+    <url>/2020/06/14/1_Hexo/Hexo%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/</url>
+    <content><![CDATA[<h1 id="Hexo美化"><a href="#Hexo美化" class="headerlink" title="Hexo美化"></a>Hexo美化</h1><h2 id="修改网站图标"><a href="#修改网站图标" class="headerlink" title="修改网站图标"></a>修改网站图标</h2><h3 id="1-实现效果"><a href="#1-实现效果" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3><p>   <img src="https://i.loli.net/2020/06/14/Z4eQtNWaku6gzdh.png" alt="image-20200614211627199" style="zoom:67%;" div align=center/></p>
+<h3 id="2-实现方法"><a href="#2-实现方法" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><p>制作或者下载自己的网站图标，这里推荐几个免费的图标下载网站. </p>
+<p><a href="https://fontawesome.com/" target="_blank" rel="noopener">Font Awesome</a></p>
+<p><a href="https://icons8.com/" target="_blank" rel="noopener">Download free icons, music, stock photos, vectors</a></p>
+<p><a href="https://illustrio.com/" target="_blank" rel="noopener">illustrio: 100% free, 100% customizable icon library</a></p>
+<p><a href="https://www.iconfont.cn/?spm=a313x.7781069.1998910419.d4d0a486a" target="_blank" rel="noopener">https://www.iconfont.cn/?spm=a313x.7781069.1998910419.d4d0a486a</a></p>
+<p>下载的图标最好是32x32和16x16的,  将它们放进<code>/themes/next/source/images/</code>中, 在主题config文件搜索favicon, 进行如下修改</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">favicon:</span></span><br><span class="line">  <span class="comment"># small: /images/favicon-16x16-next.png</span></span><br><span class="line">  <span class="comment"># medium: /images/favicon-32x32-next.png</span></span><br><span class="line">  <span class="attr">small:</span> <span class="string">/images/你的图标名(16x16)</span></span><br><span class="line">  <span class="attr">medium:</span> <span class="string">/images/你的图标名(32x32)</span></span><br></pre></td></tr></table></figure>
+<h2 id="修改Next主题底部标签的-号"><a href="#修改Next主题底部标签的-号" class="headerlink" title="修改Next主题底部标签的#号"></a>修改Next主题底部标签的#号</h2><h3 id="1-实现效果-1"><a href="#1-实现效果-1" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3><p><img src="https://i.loli.net/2020/06/14/gu2OWawqbG1ZhzM.png" alt="image-20200614105134514" style="zoom: 67%;" /></p>
+<h3 id="2-实现方法-1"><a href="#2-实现方法-1" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><p>打开 <code>/themes/next/layout/_macro/post.swig</code>，搜索 <code>rel=&quot;tag&quot;&gt; </code>，将 <code></code> 换成<code>&lt;i class=&quot;fa fa-tag&quot;&gt;&lt;/i&gt;</code></p>
+<h2 id="添加社交图标"><a href="#添加社交图标" class="headerlink" title="添加社交图标"></a>添加社交图标</h2><h3 id="1-实现效果-2"><a href="#1-实现效果-2" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3><h3 id="2-实现方法-2"><a href="#2-实现方法-2" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><p>在主题config文件中搜索social, 取消相应注释即可.</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">social:</span></span><br><span class="line">  <span class="comment"># GitHub: https://github.com/shawer96 || github</span></span><br><span class="line">  <span class="comment"># E-Mail: mailto:yourname@gmail.com || envelope</span></span><br><span class="line">  <span class="comment"># Weibo: https://weibo.com/yourname || weibo</span></span><br><span class="line">  <span class="comment">#Google: https://plus.google.com/yourname || google</span></span><br><span class="line">  <span class="comment">#Twitter: https://twitter.com/yourname || twitter</span></span><br><span class="line">  <span class="comment">#FB Page: https://www.facebook.com/yourname || facebook</span></span><br><span class="line">  <span class="comment">#StackOverflow: https://stackoverflow.com/yourname || stack-overflow</span></span><br><span class="line">  <span class="comment">#YouTube: https://youtube.com/yourname || youtube</span></span><br><span class="line">  <span class="comment">#Instagram: https://instagram.com/yourname || instagram</span></span><br><span class="line">  <span class="comment">#Skype: skype:yourname?call|chat || skype</span></span><br><span class="line">  <span class="comment">#RSS: /atom.xml || rss</span></span><br></pre></td></tr></table></figure>
+<p>也可按照<code>名称: 链接地址 || 社交图标</code>的格式自定义其他的社交账号, 其中<code>||</code>后面的图标是其在<a href="https://fontawesome.com/" target="_blank" rel="noopener">Font Awesome</a>中对应的图标名, 不需要下载.</p>
+<h2 id="文章加锁"><a href="#文章加锁" class="headerlink" title="文章加锁"></a>文章加锁</h2><h3 id="1-实现效果-3"><a href="#1-实现效果-3" class="headerlink" title="1.实现效果"></a>1.实现效果</h3><p><img src="https://i.loli.net/2020/06/14/BH3mvAxdMb9l4Yc.png" alt="image-20200614215553079"></p>
+<h3 id="2-实现方法-3"><a href="#2-实现方法-3" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><ol>
+<li>下载加密插件</li>
+</ol>
+<p>   进入hexo根目录，使用<code>npm install hexo-blog-encrypt</code>命令安装插件。</p>
+<ol>
+<li>修改配置文件</li>
+</ol>
+<p>​        在hexo根目录下的config文件中, 添加</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">encrypt:</span></span><br><span class="line">	<span class="attr">enable:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>在文章属性栏中添加相应字段</li>
+</ol>
+<p><img src="https://i.loli.net/2020/06/14/Y6PVFjne9cHlzhy.png" alt="image-20200614215627622" style="zoom: 67%;" /></p>
+<p>​    password:  文章的密码</p>
+<p>​    message: 输入密码界面提示说明.</p>
+<p>​    abstract: 文章界面介绍.</p>
+<p>​    message和abstract可以省略.</p>
+<h2 id="折叠首页文章"><a href="#折叠首页文章" class="headerlink" title="折叠首页文章"></a>折叠首页文章</h2><h3 id="1-实现效果-4"><a href="#1-实现效果-4" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3><p><img src="https://i.loli.net/2020/06/14/CcZoB8XpVUJkHNr.png" alt="image-20200614220006815" style="zoom:67%;" /></p>
+<h3 id="2-实现方法-4"><a href="#2-实现方法-4" class="headerlink" title="2.实现方法"></a>2.实现方法</h3><ol>
+<li><del>已失效, 修改主题config文件中的</del></li>
+</ol>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">auto_excerpt:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">length:</span> <span class="number">150</span></span><br></pre></td></tr></table></figure>
+<p>​        随着Next主题的更新, 这一方法不再有用.</p>
+<ol>
+<li>在文章中的属性栏中添加description，并提供文章摘录</li>
+</ol>
+<p>   这种方式只会在首页列表中显示文章的摘要内容，进入文章详情后不会再显示</p>
+<p>   <img src="https://i.loli.net/2020/06/15/3YIW8ZFi7DJVTq6.png" alt="image-20200615000644376" style="zoom: 67%;" /></p>
+<ol>
+<li>在文章中使用<code>&lt; !--more--&gt;</code> 手动进行截断</li>
+</ol>
+<p>   这种方法可以根据文章的内容，自己在合适的位置添加 <code>&lt; !--more--&gt;</code> 标签，使用灵活，也是Hexo推荐的方法</p>
+<p>​        <img src="https://i.loli.net/2020/06/14/hqtfdeRPaTrx7Dj.png" alt="image-20200614220921108"></p>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>转载：详解二分查找算法</title>
+    <url>/2020/07/25/3_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/%E8%AF%A6%E8%A7%A3%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/</url>
+    <content><![CDATA[<h1 id="转载：详解二分查找算法"><a href="#转载：详解二分查找算法" class="headerlink" title="转载：详解二分查找算法"></a>转载：详解二分查找算法</h1><p>我周围的人几乎都认为二分查找很简单，但事实真的如此吗？二分查找真的很简单吗？并不简单。看看 Knuth 大佬（发明 KMP 算法的那位）怎么说的：</p>
+<blockquote>
+<p>Although the basic idea of binary search is comparatively straightforward, the details can be surprisingly tricky…</p>
+</blockquote>
+<p>这句话可以这样理解：<strong>思路很简单，细节是魔鬼。</strong></p>
+<p>本文就来探究几个最常用的二分查找场景：寻找一个数、寻找左侧边界、寻找右侧边界。</p>
+<p>而且，我们就是要深入细节，比如while循环中的不等号是否应该带等号，mid 是否应该加一等等。分析这些细节的差异以及出现这些差异的原因，保证你能灵活准确地写出正确的二分查找算法。</p>
+<a id="more"></a>
+<h2 id="一、二分查找的框架"><a href="#一、二分查找的框架" class="headerlink" title="一、二分查找的框架"></a>一、二分查找的框架</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">binarySearch</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>, right = ...;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(...) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = (right + left) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">            left = ...</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target) &#123;</span><br><span class="line">            right = ...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ...;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>分析二分查找的一个技巧是：不要出现 else，而是把所有情况用 else if 写清楚，这样可以清楚地展现所有细节</strong>。本文都会使用 else if，旨在讲清楚，读者理解后可自行简化。</p>
+<p>其中…标记的部分，就是可能出现细节问题的地方，当你见到一个二分查找的代码时，首先注意这几个地方。后文用实例分析这些地方能有什么样的变化。</p>
+<p>另外声明一下，计算 mid 时需要技巧防止溢出，建议写成: <strong>mid = left + (right - left) / 2</strong>，本文暂时忽略这个问题。</p>
+<h2 id="二、寻找一个数（基本的二分搜索）"><a href="#二、寻找一个数（基本的二分搜索）" class="headerlink" title="二、寻找一个数（基本的二分搜索）"></a>二、寻找一个数（基本的二分搜索）</h2><p>这个场景是最简单的，可能也是大家最熟悉的，即搜索一个数，如果存在，返回其索引，否则返回 -1。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">binarySearch</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>; </span><br><span class="line">    <span class="keyword">int</span> right = nums.length - <span class="number">1</span>; <span class="comment">// 注意</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(left &lt;= right) &#123; <span class="comment">// 注意</span></span><br><span class="line">        <span class="keyword">int</span> mid = (right + left) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span>(nums[mid] == target)</span><br><span class="line">            <span class="keyword">return</span> mid; </span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &lt; target)</span><br><span class="line">            left = mid + <span class="number">1</span>; <span class="comment">// 注意</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target)</span><br><span class="line">            right = mid - <span class="number">1</span>; <span class="comment">// 注意</span></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong><em>1</em>. 为什么 while 循环的条件中是 &lt;=，而不是 &lt; ？</strong></p>
+<p>答：因为初始化 right 的赋值是 nums.length - 1，即最后一个元素的索引，而不是 nums.length。</p>
+<p>这二者可能出现在不同功能的二分查找中，区别是：前者相当于两端都闭区间 [left, right]，后者相当于左闭右开区间 [left, right)，因为索引大小为 nums.length 是越界的。</p>
+<p>我们这个算法中使用的是 [left, right] 两端都闭的区间。<strong>这个区间就是每次进行搜索的区间，我们不妨称为「搜索区间」(search space)</strong>。</p>
+<p>什么时候应该停止搜索呢？当然，找到了目标值的时候可以终止：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(nums[mid] == target)</span><br><span class="line">    <span class="keyword">return</span> mid;</span><br></pre></td></tr></table></figure>
+<p>但如果没找到，就需要 while 循环终止，然后返回 -1。那 while 循环什么时候应该终止？<strong>搜索区间为空的时候应该终止</strong>，意味着你没得找了，就等于没找到嘛。</p>
+<p>while(left &lt;= right)的终止条件是 left == right + 1，写成区间的形式就是 [right + 1, right]，或者带个具体的数字进去 [3, 2]，可见<strong>这时候搜索区间为空</strong>，因为没有数字既大于等于 3 又小于等于 2 的吧。所以这时候 while 循环终止是正确的，直接返回 -1 即可。</p>
+<p>while(left &lt; right)的终止条件是 left == right，写成区间的形式就是 [right, right]，或者带个具体的数字进去 [2, 2]，<strong>这时候搜索区间非空</strong>，还有一个数 2，但此时 while 循环终止了。也就是说这区间 [2, 2] 被漏掉了，索引 2 没有被搜索，如果这时候直接返回 -1 就可能出现错误。</p>
+<p>当然，如果你非要用 while(left &lt; right) 也可以，我们已经知道了出错的原因，就打个补丁好了：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//...</span></span><br><span class="line"><span class="keyword">while</span>(left &lt; right) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> nums[left] == target ? left : -<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p><strong><em>2</em>. 为什么 left = mid + 1，right = mid - 1？我看有的代码是 right = mid 或者 left = mid，没有这些加加减减，到底怎么回事，怎么判断？</strong></p>
+<p>答：这也是二分查找的一个难点，不过只要你能理解前面的内容，就能够很容易判断。</p>
+<p>刚才明确了「搜索区间」这个概念，而且本算法的搜索区间是两端都闭的，即 [left, right]。那么当我们发现索引 mid 不是要找的 target 时，如何确定下一步的搜索区间呢？</p>
+<p>当然是去搜索 [left, mid - 1] 或者 [mid + 1, right] 对不对？因为 mid 已经搜索过，应该从搜索区间中去除。</p>
+<p><strong><em>3</em>. 此算法有什么缺陷？</strong></p>
+<p>答：至此，你应该已经掌握了该算法的所有细节，以及这样处理的原因。但是，这个算法存在局限性。</p>
+<p>比如说给你有序数组 nums = [1,2,2,2,3]，target = 2，此算法返回的索引是 2，没错。但是如果我想得到 target 的左侧边界，即索引 1，或者我想得到 target 的右侧边界，即索引 3，这样的话此算法是无法处理的。</p>
+<p>这样的需求很常见。你也许会说，找到一个 target 索引，然后向左或向右线性搜索不行吗？可以，但是不好，因为这样难以保证二分查找对数级的时间复杂度了。</p>
+<p>我们后续的算法就来讨论这两种二分查找的算法。</p>
+<h2 id="三、寻找左侧边界的二分搜索"><a href="#三、寻找左侧边界的二分搜索" class="headerlink" title="三、寻找左侧边界的二分搜索"></a><strong>三、寻找左侧边界的二分搜索</strong></h2><p>直接看代码，其中的标记是需要注意的细节：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">left_bound</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nums.length == <span class="number">0</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> right = nums.length; <span class="comment">// 注意</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (left &lt; right) &#123; <span class="comment">// 注意</span></span><br><span class="line">        <span class="keyword">int</span> mid = (left + right) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">            right = mid;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">            left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target) &#123;</span><br><span class="line">            right = mid; <span class="comment">// 注意</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> left;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong><em>1.</em> 为什么 while(left &lt; right) 而不是 &lt;= ?</strong></p>
+<p>答：用相同的方法分析，因为初始化 right = nums.length 而不是 nums.length - 1 。因此每次循环的「搜索区间」是 [left, right) 左闭右开。</p>
+<p>while(left &lt; right) 终止的条件是 left == right，此时搜索区间 [left, left) 恰巧为空，所以可以正确终止。</p>
+<p><strong><em>2.</em> 为什么没有返回 -1 的操作？如果 nums 中不存在 target 这个值，怎么办？</strong></p>
+<p>答：因为要一步一步来，先理解一下这个「左侧边界」有什么特殊含义：</p>
+<p><img src="https://i.loli.net/2020/09/24/M21aBrXS7CQ6hd8.png" alt="image-20200924163606976"></p>
+<p>对于这个数组，算法会返回 1。这个 1 的含义可以这样解读：nums 中小于 2 的元素有 1 个。</p>
+<p>比如对于有序数组 nums = [2,3,5,7], target = 1，算法会返回 0，含义是：nums 中小于 1 的元素有 0 个。如果 target = 8，算法会返回 4，含义是：nums 中小于 8 的元素有 4 个。</p>
+<p>综上可以看出，函数的返回值（即 left 变量的值）取值区间是闭区间 [0, nums.length]，所以我们简单添加两行代码就能在正确的时候 return -1：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (left &lt; right) &#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// target 比所有数都大</span></span><br><span class="line"><span class="keyword">if</span> (left == nums.length) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line"><span class="comment">// 类似之前算法的处理方式</span></span><br><span class="line"><span class="keyword">return</span> nums[left] == target ? left : -<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p><strong><em>3.</em> 为什么 left = mid + 1，right = mid ？和之前的算法不一样？</strong></p>
+<p>答：这个很好解释，因为我们的「搜索区间」是 [left, right) 左闭右开，所以当 nums[mid] 被检测之后，下一步的搜索区间应该去掉 mid 分割成两个区间，即 [left, mid) 或 [mid + 1, right)。</p>
+<p><strong><em>4.</em> 为什么该算法能够搜索左侧边界？</strong></p>
+<p>答：关键在于对于 nums[mid] == target 这种情况的处理：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (nums[mid] == target)</span><br><span class="line">    right = mid;</span><br></pre></td></tr></table></figure>
+<p>可见，找到 target 时不要立即返回，而是缩小「搜索区间」的上界 right，在区间 [left, mid) 中继续搜索，即不断向左收缩，达到锁定左侧边界的目的。</p>
+<p><strong><em>5.</em> 为什么返回 left 而不是 right？</strong></p>
+<p>答：返回left和right都是一样的，因为 while 终止的条件是 left == right。</p>
+<p><strong><em>6.</em> 能不能想办法把 right 变成 nums.length - 1，也就是继续使用两边都闭的「搜索区间」？这样就可以和第一种二分搜索在某种程度上统一起来了。</strong></p>
+<p>答：当然可以，只要你明白了「搜索区间」这个概念，就能有效避免漏掉元素，随便你怎么改都行。下面我们严格根据逻辑来修改：</p>
+<p>因为你非要让搜索区间两端都闭，所以 right 应该初始化为 nums.length - 1，while 的终止条件应该是 left == right + 1，也就是其中应该用 &lt;=：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">left_bound</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 搜索区间为 [left, right]</span></span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.length - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">        <span class="comment">// if else ...</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>因为搜索区间是两端都闭的，且现在是搜索左侧边界，所以 left 和 right 的更新逻辑如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">    <span class="comment">// 搜索区间变为 [mid+1, right]</span></span><br><span class="line">    left = mid + <span class="number">1</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target) &#123;</span><br><span class="line">    <span class="comment">// 搜索区间变为 [left, mid-1]</span></span><br><span class="line">    right = mid - <span class="number">1</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">    <span class="comment">// 收缩右侧边界</span></span><br><span class="line">    right = mid - <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由于 while 的退出条件是 left == right + 1，所以当 target 比 nums 中所有元素都大时，会存在以下情况使得索引越界：</p>
+<p><img src="https://i.loli.net/2020/09/24/nvfVRIX1A9qLdyP.png" alt="image-20200924163652700"></p>
+<p>因此，最后返回结果的代码应该检查越界情况：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (left &gt;= nums.length || nums[left] != target)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line"><span class="keyword">return</span> left;</span><br><span class="line">至此，整个算法就写完了，完整代码如下：</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">left_bound</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.length - <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// 搜索区间为 [left, right]</span></span><br><span class="line">    <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">            <span class="comment">// 搜索区间变为 [mid+1, right]</span></span><br><span class="line">            left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target) &#123;</span><br><span class="line">            <span class="comment">// 搜索区间变为 [left, mid-1]</span></span><br><span class="line">            right = mid - <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">            <span class="comment">// 收缩右侧边界</span></span><br><span class="line">            right = mid - <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 检查出界情况</span></span><br><span class="line">    <span class="keyword">if</span> (left &gt;= nums.length || nums[left] != target)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">return</span> left;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样就和第一种二分搜索算法统一了，都是两端都闭的「搜索区间」，而且最后返回的也是 left 变量的值。只要把住二分搜索的逻辑，两种形式大家看自己喜欢哪种记哪种吧。</p>
+<h2 id="四、寻找右侧边界的二分查找"><a href="#四、寻找右侧边界的二分查找" class="headerlink" title="四、寻找右侧边界的二分查找"></a>四、寻找右侧边界的二分查找</h2><p>寻找右侧边界和寻找左侧边界的代码差不多，只有两处不同，已标注：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">right_bound</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nums.length == <span class="number">0</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.length;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (left &lt; right) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = (left + right) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">            left = mid + <span class="number">1</span>; <span class="comment">// 注意</span></span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">            left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target) &#123;</span><br><span class="line">            right = mid;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> left - <span class="number">1</span>; <span class="comment">// 注意</span></span><br></pre></td></tr></table></figure>
+<p><strong><em>1.</em> 为什么这个算法能够找到右侧边界？</strong></p>
+<p>答：类似地，关键点还是这里：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">    left = mid + <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p>当 nums[mid] == target 时，不要立即返回，而是增大「搜索区间」的下界 left，使得区间不断向右收缩，达到锁定右侧边界的目的。</p>
+<p><strong><em>2.</em> 为什么最后返回 left - 1 而不像左侧边界的函数，返回 left？而且我觉得这里既然是搜索右侧边界，应该返回 right 才对。</strong></p>
+<p>答：首先，while 循环的终止条件是 left == right，所以 left 和 right 是一样的，你非要体现右侧的特点，返回 right - 1 好了。</p>
+<p>至于为什么要减一，这是搜索右侧边界的一个特殊点，关键在这个条件判断：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">    left = mid + <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// 这样想: mid = left - 1</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2020/09/24/NicfsTJxUSQhYzE.png" alt="image-20200924163724033"></p>
+<p>因为我们对 left 的更新必须是 left = mid + 1，就是说 while 循环结束时，nums[left] <strong>一定不等于</strong> target 了，而 nums[left - 1]<strong>可能是</strong>target。</p>
+<p>至于为什么 left 的更新必须是 left = mid + 1，同左侧边界搜索，就不再赘述。</p>
+<p><strong><em>3.</em> 为什么没有返回 -1 的操作？如果 nums 中不存在 target 这个值，怎么办？</strong></p>
+<p>答：类似之前的左侧边界搜索，因为 while 的终止条件是 left == right，就是说 left 的取值范围是 [0, nums.length]，所以可以添加两行代码，正确地返回 -1：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (left &lt; right) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (left == <span class="number">0</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line"><span class="keyword">return</span> nums[left-<span class="number">1</span>] == target ? (left-<span class="number">1</span>) : -<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p>是否也可以把这个算法的「搜索区间」也统一成两端都闭的形式呢？这样这三个写法就完全统一了，以后就可以闭着眼睛写出来了。</p>
+<p>答：当然可以，类似搜索左侧边界的统一写法，其实只要改两个地方就行了：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">right_bound</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.length - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">            left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target) &#123;</span><br><span class="line">            right = mid - <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">            <span class="comment">// 这里改成收缩左侧边界即可</span></span><br><span class="line">            left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 这里改为检查 right 越界的情况，见下图</span></span><br><span class="line">    <span class="keyword">if</span> (right &lt; <span class="number">0</span> || nums[right] != target)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">return</span> right;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当 target 比所有元素都小时，right 会被减到 -1，所以需要在最后防止越界：</p>
+<p>至此，搜索右侧边界的二分查找的两种写法也完成了，其实将「搜索区间」统一成两端都闭反而更容易记忆，你说是吧？</p>
+<h2 id="五、最后总结"><a href="#五、最后总结" class="headerlink" title="五、最后总结"></a>五、最后总结</h2><p>先来梳理一下这些细节差异的因果逻辑：</p>
+<p>第一个，最基本的二分查找算法：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">因为我们初始化 right = nums.length - <span class="number">1</span></span><br><span class="line">所以决定了我们的「搜索区间」是 [left, right]</span><br><span class="line">所以决定了 <span class="keyword">while</span> (left &lt;= right)</span><br><span class="line">同时也决定了 left = mid+<span class="number">1</span> 和 right = mid-<span class="number">1</span></span><br><span class="line"></span><br><span class="line">因为我们只需找到一个 target 的索引即可</span><br><span class="line">所以当 nums[mid] == target 时可以立即返回</span><br></pre></td></tr></table></figure>
+<p>第二个，寻找左侧边界的二分查找：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">因为我们初始化 right = nums.length</span><br><span class="line">所以决定了我们的「搜索区间」是 [left, right)</span><br><span class="line">所以决定了 <span class="keyword">while</span> (left &lt; right)</span><br><span class="line">同时也决定了 left = mid+<span class="number">1</span> 和 right = mid</span><br><span class="line"></span><br><span class="line">因为我们需找到 target 的最左侧索引</span><br><span class="line">所以当 nums[mid] == target 时不要立即返回</span><br><span class="line">而要收紧右侧边界以锁定左侧边界</span><br></pre></td></tr></table></figure>
+<p>第三个，寻找右侧边界的二分查找：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">因为我们初始化 right = nums.length</span><br><span class="line">所以决定了我们的「搜索区间」是 [left, right)</span><br><span class="line">所以决定了 <span class="keyword">while</span> (left &lt; right)</span><br><span class="line">同时也决定了 left = mid+<span class="number">1</span> 和 right = mid</span><br><span class="line"></span><br><span class="line">因为我们需找到 target 的最右侧索引</span><br><span class="line">所以当 nums[mid] == target 时不要立即返回</span><br><span class="line">而要收紧左侧边界以锁定右侧边界</span><br><span class="line"></span><br><span class="line">又因为收紧左侧边界时必须 left = mid + <span class="number">1</span></span><br><span class="line">所以最后无论返回 left 还是 right，必须减一</span><br></pre></td></tr></table></figure>
+<p><strong>对于寻找左右边界的二分搜索，常见的手法是使用左闭右开的「搜索区间」，我们还根据逻辑将「搜索区间」全都统一成了两端都闭，便于记忆，只要修改两处即可变化出三种写法：</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">binary_search</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.length - <span class="number">1</span>; </span><br><span class="line">    <span class="keyword">while</span>(left &lt;= right) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">            left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target) &#123;</span><br><span class="line">            right = mid - <span class="number">1</span>; </span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(nums[mid] == target) &#123;</span><br><span class="line">            <span class="comment">// 直接返回</span></span><br><span class="line">            <span class="keyword">return</span> mid;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 直接返回</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">left_bound</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.length - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">            left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target) &#123;</span><br><span class="line">            right = mid - <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">            <span class="comment">// 别返回，锁定左侧边界</span></span><br><span class="line">            right = mid - <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 最后要检查 left 越界的情况</span></span><br><span class="line">    <span class="keyword">if</span> (left &gt;= nums.length || nums[left] != target)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">return</span> left;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">right_bound</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.length - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">            left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target) &#123;</span><br><span class="line">            right = mid - <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">            <span class="comment">// 别返回，锁定右侧边界</span></span><br><span class="line">            left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 最后要检查 right 越界的情况</span></span><br><span class="line">    <span class="keyword">if</span> (right &lt; <span class="number">0</span> || nums[right] != target)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">return</span> right;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果以上内容你都能理解，那么恭喜你，二分查找算法的细节不过如此。</p>
+<p>通过本文，你学会了：</p>
+<p><em>1.</em> 分析二分查找代码时，不要出现 else，全部展开成 else if 方便理解。</p>
+<p><em>2.</em> 注意「搜索区间」和 while 的终止条件，如果存在漏掉的元素，记得在最后检查。</p>
+<p><em>3.</em> 如需要搜索左右边界，只要在 nums[mid] == target 时做修改即可。搜索右侧时需要减一。</p>
+<p>就算遇到其他的二分查找变形，运用这几点技巧，也能保证你写出正确的代码。LeetCode Explore 中有二分查找的专项练习，其中提供了三种不同的代码模板，现在你再去看看，很容易就知道这几个模板的实现原理了。</p>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><p> 二分法刷题目录：<a href="https://leetcode-cn.com/problems/search-insert-position/solution/te-bie-hao-yong-de-er-fen-cha-fa-fa-mo-ban-python-/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/search-insert-position/solution/te-bie-hao-yong-de-er-fen-cha-fa-fa-mo-ban-python-/</a></p>
+<p>原作者：labuladong</p>
+<p>原文链接：<a href="https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/solution/er-fen-cha-zhao-suan-fa-xi-jie-xiang-jie-by-labula/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/solution/er-fen-cha-zhao-suan-fa-xi-jie-xiang-jie-by-labula/</a></p>
+<p>来源：力扣（LeetCode）著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+]]></content>
+      <categories>
+        <category>数据结构和算法</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>计算力参数FLOPS,GOPS,GMACS辨析</title>
     <url>/2020/06/16/4_%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E8%AE%A1%E7%AE%97%E5%8A%9B%E5%8F%82%E6%95%B0FLOPS-GOPS-GMACS%E8%A7%A3%E6%9E%90/</url>
     <content><![CDATA[<h2 id="FLOPS"><a href="#FLOPS" class="headerlink" title="FLOPS"></a>FLOPS</h2><p>FLOPS是“每秒所执行的浮点运算次数”（floating-point operations per second）的缩写。它常被用来估算电脑的执行效能，尤其是在使用到大量浮点运算的科学计算领域中。正因为FLOPS字尾的那个S，代表秒，而不是复数，所以不能省略掉。</p>
@@ -967,9 +1274,250 @@ LOC(a_i) = LOC(a_1) + (i-1)C</script><p>则不论ai位于何处 , 计算地址�
         <category>计算机体系结构</category>
       </categories>
       <tags>
-        <tag>计算机体系结构</tag>
         <tag>神经网络加速器</tag>
+        <tag>计算机体系结构</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>转载：关于CPU Cache——程序员需要知道的事</title>
+    <url>/2020/07/11/4_%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E5%85%B3%E4%BA%8ECPU-Cache-%E7%A8%8B%E5%BA%8F%E5%91%98%E9%9C%80%E8%A6%81%E7%9F%A5%E9%81%93%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/</url>
+    <content><![CDATA[<blockquote>
+<p>本文将介绍一些作为程序猿或者IT从业者应该知道的CPU Cache相关的知识</p>
+<p>文章欢迎转载，但转载时请保留本段文字，并置于文章的顶部 作者：卢钧轶(cenalulu) 本文原文地址：<a href="http://cenalulu.github.io/linux/all-about-cpu-cache/" target="_blank" rel="noopener">http://cenalulu.github.io/linux/all-about-cpu-cache/</a></p>
+</blockquote>
+<p>先来看一张本文所有概念的一个思维导图</p>
+<p><img src="http://cenalulu.github.io/images/linux/cache_line/mind_map.png" alt="mind_map"></p>
+<a id="more"></a>
+<h2 id="为什么要有CPU-Cache"><a href="#为什么要有CPU-Cache" class="headerlink" title="为什么要有CPU Cache"></a>为什么要有CPU Cache</h2><p>随着工艺的提升最近几十年CPU的频率不断提升，而受制于制造工艺和成本限制，目前计算机的内存主要是DRAM并且在访问速度上没有质的突破。因此，CPU的处理速度和内存的访问速度差距越来越大，甚至可以达到上万倍。这种情况下传统的CPU通过FSB直连内存的方式显然就会因为内存访问的等待，导致计算资源大量闲置，降低CPU整体吞吐量。同时又由于内存数据访问的热点集中性，在CPU和内存之间用较为快速而成本较高的SDRAM做一层缓存，就显得性价比极高了。</p>
+<h2 id="为什么要有多级CPU-Cache"><a href="#为什么要有多级CPU-Cache" class="headerlink" title="为什么要有多级CPU Cache"></a>为什么要有多级CPU Cache</h2><p>随着科技发展，热点数据的体积越来越大，单纯的增加一级缓存大小的性价比已经很低了。因此，就慢慢出现了在一级缓存(L1 Cache)和内存之间又增加一层访问速度和成本都介于两者之间的二级缓存(L2 Cache)。下面是一段从<a href="http://cenalulu.github.io/linux/all-about-cpu-cache/(www.akkadia.org/drepper/cpumemory.pdf" target="_blank" rel="noopener">What Every Programmer Should Know About Memory</a>)中摘录的解释：</p>
+<blockquote>
+<p>Soon after the introduction of the cache the system got more complicated. The speed difference between the cache and the main memory increased again, to a point that another level of cache was added, bigger and slower than the first-level cache. Only increasing the size of the first-level cache was not an option for economical rea- sons.</p>
+</blockquote>
+<p>此外，又由于程序指令和程序数据的行为和热点分布差异很大，因此L1 Cache也被划分成L1i (i for instruction)和L1d (d for data)两种专门用途的缓存。 下面<a href="https://datatake.files.wordpress.com/2015/01/cpu-cache-access-in-cpu-cycles.png" target="_blank" rel="noopener">一张图</a>可以看出各级缓存之间的响应时间差距，以及内存到底有多慢！</p>
+<p><img src="http://cenalulu.github.io/images/linux/cache_line/latency.png" alt="latency"></p>
+<h2 id="什么是Cache-Line"><a href="#什么是Cache-Line" class="headerlink" title="什么是Cache Line"></a>什么是Cache Line</h2><p>Cache Line可以简单的理解为CPU Cache中的最小缓存单位。目前主流的CPU Cache的Cache Line大小都是64Bytes。假设我们有一个512字节的一级缓存，那么按照64B的缓存单位大小来算，这个一级缓存所能存放的缓存个数就是<code>512/64 = 8</code>个。具体参见下图：</p>
+<p><img src="http://cenalulu.github.io/images/linux/cache_line/cache_line.png" alt="img"></p>
+<p>为了更好的了解Cache Line，我们还可以在自己的电脑上做下面这个有趣的实验。</p>
+<p>下面这段C代码，会从命令行接收一个参数作为数组的大小创建一个数量为N的int数组。并依次循环的从这个数组中进行数组内容访问，循环10亿次。最终输出数组总大小和对应总执行时间。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &quot;stdio.h&quot;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;sys&#x2F;time.h&gt;</span><br><span class="line"></span><br><span class="line">long timediff(clock_t t1, clock_t t2) &#123;</span><br><span class="line">    long elapsed;</span><br><span class="line">    elapsed &#x3D; ((double)t2 - t1) &#x2F; CLOCKS_PER_SEC * 1000;</span><br><span class="line">    return elapsed;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main(int argc, char *argv[])</span><br><span class="line">#*******</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    int array_size&#x3D;atoi(argv[1]);</span><br><span class="line">    int repeat_times &#x3D; 1000000000;</span><br><span class="line">    long array[array_size];</span><br><span class="line">    for(int i&#x3D;0; i&lt;array_size; i++)&#123;</span><br><span class="line">        array[i] &#x3D; 0;</span><br><span class="line">    &#125;</span><br><span class="line">    int j&#x3D;0;</span><br><span class="line">    int k&#x3D;0;</span><br><span class="line">    int c&#x3D;0;</span><br><span class="line">    clock_t start&#x3D;clock();</span><br><span class="line">    while(j++&lt;repeat_times)&#123;</span><br><span class="line">        if(k&#x3D;&#x3D;array_size)&#123;</span><br><span class="line">            k&#x3D;0;</span><br><span class="line">        &#125;</span><br><span class="line">        c &#x3D; array[k++];</span><br><span class="line">    &#125;</span><br><span class="line">    clock_t end &#x3D;clock();</span><br><span class="line">    printf(&quot;%lu\n&quot;, timediff(start,end));</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果我们把这些数据做成折线图后就会发现：总执行时间在数组大小超过64Bytes时有较为明显的拐点（当然，由于博主是在自己的Mac笔记本上测试的，会受到很多其他程序的干扰，因此会有波动）。原因是当数组小于64Bytes时数组极有可能落在一条Cache Line内，而一个元素的访问就会使得整条Cache Line被填充，因而值得后面的若干个元素受益于缓存带来的加速。而当数组大于64Bytes时，必然至少需要两条Cache Line，继而在循环访问时会出现两次Cache Line的填充，由于缓存填充的时间远高于数据访问的响应时间，因此多一次缓存填充对于总执行的影响会被放大，最终得到下图的结果： <img src="http://cenalulu.github.io/images/linux/cache_line/cache_line_size2.png" alt="cache_size"> 如果读者有兴趣的话也可以在自己的linux或者MAC上通过<code>gcc cache_line_size.c -o cache_line_size</code>编译，并通过<code>./cache_line_size</code>执行。</p>
+<p><strong>了解Cache Line的概念对我们程序猿有什么帮助？</strong> 我们来看下面这个C语言中<a href="http://qr.ae/ja9ov" target="_blank" rel="noopener">常用的循环优化例子</a> 下面两段代码中，第一段代码在C语言中总是比第二段代码的执行速度要快。具体的原因相信你仔细阅读了Cache Line的介绍后就很容易理解了。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">for(int i &#x3D; 0; i &lt; n; i++) &#123;</span><br><span class="line">    for(int j &#x3D; 0; j &lt; n; j++) &#123;</span><br><span class="line">        int num;    </span><br><span class="line">        &#x2F;&#x2F;code</span><br><span class="line">        arr[i][j] &#x3D; num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">for(int i &#x3D; 0; i &lt; n; i++) &#123;</span><br><span class="line">    for(int j &#x3D; 0; j &lt; n; j++) &#123;</span><br><span class="line">        int num;    </span><br><span class="line">        &#x2F;&#x2F;code</span><br><span class="line">        arr[j][i] &#x3D; num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="CPU-Cache-是如何存放数据的"><a href="#CPU-Cache-是如何存放数据的" class="headerlink" title="CPU Cache 是如何存放数据的"></a>CPU Cache 是如何存放数据的</h2><h4 id="你会怎么设计Cache的存放规则"><a href="#你会怎么设计Cache的存放规则" class="headerlink" title="你会怎么设计Cache的存放规则"></a>你会怎么设计Cache的存放规则</h4><p>我们先来尝试回答一下那么这个问题：</p>
+<blockquote>
+<p>假设我们有一块4MB的区域用于缓存，每个缓存对象的唯一标识是它所在的物理内存地址。每个缓存对象大小是64Bytes，所有可以被缓存对象的大小总和（即物理内存总大小）为4GB。那么我们该如何设计这个缓存？</p>
+</blockquote>
+<p>如果你和<a href="http://cenalulu.github.io/" target="_blank" rel="noopener">博主</a>一样是一个大学没有好好学习基础/数字电路的人的话，会觉得最靠谱的的一种方式就是：Hash表。把Cache设计成一个Hash数组。内存地址的Hash值作为数组的Index，缓存对象的值作为数组的Value。每次存取时，都把地址做一次Hash然后找到Cache中对应的位置操作即可。 这样的设计方式在高等语言中很常见，也显然很高效。因为Hash值得计算虽然耗时(<a href="http://programmers.stackexchange.com/questions/49550/which-hashing-algorithm-is-best-for-uniqueness-and-speed" target="_blank" rel="noopener">10000个CPU Cycle左右</a>)，但是相比程序中其他操作（上百万的CPU Cycle）来说可以忽略不计。而对于CPU Cache来说，本来其设计目标就是在几十CPU Cycle内获取到数据。如果访问效率是百万Cycle这个等级的话，还不如到Memory直接获取数据。当然，更重要的原因是在硬件上要实现Memory Address Hash的功能在成本上是非常高的。</p>
+<h4 id="为什么Cache不能做成Fully-Associative"><a href="#为什么Cache不能做成Fully-Associative" class="headerlink" title="为什么Cache不能做成Fully Associative"></a>为什么Cache不能做成Fully Associative</h4><p>Fully Associative 字面意思是全关联。在CPU Cache中的含义是：如果在一个Cache集内，任何一个内存地址的数据可以被缓存在任何一个Cache Line里，那么我们成这个cache是Fully Associative。从定义中我们可以得出这样的结论：给到一个内存地址，要知道他是否存在于Cache中，需要遍历所有Cache Line并比较缓存内容的内存地址。而Cache的本意就是为了在尽可能少得CPU Cycle内取到数据。那么想要设计一个快速的Fully Associative的Cache几乎是不可能的。</p>
+<h4 id="为什么Cache不能做成Direct-Mapped"><a href="#为什么Cache不能做成Direct-Mapped" class="headerlink" title="为什么Cache不能做成Direct Mapped"></a>为什么Cache不能做成Direct Mapped</h4><p>和Fully Associative完全相反，使用Direct Mapped模式的Cache给定一个内存地址，就唯一确定了一条Cache Line。设计复杂度低且速度快。那么为什么Cache不使用这种模式呢？让我们来想象这么一种情况：一个拥有1M L2 Cache的32位CPU，每条Cache Line的大小为64Bytes。那么整个L2Cache被划为了<code>1M/64=16384</code>条Cache Line。我们为每条Cache Line从0开始编上号。同时32位CPU所能管理的内存地址范围是<code>2^32=4G</code>，那么Direct Mapped模式下，内存也被划为<code>4G/16384=256K</code>的小份。也就是说每256K的内存地址共享一条Cache Line。但是，这种模式下每条Cache Line的使用率如果要做到接近100%，就需要操作系统对于内存的分配和访问在地址上也是近乎平均的。而与我们的意愿相反，为了减少内存碎片和实现便捷，操作系统更多的是连续集中的使用内存。这样会出现的情况就是0-1000号这样的低编号Cache Line由于内存经常被分配并使用，而16000号以上的Cache Line由于内存鲜有进程访问，几乎一直处于空闲状态。这种情况下，本来就宝贵的1M二级CPU缓存，使用率也许50%都无法达到。</p>
+<h4 id="什么是N-Way-Set-Associative"><a href="#什么是N-Way-Set-Associative" class="headerlink" title="什么是N-Way Set Associative"></a>什么是N-Way Set Associative</h4><p>为了避免以上两种设计模式的缺陷，N-Way Set Associative缓存就出现了。他的原理是把一个缓存按照N个Cache Line作为一组（set），缓存按组划为等分。这样一个64位系统的内存地址在4MB二级缓存中就划成了三个部分（见下图），低位6个bit表示在Cache Line中的偏移量，中间12bit表示Cache组号（set index），剩余的高位46bit就是内存地址的唯一id。这样的设计相较前两种设计有以下两点好处：</p>
+<ul>
+<li>给定一个内存地址可以唯一对应一个set，对于set中只需遍历16个元素就可以确定对象是否在缓存中（Full Associative中比较次数随内存大小线性增加）</li>
+<li>每<code>2^18(256K)*16(way)</code>=<code>4M</code>(这里的<code>2^18</code>可能是按照64位CPU通常采用40位地址总线计算得到的, 即<code>2^40/4MB=2^18</code>)的连续热点数据才会导致一个set内的conflict（Direct Mapped中512K的连续热点数据就会出现conflict）</li>
+</ul>
+<p><img src="http://cenalulu.github.io/images/linux/cache_line/addr_bits.png" alt="addr"></p>
+<p><strong>为什么N-Way Set Associative的Set段是从低位而不是高位开始的</strong></p>
+<p>下面是一段从<a href="http://danluu.com/3c-conflict/#fn3" target="_blank" rel="noopener">How Misaligning Data Can Increase Performance 12x by Reducing Cache Misses</a>摘录的解释：</p>
+<blockquote>
+<p>The vast majority of accesses are close together, so moving the set index bits upwards would cause more conflict misses. You might be able to get away with a hash function that isn’t simply the least significant bits, but most proposed schemes hurt about as much as they help while adding extra complexity.</p>
+</blockquote>
+<p>由于内存的访问通常是大片连续的，或者是因为在同一程序中而导致地址接近的（即这些内存地址的高位都是一样的）。所以如果把内存地址的高位作为set index的话，那么短时间的大量内存访问都会因为set index相同而落在同一个set index中，从而导致cache conflicts使得L2, L3 Cache的命中率低下，影响程序的整体执行效率。</p>
+<p><strong>了解N-Way Set Associative的存储模式对我们有什么帮助</strong></p>
+<p>了解N-Way Set的概念后，我们不难得出以下结论：<code>2^(6Bits &lt;Cache Line Offset&gt; + 12Bits &lt;Set Index&gt;)</code> = <code>2^18</code> = <code>256K</code>。即在连续的内存地址中每256K都会出现一个处于同一个Cache Set中的缓存对象。也就是说这些对象都会争抢一个仅有16个空位的缓存池（16-Way Set）。而如果我们在程序中又使用了所谓优化神器的“内存对齐”的时候，这种争抢就会越发增多。效率上的损失也会变得非常明显。具体的实际测试我们可以参考： <a href="http://danluu.com/3c-conflict/#fn3" target="_blank" rel="noopener">How Misaligning Data Can Increase Performance 12x by Reducing Cache Misses</a> 一文。 这里我们引用一张<a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">Gallery of Processor Cache Effects</a> 中的测试结果图，来解释下内存对齐在极端情况下带来的性能损失。 <img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/assoc_big1.png" alt="memory_align"></p>
+<p>该图实际上是我们上文中第一个测试的一个变种。纵轴表示了测试对象数组的大小。横轴表示了每次数组元素访问之间的index间隔。而图中的颜色表示了响应时间的长短，蓝色越明显的部分表示响应时间越长。从这个图我们可以得到很多结论。当然这里我们只对内存带来的性能损失感兴趣。有兴趣的读者也可以阅读<a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">原文</a>分析理解其他从图中可以得到的结论。</p>
+<p>从图中我们不难看出图中每1024个步进，即每<code>1024*4</code>即4096Bytes，都有一条特别明显的蓝色竖线。也就是说，只要我们按照4K的步进去访问内存(内存根据4K对齐），无论热点数据多大它的实际效率都是非常低的！按照我们上文的分析，如果4KB的内存对齐，那么一个240MB的数组就含有61440个可以被访问到的数组元素；而对于一个每256K就会有set冲突的16Way二级缓存，总共有<code>256K/4K</code>=<code>64</code>个元素要去争抢16个空位，总共有<code>61440/64</code>=<code>960</code>个这样的元素。那么缓存命中率只有1%，自然效率也就低了。</p>
+<p>除了这个例子，有兴趣的读者还可以查阅另一篇国人对Page Align导致效率低的实验：<a href="http://evol128.is-programmer.com/posts/35453.html" target="_blank" rel="noopener">http://evol128.is-programmer.com/posts/35453.html</a></p>
+<p>想要知道更多关于内存地址对齐在目前的这种CPU-Cache的架构下会出现的问题可以详细阅读以下两篇文章：</p>
+<ul>
+<li><a href="http://danluu.com/3c-conflict/" target="_blank" rel="noopener">How Misaligning Data Can Increase Performance 12x by Reducing Cache Misses</a></li>
+<li><a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">Gallery of Processor Cache Effects</a></li>
+</ul>
+<hr>
+<h2 id="Cache淘汰策略"><a href="#Cache淘汰策略" class="headerlink" title="Cache淘汰策略"></a>Cache淘汰策略</h2><p>在文章的最后我们顺带提一下CPU Cache的淘汰策略。常见的淘汰策略主要有<code>LRU</code>和<code>Random</code>两种。通常意义下LRU对于Cache的命中率会比Random更好，所以CPU Cache的淘汰策略选择的是<code>LRU</code>。当然也有些实验显示<a href="http://danluu.com/2choices-eviction/" target="_blank" rel="noopener">在Cache Size较大的时候Random策略会有更高的命中率</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>CPU Cache对于程序猿是透明的，所有的操作和策略都在CPU内部完成。但是，了解和理解CPU Cache的设计、工作原理有利于我们更好的利用CPU Cache，写出更多对CPU Cache友好的程序</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
+<li><a href="http://igoro.com/archive/gallery-of-processor-cache-effects/" target="_blank" rel="noopener">Gallery of Processor Cache Effects</a></li>
+<li><a href="http://danluu.com/3c-conflict/" target="_blank" rel="noopener">How Misaligning Data Can Increase Performance 12x by Reducing Cache Misses</a></li>
+<li><a href="http://www.cs.umd.edu/class/sum2003/cmsc311/Notes/Memory/introCache.html" target="_blank" rel="noopener">Introduction to Caches</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>计算机体系结构</category>
+      </categories>
+      <tags>
+        <tag>计算机体系结构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>论文阅读笔记--Buffet</title>
+    <url>/2020/06/12/5_%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0-Buffet/</url>
+    <content><![CDATA[<h1 id="Buffets-An-Efficient-and-Composable-Storage-Idiom-for-Explicit-Decoupled-Data-Orchestration"><a href="#Buffets-An-Efficient-and-Composable-Storage-Idiom-for-Explicit-Decoupled-Data-Orchestration" class="headerlink" title="Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration"></a>Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration</h1><blockquote>
+<p>原文: Pellauer, M., et al. (2019). Buffets. Proceedings of the Twenty-Fourth International Conference on Architectural Support for Programming Languages and Operating Systems - ASPLOS ‘19: 137-151.</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><h3 id="1-要解决什么问题"><a href="#1-要解决什么问题" class="headerlink" title="1. 要解决什么问题"></a>1. 要解决什么问题</h3><p>提出针对加速器不同需求通用的, 可重用的storage idiom, 它独立于任何特定的设计.</p>
+<h3 id="2-通过什么理论或者模型来解决"><a href="#2-通过什么理论或者模型来解决" class="headerlink" title="2. 通过什么理论或者模型来解决"></a>2. 通过什么理论或者模型来解决</h3><ul>
+<li><p>Buffet</p>
+</li>
+<li><p>Decoupled fills and accesses with fine-grained synchronization.</p>
+</li>
+<li><p>Hierarchical composition, and efficient multi-casting. </p>
+</li>
+</ul>
+<h3 id="3-给出了什么答案"><a href="#3-给出了什么答案" class="headerlink" title="3. 给出了什么答案"></a>3. 给出了什么答案</h3><p>在8KB RAM上仅仅增加2%的控制开销,与DMA管理的double-buffer scratched pad和跨各种工作负载的cache相比，Buffet分别将能量延迟乘积提高了1.53倍和5.39倍。</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><h3 id="1-研究意义"><a href="#1-研究意义" class="headerlink" title="1. 研究意义"></a>1. 研究意义</h3><p>相较于通用芯片, 数据编排(data orchestration)—即将数据移入或者移出buffer heirarchy, 是专用加速芯片实现高性能的重要方法.</p>
+<p><img src="https://i.loli.net/2020/06/11/4sbALD7TirONE19.png" alt="image-20200611104101471" style="zoom:80%;" /></p>
+<p>加速器在定制的片上缓冲上花费了大量的精力。不幸的是，这些解决方案与特定设计紧密相关，从而妨碍了其他加速器领域的可重用性。</p>
+<h3 id="2-研究背景"><a href="#2-研究背景" class="headerlink" title="2. 研究背景"></a>2. 研究背景</h3><p>Existing reusable buffer idiom:</p>
+<p>cache</p>
+<ul>
+<li>过多面积和功耗用于隐式数据编排, 与加速器需求不一致.</li>
+</ul>
+<p>scratched pad</p>
+<ul>
+<li>不灵活, 不满足复杂数据重用和更新模式需求.</li>
+</ul>
+<p>FIFO</p>
+<ul>
+<li>缺乏同步性, 难以层次化..</li>
+</ul>
+<h3 id="3-基于哪些假设"><a href="#3-基于哪些假设" class="headerlink" title="3. 基于哪些假设"></a>3. 基于哪些假设</h3><ol>
+<li>显式解耦合(EDDO)方式.</li>
+<li>同步实现方式.</li>
+<li>Buffet与层次化存储结合, buffet间同步, 支持单buffet多数据广播.</li>
+</ol>
+<h2 id="Classifying-Data-Orchestration"><a href="#Classifying-Data-Orchestration" class="headerlink" title="Classifying Data Orchestration"></a>Classifying Data Orchestration</h2><p>加速器架构师利用他们在设计时对工作负载特征和访问模式的了解，可以获得以下收益：</p>
+<ul>
+<li>预取—提前准确的取来将被使用的数据,</li>
+<li>在最小，最快和最节能的缓冲区中最大程度地访问数据,</li>
+<li><del>将数据暂存到层次结构中共享者之间最小上限的缓冲区中,</del></li>
+<li>将下一个数据图块的填充与当前数据图块的消耗重叠，</li>
+<li>同时向访问的数据的所有使用者广播（或multi-casting）缓冲区访问的结果，</li>
+<li>精确且廉价地同步数据可用性,</li>
+<li>准确删除不再需要的数据</li>
+</ul>
+<p>传统应用场景下的resuable buffering idioms分类:</p>
+<p>​        implict/explict: workload在何种程度上决定暂存, 缓存策略.</p>
+<p>​        coupled/decoupled: 访存请求是round-trip还是flow-forward.</p>
+<p><img src="https://i.loli.net/2020/06/11/HG2x6trF9miWDl8.png" alt="image-20200611115419792" style="zoom: 67%;" /></p>
+<h3 id="1-Implicit-versus-Explicit-Orchestration"><a href="#1-Implicit-versus-Explicit-Orchestration" class="headerlink" title="1. Implicit versus Explicit Orchestration"></a>1. Implicit versus Explicit Orchestration</h3><ul>
+<li>cache<ul>
+<li>可重用的模块化的buffer抽象</li>
+<li>implict: 发起请求的程序并不指定数据何时重用和清空</li>
+<li>启发式(Heuristic)替换策略, 与workload无关</li>
+<li>但对于特定领域的加速器, tag匹配等带来的面积和功耗开销也难以忍受</li>
+</ul>
+</li>
+<li>Scratched Pad<ul>
+<li>指定存储的地址范围, 实现显示数据编排和精确控制</li>
+<li>常用于GPU的shared mem</li>
+<li>避免了cache的硬件开销</li>
+<li>Across fill和overlaping fill繁琐且易出错, 难组成层级化的存储</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-Coupled-versus-Decoupled-Orchestration"><a href="#2-Coupled-versus-Decoupled-Orchestration" class="headerlink" title="2.  Coupled versus Decoupled Orchestration"></a>2.  Coupled versus Decoupled Orchestration</h3><ul>
+<li><p>Coupled</p>
+<ul>
+<li>存取请求的发起者也接收响应.</li>
+<li>Pros: <ul>
+<li>数据需求和使用之前的同步性高效且直观</li>
+</ul>
+</li>
+<li>Cons: <ul>
+<li>难以实现数据填充(fill)和访问(access)之间的overlap—请求/响应者要来在请求者和消费者之间回变换角色</li>
+</ul>
+</li>
+<li>必须为整个往返负载延迟保留传入数据图块的“着陆区(landing zone)”，这会增加对RAM资源的压力</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>Decoupled</p>
+<ul>
+<li><p>单独的硬件模块（例如DMA或地址生成器（AGEN））负责将数据推送到一个或多个功能单元的staging buffer中.</p>
+</li>
+<li><p>为了掩盖延时, ==这些buffer通常是ping-pong buffers[1,2]==.</p>
+</li>
+<li><p>Pros:</p>
+<ul>
+<li>请求者可以以自己的速度运行, 返回的数据可以广播到多个使用者.</li>
+<li>访存是feed-forward的, 只需要与相邻层级的存储结构之间的lantancy相关的landing zong,  而不是在整个层次结构之间round-trip(比如cache如果miss还要去访问高一级存储, 如果decoupled那么buffer的大小只需要掩盖L1到L2的延时)</li>
+</ul>
+</li>
+<li><p>Cons:</p>
+<ul>
+<li>传统的DAE数据编排依然是隐式的, 使用cache的管理机制</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2020/06/12/HYUbECoueQTwhqa.png" alt=""></p>
+<h3 id="3-Synchronization-Concerns"><a href="#3-Synchronization-Concerns" class="headerlink" title="3. Synchronization Concerns"></a>3. Synchronization Concerns</h3><p>何时load一个new tile? 过早会导致数据被覆盖, 过晚会导致性能损失. </p>
+<p>通过脉动阵列来约束tile的执行时间是一种办法. 对于涉及片外访问或者条件执行的系统, 这些时限过于保守.</p>
+<p>本文采用ready-valid握手协议, 也可以使用其他micro-protocols(例如TRY/ACK). 本文提供了一个EDDO storage idiom，它在staging buffer操作本身中封装了细粒度的同步。</p>
+<h2 id="The-Buffet-Storage-Idiom"><a href="#The-Buffet-Storage-Idiom" class="headerlink" title="The Buffet Storage Idiom"></a>The Buffet Storage Idiom</h2><p><img src="https://i.loli.net/2020/06/12/omPiChJxk5trX1S.png" style="zoom: 67%;" /></p>
+<p>上图给出了buffet的数据编排模型, 它属于表1中的EDDO象限. 相较于DMA, 采用decoupled AGEN扩大了解耦的范围.</p>
+<p>在buffet中，有限状态机控制四个基本存储操作：</p>
+<ol>
+<li>Fill(data)</li>
+<li>Read(index)</li>
+<li>Update(index, data): </li>
+<li>Shrink(num)</li>
+</ol>
+<p>上级存储如DRAM通过<strong>FILL</strong>操作填入数据. 下级模块（例如DataPath）则通过<strong>Read</strong>和<strong>Update</strong>操作来处理buffet中的数据. <strong>Shrink</strong>操作从窗口中删除数据.</p>
+<p><img src="https://i.loli.net/2020/06/12/kprVbnS1IgGwmxu.png" style="zoom:67%;" /></p>
+<h3 id="1-Buffet-Operational-Behavior"><a href="#1-Buffet-Operational-Behavior" class="headerlink" title="1. Buffet Operational Behavior"></a>1. Buffet Operational Behavior</h3><p><img src="https://i.loli.net/2020/06/12/PcMjgDhnptIOEfV.png" alt="image-20200611205302228" style="zoom: 50%;" /></p>
+<p>❶新传输的数据通过Fill逻辑装入RAM, 这一步类似于传统的FIFO, 数据不带有地址信息. Local地址的生成依赖于填充顺序.</p>
+<p>❷与FIFO不同的是Read请求包含一个额外的Index, 允许以与接收数据不同的顺序读取数据. 这一index是相对于staging buffer中的oldest installed datum. 这一缩影不能超出RAM的大小.  传统的FIFO只要为非空，就会声明Pop.Vld. 在buffet中，请求数据的存在是索引的函数.  只有被请求的数据已被填充, 才会设置ReadRsp.VLD.</p>
+<p>❸除了索引读取之外，与FIFO的一个显着区别是活动窗口内的数据元素可以就地修改，我们将其称为Update路径.</p>
+<p>❹ shrink路径描述了从buffet中删除暂存数据的逻辑。此操作采用size参数，并从活动窗口中删除那么多元素。此操作仅更新内部记分板-不会发生数据移动。credits被释放到Fill AGEN，表明有空间可以进行另一次批量传输. 主张谁使用数据(生成index)谁shrink.</p>
+<p><img src="https://i.loli.net/2020/06/12/uZ1agqPvn9zxKRo.png" alt="image-20200611211210544" style="zoom:80%;" /></p>
+<h3 id="2-Buffet-Synchronization-Details"><a href="#2-Buffet-Synchronization-Details" class="headerlink" title="2. Buffet Synchronization Details"></a>2. Buffet Synchronization Details</h3><ul>
+<li>需要显式硬件同步的情况由算法1中的“wait_until”调用表示。</li>
+<li>由于公式1中的操作顺序，许多其他同步情况都可以在不需要显式硬件支持的情况下处理，如图4所示。</li>
+<li>RAW冒险检查—计分板<ul>
+<li>will_update 用于表示datapath即将修改当前阶段的值</li>
+<li>如果后续的<strong>Read</strong>请求正在被修改的索引，则响应将stall—这与读取尚未填充的索引没有区别</li>
+<li><strong>FILL</strong>写入时不需要检查</li>
+<li>定制化—如果确定没有RAW冒险, 可以删除RAW检查, 如果<strong>FILL</strong>与<strong>UPDATE</strong>互斥, 可以共享一个写端口. </li>
+</ul>
+</li>
+<li><strong>SHRINK</strong>与<strong>FILL</strong>之间的同步<ul>
+<li>算法1中对<strong>SHRINK</strong>保守的使用显示同步—wait_until(num&lt;occupancy).</li>
+<li>图4将其描述为隐式同步, 详见第四节</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2020/06/12/On4vEXflL9IuGKk.png" alt="image-20200611212533286" style="zoom:67%;" /></p>
+<h3 id="3-Composition-of-Buffets"><a href="#3-Composition-of-Buffets" class="headerlink" title="3. Composition of Buffets"></a>3. Composition of Buffets</h3><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><h3 id="1-文章的主要内容"><a href="#1-文章的主要内容" class="headerlink" title="1. 文章的主要内容"></a>1. 文章的主要内容</h3><h3 id="2-存在哪些缺陷"><a href="#2-存在哪些缺陷" class="headerlink" title="2. 存在哪些缺陷"></a>2. 存在哪些缺陷</h3><h3 id="3-有什么构思"><a href="#3-有什么构思" class="headerlink" title="3. 有什么构思"></a>3. 有什么构思</h3><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><blockquote>
+<p>[1] J. Cong, M. A. Ghodrat, M. Gill, B. Grigorian, K. Gururaj, and G. Reinman. Accelerator-rich architectures: Opportunities and progresses. In Proceedings of the Design Automation Conference (DAC), 2014.<br>[2] E. G. Cota, P. Mantovani, G. D. Guglielmo, and L. P. Carloni. An analysis of accelerator coupling in heterogeneous architectures. In 2015 52nd ACM/EDAC/IEEE Design Automation Conference (DAC), pages 1–6, June 2015.</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>论文阅读笔记</category>
+      </categories>
+      <tags>
+        <tag>计算机体系结构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>我的第一篇博客</title>
+    <url>/2019/12/29/6_%E9%9A%8F%E7%AC%94/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<div id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <div class="hbe-input-container">
+  <input type="password" id="hbePass" placeholder="" />
+    <label for="hbePass">Hey, password is required here.</label>
+    <div class="bottom-line"></div>
+  </div>
+  <script id="hbeData" type="hbeData" data-hmacdigest="c60b1ad9f22f09a9905fa786aac12ca23e35ac28ef82a4d384ba02338c7309b0">2daa0e43d16059575e0358eeb13204c9334f10fe9f5b4c4ca9e491347ae1aac787a653f3bfdff483154faa9c306499459a543d8e0e9fdb7cb6a5691a3868df52cad9689da85c8199db4aac1924b04b538bf91d99cddcb7f67e38171e7d09e6b5597213a8b0d8533be2784f8c387f9f0e68d0da8bb048934a16c72aa145f07ad7ad2b10054f7f6b1d80b0d972ac6485d319be33fd5c92fbe1131f89956e7073ea85085780b1c6a34ebadafa0d52784ba9f0261bdd30c89b38edda4c7efe264159e6e8a362df38552661363061bfa6a36abe0affed58798e5a6d70904733b2ad67d59ed42e7b388d29ddb4d8010b266ca05db60cbedc9060a428ca1bad408deceeab54380c354fdfb78225304e7d4c88b8e72446d8af33f4178fb27faf0449b805d486d93cb7785dd7dbb3392434262aab7a601b8088edb79def0f6fdb4926f9d04f2c1e1aead921142879cb84a484b8e4dfcd34931c5fcea43e424ded1d1812eba22ca16c330fd68f276497435047212117eeb1a62d4c93242d72e10d6724aaad4dcfb180bc95b3f5b99e65330158bd894ce97a9c4fb53d4f5c1ea52ef8ff5dbe2648adca06564933bdac07b21b3cad5c719d3e3240f6c8552d75e8f2915a921e6d0843ea372193f682b95dcd3bf10c782b69c7ce44d3b0090bc7d681e2fc7b223cf6d6d0250200d0783bc24ad9075ab73f86040d8f679046798f5cd3a1ca8209329d43d6f89d643546670e222bb26ffd8b10a56ce2af5dbc3e12ae65c3f3216d657241a0657c72df14798ba83b10ccddbb47eef59f497761a407577164474a0c2e03e28634c6f9912748f2d6dd6a69b188d8cc2e21686e42bab33415c5f368932f753d1fd62ace6bbf3c7b75a9e2a799ed4d386784a9ce1405719dc52e00dc1f0c85e5c6ac756e1e14c66a268140ebf1b1ecfa515901fd273c9351202425498ae9b937346baa409fcfe66635c516435b9a929ec339333d2d8e0091b8bc155b1f24d6fe55d4d17d8a760648d92ccd7983b79df3cd5e2aa01f015c75216019495aabe0fedd9b61d1b5672d5643de5e7b7adff4dd66c76df3f67193d7e3812aca14eb90b0badc2dc2461c8a98524cb119b47ca1302e93962a861f229c0fdcc505cfb12451ec1bad993b4e8e23dee748821febba58e44b376a927b5b7a3d19439c3b9878319c543f34f7dec63c58fcf910fe08bb7335c34f277eedb08d61ac013b1c887783e609bfe2f17fe64abd6d402da318e9668de1a6d5b6ce48ceb45da8337e001be83a04e4351b653c4bbd9ee42d16b3c8639da1f7e5636130c198a212e168bc4dc35121d604ba0de0cb781467df42</script>
+</div>
+<script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
   </entry>
   <entry>
     <title>论文阅读笔记--清华大学深度神经网络加速器(DNA)</title>
@@ -1140,80 +1688,6 @@ LOC(a_i) = LOC(a_1) + (i-1)C</script><p>则不论ai位于何处 , 计算地址�
         <tag>计算机体系结构</tag>
         <tag>神经网络</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Hexo主题美化</title>
-    <url>/2020/06/14/1_Hexo/Hexo%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/</url>
-    <content><![CDATA[<h1 id="Hexo美化"><a href="#Hexo美化" class="headerlink" title="Hexo美化"></a>Hexo美化</h1><h2 id="修改网站图标"><a href="#修改网站图标" class="headerlink" title="修改网站图标"></a>修改网站图标</h2><h3 id="1-实现效果"><a href="#1-实现效果" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3><p>   <img src="https://i.loli.net/2020/06/14/Z4eQtNWaku6gzdh.png" alt="image-20200614211627199" style="zoom:67%;" div align=center/></p>
-<h3 id="2-实现方法"><a href="#2-实现方法" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><p>制作或者下载自己的网站图标，这里推荐几个免费的图标下载网站. </p>
-<p><a href="https://fontawesome.com/" target="_blank" rel="noopener">Font Awesome</a></p>
-<p><a href="https://icons8.com/" target="_blank" rel="noopener">Download free icons, music, stock photos, vectors</a></p>
-<p><a href="https://illustrio.com/" target="_blank" rel="noopener">illustrio: 100% free, 100% customizable icon library</a></p>
-<p><a href="https://www.iconfont.cn/?spm=a313x.7781069.1998910419.d4d0a486a" target="_blank" rel="noopener">https://www.iconfont.cn/?spm=a313x.7781069.1998910419.d4d0a486a</a></p>
-<p>下载的图标最好是32x32和16x16的,  将它们放进<code>/themes/next/source/images/</code>中, 在主题config文件搜索favicon, 进行如下修改</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">favicon:</span></span><br><span class="line">  <span class="comment"># small: /images/favicon-16x16-next.png</span></span><br><span class="line">  <span class="comment"># medium: /images/favicon-32x32-next.png</span></span><br><span class="line">  <span class="attr">small:</span> <span class="string">/images/你的图标名(16x16)</span></span><br><span class="line">  <span class="attr">medium:</span> <span class="string">/images/你的图标名(32x32)</span></span><br></pre></td></tr></table></figure>
-<h2 id="修改Next主题底部标签的-号"><a href="#修改Next主题底部标签的-号" class="headerlink" title="修改Next主题底部标签的#号"></a>修改Next主题底部标签的#号</h2><h3 id="1-实现效果-1"><a href="#1-实现效果-1" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3><p><img src="https://i.loli.net/2020/06/14/gu2OWawqbG1ZhzM.png" alt="image-20200614105134514" style="zoom: 67%;" /></p>
-<h3 id="2-实现方法-1"><a href="#2-实现方法-1" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><p>打开 <code>/themes/next/layout/_macro/post.swig</code>，搜索 <code>rel=&quot;tag&quot;&gt; </code>，将 <code></code> 换成<code>&lt;i class=&quot;fa fa-tag&quot;&gt;&lt;/i&gt;</code></p>
-<h2 id="添加社交图标"><a href="#添加社交图标" class="headerlink" title="添加社交图标"></a>添加社交图标</h2><h3 id="1-实现效果-2"><a href="#1-实现效果-2" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3><h3 id="2-实现方法-2"><a href="#2-实现方法-2" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><p>在主题config文件中搜索social, 取消相应注释即可.</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">social:</span></span><br><span class="line">  <span class="comment"># GitHub: https://github.com/shawer96 || github</span></span><br><span class="line">  <span class="comment"># E-Mail: mailto:yourname@gmail.com || envelope</span></span><br><span class="line">  <span class="comment"># Weibo: https://weibo.com/yourname || weibo</span></span><br><span class="line">  <span class="comment">#Google: https://plus.google.com/yourname || google</span></span><br><span class="line">  <span class="comment">#Twitter: https://twitter.com/yourname || twitter</span></span><br><span class="line">  <span class="comment">#FB Page: https://www.facebook.com/yourname || facebook</span></span><br><span class="line">  <span class="comment">#StackOverflow: https://stackoverflow.com/yourname || stack-overflow</span></span><br><span class="line">  <span class="comment">#YouTube: https://youtube.com/yourname || youtube</span></span><br><span class="line">  <span class="comment">#Instagram: https://instagram.com/yourname || instagram</span></span><br><span class="line">  <span class="comment">#Skype: skype:yourname?call|chat || skype</span></span><br><span class="line">  <span class="comment">#RSS: /atom.xml || rss</span></span><br></pre></td></tr></table></figure>
-<p>也可按照<code>名称: 链接地址 || 社交图标</code>的格式自定义其他的社交账号, 其中<code>||</code>后面的图标是其在<a href="https://fontawesome.com/" target="_blank" rel="noopener">Font Awesome</a>中对应的图标名, 不需要下载.</p>
-<h2 id="文章加锁"><a href="#文章加锁" class="headerlink" title="文章加锁"></a>文章加锁</h2><h3 id="1-实现效果-3"><a href="#1-实现效果-3" class="headerlink" title="1.实现效果"></a>1.实现效果</h3><p><img src="https://i.loli.net/2020/06/14/BH3mvAxdMb9l4Yc.png" alt="image-20200614215553079"></p>
-<h3 id="2-实现方法-3"><a href="#2-实现方法-3" class="headerlink" title="2. 实现方法"></a>2. 实现方法</h3><ol>
-<li>下载加密插件</li>
-</ol>
-<p>   进入hexo根目录，使用<code>npm install hexo-blog-encrypt</code>命令安装插件。</p>
-<ol>
-<li>修改配置文件</li>
-</ol>
-<p>​        在hexo根目录下的config文件中, 添加</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">encrypt:</span></span><br><span class="line">	<span class="attr">enable:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
-<ol>
-<li>在文章属性栏中添加相应字段</li>
-</ol>
-<p><img src="https://i.loli.net/2020/06/14/Y6PVFjne9cHlzhy.png" alt="image-20200614215627622" style="zoom: 67%;" /></p>
-<p>​    password:  文章的密码</p>
-<p>​    message: 输入密码界面提示说明.</p>
-<p>​    abstract: 文章界面介绍.</p>
-<p>​    message和abstract可以省略.</p>
-<h2 id="折叠首页文章"><a href="#折叠首页文章" class="headerlink" title="折叠首页文章"></a>折叠首页文章</h2><h3 id="1-实现效果-4"><a href="#1-实现效果-4" class="headerlink" title="1. 实现效果"></a>1. 实现效果</h3><p><img src="https://i.loli.net/2020/06/14/CcZoB8XpVUJkHNr.png" alt="image-20200614220006815" style="zoom:67%;" /></p>
-<h3 id="2-实现方法-4"><a href="#2-实现方法-4" class="headerlink" title="2.实现方法"></a>2.实现方法</h3><ol>
-<li><del>已失效, 修改主题config文件中的</del></li>
-</ol>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">auto_excerpt:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">length:</span> <span class="number">150</span></span><br></pre></td></tr></table></figure>
-<p>​        随着Next主题的更新, 这一方法不再有用.</p>
-<ol>
-<li>在文章中的属性栏中添加description，并提供文章摘录</li>
-</ol>
-<p>   这种方式只会在首页列表中显示文章的摘要内容，进入文章详情后不会再显示</p>
-<p>   <img src="https://i.loli.net/2020/06/15/3YIW8ZFi7DJVTq6.png" alt="image-20200615000644376" style="zoom: 67%;" /></p>
-<ol>
-<li>在文章中使用<code>&lt; !--more--&gt;</code> 手动进行截断</li>
-</ol>
-<p>   这种方法可以根据文章的内容，自己在合适的位置添加 <code>&lt; !--more--&gt;</code> 标签，使用灵活，也是Hexo推荐的方法</p>
-<p>​        <img src="https://i.loli.net/2020/06/14/hqtfdeRPaTrx7Dj.png" alt="image-20200614220921108"></p>
-]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>我的第一篇博客</title>
-    <url>/2019/12/29/6_%E9%9A%8F%E7%AC%94/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<div id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
-  <div class="hbe-input-container">
-  <input type="password" id="hbePass" placeholder="" />
-    <label for="hbePass">Hey, password is required here.</label>
-    <div class="bottom-line"></div>
-  </div>
-  <script id="hbeData" type="hbeData" data-hmacdigest="c60b1ad9f22f09a9905fa786aac12ca23e35ac28ef82a4d384ba02338c7309b0">2daa0e43d16059575e0358eeb13204c9334f10fe9f5b4c4ca9e491347ae1aac787a653f3bfdff483154faa9c306499459a543d8e0e9fdb7cb6a5691a3868df52cad9689da85c8199db4aac1924b04b538bf91d99cddcb7f67e38171e7d09e6b5597213a8b0d8533be2784f8c387f9f0e68d0da8bb048934a16c72aa145f07ad7ad2b10054f7f6b1d80b0d972ac6485d319be33fd5c92fbe1131f89956e7073ea85085780b1c6a34ebadafa0d52784ba9f0261bdd30c89b38edda4c7efe264159e6e8a362df38552661363061bfa6a36abe0affed58798e5a6d70904733b2ad67d59ed42e7b388d29ddb4d8010b266ca05db60cbedc9060a428ca1bad408deceeab54380c354fdfb78225304e7d4c88b8e72446d8af33f4178fb27faf0449b805d486d93cb7785dd7dbb3392434262aab7a601b8088edb79def0f6fdb4926f9d04f2c1e1aead921142879cb84a484b8e4dfcd34931c5fcea43e424ded1d1812eba22ca16c330fd68f276497435047212117eeb1a62d4c93242d72e10d6724aaad4dcfb180bc95b3f5b99e65330158bd894ce97a9c4fb53d4f5c1ea52ef8ff5dbe2648adca06564933bdac07b21b3cad5c719d3e3240f6c8552d75e8f2915a921e6d0843ea372193f682b95dcd3bf10c782b69c7ce44d3b0090bc7d681e2fc7b223cf6d6d0250200d0783bc24ad9075ab73f86040d8f679046798f5cd3a1ca8209329d43d6f89d643546670e222bb26ffd8b10a56ce2af5dbc3e12ae65c3f3216d657241a0657c72df14798ba83b10ccddbb47eef59f497761a407577164474a0c2e03e28634c6f9912748f2d6dd6a69b188d8cc2e21686e42bab33415c5f368932f753d1fd62ace6bbf3c7b75a9e2a799ed4d386784a9ce1405719dc52e00dc1f0c85e5c6ac756e1e14c66a268140ebf1b1ecfa515901fd273c9351202425498ae9b937346baa409fcfe66635c516435b9a929ec339333d2d8e0091b8bc155b1f24d6fe55d4d17d8a760648d92ccd7983b79df3cd5e2aa01f015c75216019495aabe0fedd9b61d1b5672d5643de5e7b7adff4dd66c76df3f67193d7e3812aca14eb90b0badc2dc2461c8a98524cb119b47ca1302e93962a861f229c0fdcc505cfb12451ec1bad993b4e8e23dee748821febba58e44b376a927b5b7a3d19439c3b9878319c543f34f7dec63c58fcf910fe08bb7335c34f277eedb08d61ac013b1c887783e609bfe2f17fe64abd6d402da318e9668de1a6d5b6ce48ceb45da8337e001be83a04e4351b653c4bbd9ee42d16b3c8639da1f7e5636130c198a212e168bc4dc35121d604ba0de0cb781467df42</script>
-</div>
-<script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
   </entry>
   <entry>
     <title>论文阅读笔记--卷积神经网络加速器最优设计空间</title>
@@ -1425,160 +1899,6 @@ LOC(a_i) = LOC(a_1) + (i-1)C</script><p>则不论ai位于何处 , 计算地址�
       <tags>
         <tag>计算机体系结构</tag>
         <tag>神经网络</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>论文阅读笔记--Buffet</title>
-    <url>/2020/06/12/5_%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0-Buffet/</url>
-    <content><![CDATA[<h1 id="Buffets-An-Efficient-and-Composable-Storage-Idiom-for-Explicit-Decoupled-Data-Orchestration"><a href="#Buffets-An-Efficient-and-Composable-Storage-Idiom-for-Explicit-Decoupled-Data-Orchestration" class="headerlink" title="Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration"></a>Buffets: An Efficient and Composable Storage Idiom for Explicit Decoupled Data Orchestration</h1><blockquote>
-<p>原文: Pellauer, M., et al. (2019). Buffets. Proceedings of the Twenty-Fourth International Conference on Architectural Support for Programming Languages and Operating Systems - ASPLOS ‘19: 137-151.</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><h3 id="1-要解决什么问题"><a href="#1-要解决什么问题" class="headerlink" title="1. 要解决什么问题"></a>1. 要解决什么问题</h3><p>提出针对加速器不同需求通用的, 可重用的storage idiom, 它独立于任何特定的设计.</p>
-<h3 id="2-通过什么理论或者模型来解决"><a href="#2-通过什么理论或者模型来解决" class="headerlink" title="2. 通过什么理论或者模型来解决"></a>2. 通过什么理论或者模型来解决</h3><ul>
-<li><p>Buffet</p>
-</li>
-<li><p>Decoupled fills and accesses with fine-grained synchronization.</p>
-</li>
-<li><p>Hierarchical composition, and efficient multi-casting. </p>
-</li>
-</ul>
-<h3 id="3-给出了什么答案"><a href="#3-给出了什么答案" class="headerlink" title="3. 给出了什么答案"></a>3. 给出了什么答案</h3><p>在8KB RAM上仅仅增加2%的控制开销,与DMA管理的double-buffer scratched pad和跨各种工作负载的cache相比，Buffet分别将能量延迟乘积提高了1.53倍和5.39倍。</p>
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><h3 id="1-研究意义"><a href="#1-研究意义" class="headerlink" title="1. 研究意义"></a>1. 研究意义</h3><p>相较于通用芯片, 数据编排(data orchestration)—即将数据移入或者移出buffer heirarchy, 是专用加速芯片实现高性能的重要方法.</p>
-<p><img src="https://i.loli.net/2020/06/11/4sbALD7TirONE19.png" alt="image-20200611104101471" style="zoom:80%;" /></p>
-<p>加速器在定制的片上缓冲上花费了大量的精力。不幸的是，这些解决方案与特定设计紧密相关，从而妨碍了其他加速器领域的可重用性。</p>
-<h3 id="2-研究背景"><a href="#2-研究背景" class="headerlink" title="2. 研究背景"></a>2. 研究背景</h3><p>Existing reusable buffer idiom:</p>
-<p>cache</p>
-<ul>
-<li>过多面积和功耗用于隐式数据编排, 与加速器需求不一致.</li>
-</ul>
-<p>scratched pad</p>
-<ul>
-<li>不灵活, 不满足复杂数据重用和更新模式需求.</li>
-</ul>
-<p>FIFO</p>
-<ul>
-<li>缺乏同步性, 难以层次化..</li>
-</ul>
-<h3 id="3-基于哪些假设"><a href="#3-基于哪些假设" class="headerlink" title="3. 基于哪些假设"></a>3. 基于哪些假设</h3><ol>
-<li>显式解耦合(EDDO)方式.</li>
-<li>同步实现方式.</li>
-<li>Buffet与层次化存储结合, buffet间同步, 支持单buffet多数据广播.</li>
-</ol>
-<h2 id="Classifying-Data-Orchestration"><a href="#Classifying-Data-Orchestration" class="headerlink" title="Classifying Data Orchestration"></a>Classifying Data Orchestration</h2><p>加速器架构师利用他们在设计时对工作负载特征和访问模式的了解，可以获得以下收益：</p>
-<ul>
-<li>预取—提前准确的取来将被使用的数据,</li>
-<li>在最小，最快和最节能的缓冲区中最大程度地访问数据,</li>
-<li><del>将数据暂存到层次结构中共享者之间最小上限的缓冲区中,</del></li>
-<li>将下一个数据图块的填充与当前数据图块的消耗重叠，</li>
-<li>同时向访问的数据的所有使用者广播（或multi-casting）缓冲区访问的结果，</li>
-<li>精确且廉价地同步数据可用性,</li>
-<li>准确删除不再需要的数据</li>
-</ul>
-<p>传统应用场景下的resuable buffering idioms分类:</p>
-<p>​        implict/explict: workload在何种程度上决定暂存, 缓存策略.</p>
-<p>​        coupled/decoupled: 访存请求是round-trip还是flow-forward.</p>
-<p><img src="https://i.loli.net/2020/06/11/HG2x6trF9miWDl8.png" alt="image-20200611115419792" style="zoom: 67%;" /></p>
-<h3 id="1-Implicit-versus-Explicit-Orchestration"><a href="#1-Implicit-versus-Explicit-Orchestration" class="headerlink" title="1. Implicit versus Explicit Orchestration"></a>1. Implicit versus Explicit Orchestration</h3><ul>
-<li>cache<ul>
-<li>可重用的模块化的buffer抽象</li>
-<li>implict: 发起请求的程序并不指定数据何时重用和清空</li>
-<li>启发式(Heuristic)替换策略, 与workload无关</li>
-<li>但对于特定领域的加速器, tag匹配等带来的面积和功耗开销也难以忍受</li>
-</ul>
-</li>
-<li>Scratched Pad<ul>
-<li>指定存储的地址范围, 实现显示数据编排和精确控制</li>
-<li>常用于GPU的shared mem</li>
-<li>避免了cache的硬件开销</li>
-<li>Across fill和overlaping fill繁琐且易出错, 难组成层级化的存储</li>
-</ul>
-</li>
-</ul>
-<h3 id="2-Coupled-versus-Decoupled-Orchestration"><a href="#2-Coupled-versus-Decoupled-Orchestration" class="headerlink" title="2.  Coupled versus Decoupled Orchestration"></a>2.  Coupled versus Decoupled Orchestration</h3><ul>
-<li><p>Coupled</p>
-<ul>
-<li>存取请求的发起者也接收响应.</li>
-<li>Pros: <ul>
-<li>数据需求和使用之前的同步性高效且直观</li>
-</ul>
-</li>
-<li>Cons: <ul>
-<li>难以实现数据填充(fill)和访问(access)之间的overlap—请求/响应者要来在请求者和消费者之间回变换角色</li>
-</ul>
-</li>
-<li>必须为整个往返负载延迟保留传入数据图块的“着陆区(landing zone)”，这会增加对RAM资源的压力</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><p>Decoupled</p>
-<ul>
-<li><p>单独的硬件模块（例如DMA或地址生成器（AGEN））负责将数据推送到一个或多个功能单元的staging buffer中.</p>
-</li>
-<li><p>为了掩盖延时, ==这些buffer通常是ping-pong buffers[1,2].</p>
-</li>
-<li><p>Pros:</p>
-<ul>
-<li>请求者可以以自己的速度运行, 返回的数据可以广播到多个使用者.</li>
-<li>访存是feed-forward的, 只需要与相邻层级的存储结构之间的lantancy相关的landing zong,  而不是在整个层次结构之间round-trip(比如cache如果miss还要去访问高一级存储, 如果decoupled那么buffer的大小只需要掩盖L1到L2的延时)</li>
-</ul>
-</li>
-<li><p>Cons:</p>
-<ul>
-<li>传统的DAE数据编排依然是隐式的, 使用cache的管理机制</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://i.loli.net/2020/06/12/HYUbECoueQTwhqa.png" alt=""></p>
-<h3 id="3-Synchronization-Concerns"><a href="#3-Synchronization-Concerns" class="headerlink" title="3. Synchronization Concerns"></a>3. Synchronization Concerns</h3><p>何时load一个new tile? 过早会导致数据被覆盖, 过晚会导致性能损失. </p>
-<p>通过脉动阵列来约束tile的执行时间是一种办法. 对于涉及片外访问或者条件执行的系统, 这些时限过于保守.</p>
-<p>本文采用ready-valid握手协议, 也可以使用其他micro-protocols(例如TRY/ACK). 本文提供了一个EDDO storage idiom，它在staging buffer操作本身中封装了细粒度的同步。</p>
-<h2 id="The-Buffet-Storage-Idiom"><a href="#The-Buffet-Storage-Idiom" class="headerlink" title="The Buffet Storage Idiom"></a>The Buffet Storage Idiom</h2><p><img src="https://i.loli.net/2020/06/12/omPiChJxk5trX1S.png" style="zoom: 67%;" /></p>
-<p>上图给出了buffet的数据编排模型, 它属于表1中的EDDO象限. 相较于DMA, 采用decoupled AGEN扩大了解耦的范围.</p>
-<p>在buffet中，有限状态机控制四个基本存储操作：</p>
-<ol>
-<li>Fill(data)</li>
-<li>Read(index)</li>
-<li>Update(index, data): </li>
-<li>Shrink(num)</li>
-</ol>
-<p>上级存储如DRAM通过<strong>FILL</strong>操作填入数据. 下级模块（例如DataPath）则通过<strong>Read</strong>和<strong>Update</strong>操作来处理buffet中的数据. <strong>Shrink</strong>操作从窗口中删除数据.</p>
-<p><img src="https://i.loli.net/2020/06/12/kprVbnS1IgGwmxu.png" style="zoom:67%;" /></p>
-<h3 id="1-Buffet-Operational-Behavior"><a href="#1-Buffet-Operational-Behavior" class="headerlink" title="1. Buffet Operational Behavior"></a>1. Buffet Operational Behavior</h3><p><img src="https://i.loli.net/2020/06/12/PcMjgDhnptIOEfV.png" alt="image-20200611205302228" style="zoom: 50%;" /></p>
-<p>❶新传输的数据通过Fill逻辑装入RAM, 这一步类似于传统的FIFO, 数据不带有地址信息. Local地址的生成依赖于填充顺序.</p>
-<p>❷与FIFO不同的是Read请求包含一个额外的Index, 允许以与接收数据不同的顺序读取数据. 这一index是相对于staging buffer中的oldest installed datum. 这一缩影不能超出RAM的大小.  传统的FIFO只要为非空，就会声明Pop.Vld. 在buffet中，请求数据的存在是索引的函数.  只有被请求的数据已被填充, 才会设置ReadRsp.VLD.</p>
-<p>❸除了索引读取之外，与FIFO的一个显着区别是活动窗口内的数据元素可以就地修改，我们将其称为Update路径.</p>
-<p>❹ shrink路径描述了从buffet中删除暂存数据的逻辑。此操作采用size参数，并从活动窗口中删除那么多元素。此操作仅更新内部记分板-不会发生数据移动。credits被释放到Fill AGEN，表明有空间可以进行另一次批量传输. 主张谁使用数据(生成index)谁shrink.</p>
-<p><img src="https://i.loli.net/2020/06/12/uZ1agqPvn9zxKRo.png" alt="image-20200611211210544" style="zoom:80%;" /></p>
-<h3 id="2-Buffet-Synchronization-Details"><a href="#2-Buffet-Synchronization-Details" class="headerlink" title="2. Buffet Synchronization Details"></a>2. Buffet Synchronization Details</h3><ul>
-<li>需要显式硬件同步的情况由算法1中的“wait_until”调用表示。</li>
-<li>由于公式1中的操作顺序，许多其他同步情况都可以在不需要显式硬件支持的情况下处理，如图4所示。</li>
-<li>RAW冒险检查—计分板<ul>
-<li>will_update 用于表示datapath即将修改当前阶段的值</li>
-<li>如果后续的<strong>Read</strong>请求正在被修改的索引，则响应将stall—这与读取尚未填充的索引没有区别</li>
-<li><strong>FILL</strong>写入时不需要检查</li>
-<li>定制化—如果确定没有RAW冒险, 可以删除RAW检查, 如果<strong>FILL</strong>与<strong>UPDATE</strong>互斥, 可以共享一个写端口. </li>
-</ul>
-</li>
-<li><strong>SHRINK</strong>与<strong>FILL</strong>之间的同步<ul>
-<li>算法1中对<strong>SHRINK</strong>保守的使用显示同步—wait_until(num&lt;occupancy).</li>
-<li>图4将其描述为隐式同步, 详见第四节</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://i.loli.net/2020/06/12/On4vEXflL9IuGKk.png" alt="image-20200611212533286" style="zoom:67%;" /></p>
-<h3 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h3><h3 id="4-Composition-of-Buffets"><a href="#4-Composition-of-Buffets" class="headerlink" title="4. Composition of Buffets"></a>4. Composition of Buffets</h3><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><h3 id="1-文章的主要内容"><a href="#1-文章的主要内容" class="headerlink" title="1. 文章的主要内容"></a>1. 文章的主要内容</h3><h3 id="2-存在哪些缺陷"><a href="#2-存在哪些缺陷" class="headerlink" title="2. 存在哪些缺陷"></a>2. 存在哪些缺陷</h3><h3 id="3-有什么构思"><a href="#3-有什么构思" class="headerlink" title="3. 有什么构思"></a>3. 有什么构思</h3><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><blockquote>
-<p>[1] J. Cong, M. A. Ghodrat, M. Gill, B. Grigorian, K. Gururaj, and G. Reinman. Accelerator-rich architectures: Opportunities and progresses. In Proceedings of the Design Automation Conference (DAC), 2014.<br>[2] E. G. Cota, P. Mantovani, G. D. Guglielmo, and L. P. Carloni. An analysis of accelerator coupling in heterogeneous architectures. In 2015 52nd ACM/EDAC/IEEE Design Automation Conference (DAC), pages 1–6, June 2015.</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>论文阅读笔记</category>
-      </categories>
-      <tags>
-        <tag>计算机体系结构</tag>
       </tags>
   </entry>
 </search>
